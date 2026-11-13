@@ -1,0 +1,71 @@
+"""Every choice that changes results lives here, and is copied into the method notes.
+
+Change a value here, rerun `python pipeline/run_all.py`, and every output follows.
+"""
+from datetime import date
+from pathlib import Path
+
+# --- Paths -------------------------------------------------------------------
+ROOT = Path(__file__).resolve().parent.parent
+RAW_DIR = ROOT / "data" / "raw"
+PROCESSED_DIR = ROOT / "data" / "processed"
+SAMPLE_DIR = ROOT / "data" / "sample"
+
+# --- Areas -------------------------------------------------------------------
+# bbox = [west, south, east, north] in degrees.
+# PLACEHOLDERS: confirm these boxes with the team before the first real run.
+AREAS = {
+    "indonesia": {"name": "Indonesia", "bbox": [95.0, -11.0, 141.0, 6.0]},
+    "riau": {"name": "Riau, Indonesia", "bbox": [100.0, -1.2, 104.0, 2.9]},
+    "central_kalimantan": {"name": "Central Kalimantan, Indonesia", "bbox": [110.7, -3.6, 116.0, 0.8]},
+    # Second region outside Indonesia: still to be chosen by the team.
+}
+
+# --- Cleaning ----------------------------------------------------------------
+MODIS_MIN_CONFIDENCE = 30           # MODIS confidence is 0-100; keep >= this
+VIIRS_KEEP_CONFIDENCE = {"n", "h"}  # VIIRS confidence is l / n / h; keep nominal + high
+KEEP_DAYNIGHT = {"D", "N"}          # same day/night rule for every sensor
+
+# --- Binning -----------------------------------------------------------------
+GRID_DEG = 0.25                     # cell size for the map layer
+
+# --- Sensors -----------------------------------------------------------------
+SENSORS = ["MODIS", "SNPP", "NOAA20"]
+
+# Official coverage of each sensor (FIRMS, checked Nov 13, 2026). A month only
+# counts for a sensor if it is fully inside this window AND inside the dates
+# actually present in data/raw. end=None means "still producing".
+SENSOR_COVERAGE = {
+    "MODIS": {"start": date(2000, 11, 1), "end": None},
+    "SNPP": {"start": date(2012, 1, 20), "end": date(2026, 11, 2)},
+    "NOAA20": {"start": date(2018, 4, 1), "end": None},
+}
+
+# --- Calibration -------------------------------------------------------------
+# Each link converts `source` counts into `target` units, fitted on overlap years.
+LINKS = {
+    "modis_to_snpp": {"source": "MODIS", "target": "SNPP", "years": (2012, 2025)},
+    "snpp_to_noaa20": {"source": "SNPP", "target": "NOAA20", "years": (2018, 2025)},
+}
+VALIDATION_HOLDOUT_YEARS = 2        # last N full overlap years held out for validation
+VALIDATION_MIN_MONTH_COUNT = 10     # months with fewer target hotspots are skipped in MAPE
+                                    # (tiny counts make percentage errors meaningless)
+
+# Drift check on MODIS -> SNPP (Terra/Aqua orbit drift).
+DRIFT_EARLY_YEARS = (2012, 2018)
+DRIFT_LATE_YEARS = (2019, 2025)
+DRIFT_MAX_DIFF = 0.20               # > 20% difference -> calibrate on early years only
+
+# A link is "unstable" if the spread of its yearly ratios, (max - min) / median,
+# is above this. Then per-sensor percentile ranks are the recommended fallback.
+UNSTABLE_SPREAD = 0.50
+
+# --- Anomaly -----------------------------------------------------------------
+# anomaly_pct = (count - median) / median * 100, median over earlier complete years.
+# Checked top to bottom: the first threshold the anomaly is at or above wins.
+ANOMALY_LABELS = [
+    (50.0, "Well above normal"),
+    (15.0, "Above normal"),
+    (-15.0, "Normal"),
+    (float("-inf"), "Below normal"),
+]

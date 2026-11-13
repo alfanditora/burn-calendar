@@ -1,0 +1,14 @@
+# Raw FIRMS archive files are large and licensed for download, never committed
+data/raw/*
+!data/raw/.gitkeep
+
+# Secrets (FIRMS_MAP_KEY lives in the environment or a local .env)
+.env
+.env.*
+*.key
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/

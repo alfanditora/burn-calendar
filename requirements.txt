@@ -1,0 +1,4 @@
+pandas>=2.2
+numpy>=1.26
+pymannkendall==1.4.3
+pytest>=8

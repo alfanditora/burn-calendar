@@ -1,0 +1,154 @@
+"""Fit the sensor links on overlap years, validate them, and build one NOAA-20-unit series.
+
+Ratio method: factor = sum(target counts) / sum(source counts) over the overlap months
+where BOTH sensors are covered. Simple, explainable, and robust to zero months.
+"""
+import numpy as np
+import pandas as pd
+
+from pipeline import config
+
+
+def _paired(counts, area_id, source, target, years):
+    """Monthly source/target counts for one area, only months both sensors cover."""
+    a = counts[(counts["area_id"] == area_id) & counts["year"].between(*years)]
+    wide = a.pivot_table(index=["year", "month"], columns="sensor", values="raw_count")
+    if source not in wide or target not in wide:
+        return pd.DataFrame(columns=["year", "month", "source", "target"])
+    pair = wide[[source, target]].dropna().reset_index()
+    return pair.rename(columns={source: "source", target: "target"})
+
+
+def ratio(pair):
+    s = pair["source"].sum()
+    return float(pair["target"].sum() / s) if s > 0 else float("nan")
+
+
+def yearly_ratios(pair):
+    out = {}
+    for year, g in pair.groupby("year"):
+        r = ratio(g)
+        if np.isfinite(r):
+            out[int(year)] = round(r, 4)
+    return out
+
+
+def spread(yearly):
+    """(max - min) / median of the yearly ratios; NaN with fewer than 2 years."""
+    vals = np.array(list(yearly.values()))
+    if len(vals) < 2:
+        return float("nan")
+    return float((vals.max() - vals.min()) / np.median(vals))
+
+
+def validate(pair, holdout_years):
+    """Refit without the last N full years, predict them, report the errors."""
+    years = sorted(pair.loc[pair.groupby("year")["month"].transform("size") == 12, "year"].unique())
+    if len(years) <= holdout_years:
+        return {"holdout_years": [], "monthly_mape_pct": None, "yearly_error_pct": None,
+                "note": "not enough full overlap years to validate"}
+    held = years[-holdout_years:]
+    train = pair[~pair["year"].isin(held)]
+    test = pair[pair["year"].isin(held)].copy()
+    factor = ratio(train)
+    test["pred"] = test["source"] * factor
+
+    big = test[test["target"] >= config.VALIDATION_MIN_MONTH_COUNT]
+    mape = (
+        float((abs(big["pred"] - big["target"]) / big["target"]).mean() * 100) if len(big) else None
+    )
+    by_year = test.groupby("year")[["pred", "target"]].sum()
+    by_year = by_year[by_year["target"] > 0]
+    yearly_err = (
+        float((abs(by_year["pred"] - by_year["target"]) / by_year["target"]).mean() * 100)
+        if len(by_year) else None
+    )
+    return {
+        "holdout_years": [int(y) for y in held],
+        "train_factor": round(factor, 4),
+        "monthly_mape_pct": None if mape is None else round(mape, 1),
+        "months_scored": int(len(big)),
+        "yearly_error_pct": None if yearly_err is None else round(yearly_err, 1),
+    }
+
+
+def fit_link(counts, area_id, link_name):
+    link = config.LINKS[link_name]
+    years = link["years"]
+    pair = _paired(counts, area_id, link["source"], link["target"], years)
+    notes = []
+
+    if link_name == "modis_to_snpp":
+        early = ratio(_paired(counts, area_id, "MODIS", "SNPP", config.DRIFT_EARLY_YEARS))
+        late = ratio(_paired(counts, area_id, "MODIS", "SNPP", config.DRIFT_LATE_YEARS))
+        diff = abs(late - early) / early if np.isfinite(early) and early > 0 and np.isfinite(late) else float("nan")
+        drift = {"early_ratio": round(early, 4) if np.isfinite(early) else None,
+                 "late_ratio": round(late, 4) if np.isfinite(late) else None,
+                 "diff_pct": round(diff * 100, 1) if np.isfinite(diff) else None,
+                 "used_early_only": bool(np.isfinite(diff) and diff > config.DRIFT_MAX_DIFF)}
+        if drift["used_early_only"]:
+            years = config.DRIFT_EARLY_YEARS
+            pair = _paired(counts, area_id, "MODIS", "SNPP", years)
+            notes.append(f"MODIS-SNPP ratio drifted {drift['diff_pct']}% between "
+                         f"{config.DRIFT_EARLY_YEARS} and {config.DRIFT_LATE_YEARS}; "
+                         f"calibrated on {years[0]}-{years[1]} only.")
+    else:
+        drift = None
+
+    factor = ratio(pair)
+    yearly = yearly_ratios(pair)
+    sp = spread(yearly)
+    unstable = bool(np.isfinite(sp) and sp > config.UNSTABLE_SPREAD)
+    if unstable:
+        notes.append(f"{link_name} yearly ratios spread {sp:.0%}; percentile ranks offered as fallback.")
+    if not np.isfinite(factor):
+        notes.append(f"{link_name}: no overlap data, factor unavailable.")
+
+    return {
+        "factor": round(factor, 4) if np.isfinite(factor) else None,
+        "fit_years": [int(years[0]), int(years[1])],
+        "overlap_months": int(len(pair)),
+        "yearly_ratios": yearly,
+        "spread": round(sp, 3) if np.isfinite(sp) else None,
+        "unstable": unstable,
+        "drift": drift,
+        "validation": validate(pair, config.VALIDATION_HOLDOUT_YEARS),
+        "notes": notes,
+    }
+
+
+def calibrate_area(counts, area_id):
+    return {name: fit_link(counts, area_id, name) for name in config.LINKS}
+
+
+def harmonize(counts, area_id, links):
+    """Add harmonized_count (each sensor in NOAA-20 units) and source_used per month.
+
+    Priority per month: NOAA20, else SNPP x f2, else MODIS x f1 x f2.
+    """
+    f1 = links["modis_to_snpp"]["factor"]
+    f2 = links["snpp_to_noaa20"]["factor"]
+    to_n20 = {
+        "NOAA20": 1.0,
+        "SNPP": f2,
+        "MODIS": f1 * f2 if f1 is not None and f2 is not None else None,
+    }
+    a = counts[counts["area_id"] == area_id].copy()
+    a["harmonized_count"] = [
+        r * to_n20[s] if to_n20[s] is not None else np.nan for r, s in zip(a["raw_count"], a["sensor"])
+    ]
+
+    priority = {"NOAA20": 0, "SNPP": 1, "MODIS": 2}
+    usable = a.dropna(subset=["harmonized_count"]).copy()
+    usable["prio"] = usable["sensor"].map(priority)
+    chosen = usable.sort_values("prio").groupby(["year", "month"]).first()["sensor"].rename("source_used")
+    return a.merge(chosen.reset_index(), on=["year", "month"], how="left")
+
+
+def percentile_ranks(counts):
+    """Fallback: rank each month's raw count within the same calendar month of its own sensor (0-100)."""
+    c = counts.copy()
+    c["pct_rank_within_sensor"] = (
+        c.groupby(["area_id", "sensor", "month"])["raw_count"].rank(pct=True) * 100
+    ).round(1)
+    return c
