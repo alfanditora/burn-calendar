@@ -105,3 +105,15 @@ ANOMALY_LABELS = [
     (-15.0, "Normal"),
     (float("-inf"), "Below normal"),
 ]
+
+# --- Insights: fire season, early signal, unusual places (pipeline/insights.py) --
+# Fire season = the shortest run of consecutive months that holds at least this share of a
+# typical year's hotspots (sum of the monthly medians over complete years).
+SEASON_SHARE = 0.80
+PEAK_WINDOW_MONTHS = 2              # peak = the N consecutive months with the highest medians
+LEAD_MONTHS = 2                     # early signal = the N months just before the peak
+EARLY_WARNING_ABOVE_PCT = 15.0      # "above normal" = at least +15% (same as the Above normal label)
+MIN_BASELINE_YEARS = 5              # an anomaly needs at least this many earlier complete years
+PERMUTATIONS = 10000                # permutation test for the early-signal correlation (seed 0)
+# Province / state names for map cells (Indonesia and Australia), built by pipeline/regions.py.
+ADMIN1_GEOJSON = ROOT / "data" / "external" / "admin1.geojson"

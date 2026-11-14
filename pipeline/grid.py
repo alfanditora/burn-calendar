@@ -8,6 +8,8 @@ grid/{region}.json for the web map:
   land                 string of "0"/"1", one char per cell (Natural Earth land, or any cell with fire)
   months               ["2000-11", ...] in the same order as the calendar
   fires                one flat list per month: [cell, count, cell, count, ...]
+  names, cell_name     province/state names, and one index into names per cell (-1 = none), so the
+                       unusual-places list can say "near Riau"
 
 Counts use the same sensor and factor as the area calendar for that month
 (NOAA-20 > SNPP x f2 > MODIS x f1 x f2), so the map and the calendar agree.
@@ -89,6 +91,28 @@ def region_grid(cleaned, bbox, area_json, deg=None):
     }
 
 
+def cell_names(bbox, w, h, deg, geojson_path=None, max_distance=0.5):
+    """Name each cell by the province/state containing its centre, else the nearest within max_distance degrees."""
+    path = Path(geojson_path or config.ADMIN1_GEOJSON)
+    if not path.exists():
+        return [], [-1] * (w * h)
+    feats = json.loads(path.read_text(encoding="utf-8"))["features"]
+    west, south, east, north = bbox
+    box = shapely.box(west, south, east, north)
+    feats = [(f["properties"]["name"], shapely.geometry.shape(f["geometry"])) for f in feats]
+    feats = [(n, g) for n, g in feats if g.intersects(box)]
+    if not feats:
+        return [], [-1] * (w * h)
+    names = [n for n, _ in feats]
+    tree = shapely.STRtree([g for _, g in feats])
+    cols, rows = np.meshgrid(np.arange(w), np.arange(h))
+    pts = shapely.points(west + (cols.ravel() + 0.5) * deg, north - (rows.ravel() + 0.5) * deg)
+    out = np.full(w * h, -1)
+    pairs = tree.query_nearest(pts, max_distance=max_distance, all_matches=False)
+    out[pairs[0]] = pairs[1]
+    return names, [int(v) for v in out]
+
+
 def area_masks(bbox, w, h, deg, areas):
     """For each area with a real outline inside this map: "0"/"1" per cell, 1 where the cell touches the outline.
     The web map uses it to draw a pixel border and dim cells outside the selected area (display only)."""
@@ -120,6 +144,7 @@ def export_grids(cleaned, out_dir, regions=None, areas=None):
             continue
         data = region_grid(cleaned, bbox, json.loads(area_file.read_text(encoding="utf-8")))
         data["areas"] = area_masks(bbox, data["w"], data["h"], data["deg"], areas or config.AREAS)
+        data["names"], data["cell_name"] = cell_names(bbox, data["w"], data["h"], data["deg"])
         path = out_dir / "grid" / f"{region}.json"
         path.write_text(json.dumps(data, separators=(",", ":")), encoding="utf-8")
         written.append(path)

@@ -14,6 +14,9 @@ Outlines:
   riau                 Riau Province (ISO 3166-2 ID-RI)
   central_kalimantan   Central Kalimantan Province (ID-KT)
   north_australia      Australian land north of 20°S, within the downloaded box (121-146°E)
+
+It also writes data/external/admin1.geojson: Indonesian provinces and Australian states inside the
+download boxes (English names), used to name map cells ("near Riau") in the unusual-places list.
 """
 import json
 import sys
@@ -49,6 +52,26 @@ def build(source=SOURCE, out=None):
         geom = shapely.simplify(geom, SIMPLIFY_DEG, preserve_topology=True)
         features.append({"type": "Feature", "properties": {"id": rid, "description": desc,
                          "source": "Natural Earth 1:10m admin-1 (public domain)"},
+                         "geometry": shapely.geometry.mapping(geom)})
+    out.write_text(json.dumps({"type": "FeatureCollection", "features": features}), encoding="utf-8")
+    build_admin1(feats)
+    return out
+
+
+def build_admin1(feats, out=None, simplify_deg=0.02):
+    """Provinces/states of the two countries inside the download boxes, for naming map cells."""
+    out = Path(out or config.ADMIN1_GEOJSON)
+    boxes = {"IDN": config.FETCH_REGIONS["indonesia"], "AUS": config.FETCH_REGIONS["north_australia"]}
+    features = []
+    for f in feats:
+        p = f["properties"]
+        if p.get("adm0_a3") not in boxes:
+            continue
+        geom = shapely.geometry.shape(f["geometry"]).intersection(shapely.box(*boxes[p["adm0_a3"]]))
+        if geom.is_empty:
+            continue
+        geom = shapely.simplify(geom, simplify_deg, preserve_topology=True)
+        features.append({"type": "Feature", "properties": {"name": p.get("name_en") or p["name"], "country": p["adm0_a3"]},
                          "geometry": shapely.geometry.mapping(geom)})
     out.write_text(json.dumps({"type": "FeatureCollection", "features": features}), encoding="utf-8")
     return out

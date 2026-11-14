@@ -2947,5 +2947,188 @@
   },
   "fallback_percentiles_recommended": true,
   "notes": "Cleaning: MODIS confidence >= 30, VIIRS confidence in ['h', 'n'], day/night kept: ['D', 'N']. Factor = sum(target)/sum(source) over overlap months. Validation holds out the last 2 full overlap years (monthly MAPE skips months with < 10 target hotspots); headline error = leave-one-year-out, count-weighted. Unstable provincial links use the parent area's factor. Anomaly = vs median of the same month in earlier complete years. Areas follow real borders (Natural Earth 1:10m admin-1); Northern Australia is Australian land north of 20\u00b0S, 121-146\u00b0E. Counts are hotspots, not burned area. modis_to_snpp yearly ratios spread 50%; percentile ranks offered as fallback. modis_to_snpp: own ratio unstable, so the indonesia factor 5.1009 is used (own 5.047); validated on this area's [2024, 2025] months: 52.4% monthly error vs 51.8% with its own factor. Cross-validated weighted error: 16.3% (own factor: 17.7%)."
+ },
+ "season": {
+  "method": "Monthly medians over complete years; fire season = the shortest run of consecutive months holding at least 80% of a typical year; peak = the 2 consecutive months with the highest medians.",
+  "years": [
+   2001,
+   2025
+  ],
+  "monthly_median": [
+   89.0,
+   80.6,
+   65.0,
+   55.4,
+   181.2,
+   171.7,
+   375.0,
+   4374.4,
+   10874.0,
+   4113.3,
+   297.0,
+   50.3
+  ],
+  "monthly_share_pct": [
+   0.4,
+   0.4,
+   0.3,
+   0.3,
+   0.9,
+   0.8,
+   1.8,
+   21.1,
+   52.5,
+   19.8,
+   1.4,
+   0.2
+  ],
+  "season_months": [
+   8,
+   9,
+   10
+  ],
+  "season_label": "Aug\u2013Oct",
+  "season_share_pct": 93.4,
+  "peak_months": [
+   8,
+   9
+  ],
+  "peak_label": "Aug\u2013Sep",
+  "peak_share_pct": 73.6
+ },
+ "early_warning": {
+  "method": "Hindcast: lead = the 2 months before the 2-month peak; each window is compared with the median of the same window in earlier complete years (at least 5); above normal = at least +15%. Spearman rank correlation with a one-sided permutation test (10000 shuffles, seed 0). A historical pattern, not a forecast.",
+  "lead_months": [
+   6,
+   7
+  ],
+  "lead_label": "Jun\u2013Jul",
+  "peak_months": [
+   8,
+   9
+  ],
+  "peak_label": "Aug\u2013Sep",
+  "above_pct": 15.0,
+  "years_scored": [
+   2006,
+   2026
+  ],
+  "n": 21,
+  "lead_above_peak_above": 4,
+  "lead_above_peak_not": 1,
+  "lead_not_peak_above": 2,
+  "lead_not_peak_not": 14,
+  "hit_rate_pct": 80.0,
+  "base_rate_pct": 28.6,
+  "quiet_rate_pct": 87.5,
+  "spearman": 0.891,
+  "p_value": 0.0001,
+  "years": [
+   {
+    "year": 2006,
+    "lead_anomaly_pct": 6.0,
+    "peak_anomaly_pct": 84.5
+   },
+   {
+    "year": 2007,
+    "lead_anomaly_pct": -82.5,
+    "peak_anomaly_pct": -73.7
+   },
+   {
+    "year": 2008,
+    "lead_anomaly_pct": -70.4,
+    "peak_anomaly_pct": -87.5
+   },
+   {
+    "year": 2009,
+    "lead_anomaly_pct": 40.0,
+    "peak_anomaly_pct": 139.8
+   },
+   {
+    "year": 2010,
+    "lead_anomaly_pct": -96.7,
+    "peak_anomaly_pct": -97.2
+   },
+   {
+    "year": 2011,
+    "lead_anomaly_pct": 66.3,
+    "peak_anomaly_pct": -11.5
+   },
+   {
+    "year": 2012,
+    "lead_anomaly_pct": -61.3,
+    "peak_anomaly_pct": -19.1
+   },
+   {
+    "year": 2013,
+    "lead_anomaly_pct": -75.2,
+    "peak_anomaly_pct": -76.8
+   },
+   {
+    "year": 2014,
+    "lead_anomaly_pct": -42.0,
+    "peak_anomaly_pct": 25.1
+   },
+   {
+    "year": 2015,
+    "lead_anomaly_pct": 86.2,
+    "peak_anomaly_pct": 248.1
+   },
+   {
+    "year": 2016,
+    "lead_anomaly_pct": -90.4,
+    "peak_anomaly_pct": -93.9
+   },
+   {
+    "year": 2017,
+    "lead_anomaly_pct": -88.8,
+    "peak_anomaly_pct": -96.1
+   },
+   {
+    "year": 2018,
+    "lead_anomaly_pct": -36.1,
+    "peak_anomaly_pct": -57.5
+   },
+   {
+    "year": 2019,
+    "lead_anomaly_pct": 102.4,
+    "peak_anomaly_pct": 164.2
+   },
+   {
+    "year": 2020,
+    "lead_anomaly_pct": -91.3,
+    "peak_anomaly_pct": -95.8
+   },
+   {
+    "year": 2021,
+    "lead_anomaly_pct": -81.2,
+    "peak_anomaly_pct": -99.2
+   },
+   {
+    "year": 2022,
+    "lead_anomaly_pct": -85.5,
+    "peak_anomaly_pct": -97.5
+   },
+   {
+    "year": 2023,
+    "lead_anomaly_pct": -39.5,
+    "peak_anomaly_pct": -23.2
+   },
+   {
+    "year": 2024,
+    "lead_anomaly_pct": -51.8,
+    "peak_anomaly_pct": -81.8
+   },
+   {
+    "year": 2025,
+    "lead_anomaly_pct": -43.7,
+    "peak_anomaly_pct": -87.2
+   },
+   {
+    "year": 2026,
+    "lead_anomaly_pct": 123.4,
+    "peak_anomaly_pct": 418.1
+   }
+  ]
  }
 }

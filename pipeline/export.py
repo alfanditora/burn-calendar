@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from pipeline import calibrate, config, trend
+from pipeline import calibrate, config, insights, trend
 
 UNIT = "NOAA-20-equivalent hotspots per month"
 
@@ -78,6 +78,7 @@ def build_area(counts, area_id, area):
             "notes": " ".join(notes),
         },
     }
+    insights.add_insights(data)  # fire season + early-signal hindcast
     return data, rows
 
 
