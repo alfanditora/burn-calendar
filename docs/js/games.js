@@ -8,13 +8,17 @@ const GAMES = [
   { id: "normal", icon: "question", title: "NORMAL OR NOT?", desc: "10 rounds: more or fewer fires than usual?", start: () => normalStart() },
 ];
 
-// Calendar colour ramp (shared with the Data Lab).
-const RAMP = ["#ffffcc", "#ffeda0", "#fed976", "#feb24c", "#fd8d3c", "#fc4e2a", "#e31a1c", "#bd0026", "#800026"];
-function rampColour(count, max) {
-  if (!count) return "#e3d0a8";
-  const t = Math.log1p(count) / Math.log1p(max);
-  return RAMP[Math.min(RAMP.length - 1, Math.floor(t * RAMP.length))];
+// Calendar colours (shared with the Data Lab): fixed ranges, so a colour means the same count in every area.
+const BINS = [
+  [0, "#cfe8b0", "0"], [1, "#fde68a", "1–9"], [10, "#fbbf24", "10–99"], [100, "#f97316", "100–999"],
+  [1000, "#dc2626", "1k–10k"], [10000, "#991b1b", "10k–100k"], [100000, "#4a0d0d", "100k+"],
+];
+function binColour(count) {
+  let c = BINS[0][1]; // below 1 = no fires
+  for (const [lo, col] of BINS) if (lo > 0 && count >= lo) c = col;
+  return c;
 }
+const rampColour = (count) => binColour(Math.round(count));
 
 function renderHub() {
   const hub = $("game-hub");
@@ -135,12 +139,11 @@ function spotRound() {
   }
   const total = (y) => App.area.calendar.filter((c) => c.year === y).reduce((s, c) => s + c.count, 0);
   const worst = chosen.reduce((w, y) => (total(y) > total(w) ? y : w), chosen[0]);
-  const max = Math.max(...App.area.calendar.map((c) => c.count));
-  const strip = (y) => MONTHS.map((_, m) => `<i style="background:${rampColour(calEntry(y, m + 1).count, max)}"></i>`).join("");
+  const strip = (y) => MONTHS.map((_, m) => `<i style="background:${rampColour(calEntry(y, m + 1).count)}"></i>`).join("");
   const s = stage(`
     <div class="stage-head">${backBtn}<span class="score">ROUND ${SPOT.round + 1}/3 · ${SPOT.right} ✓</span></div>
     <p class="kicker">Spot the Disaster Year · ${App.area.name}</p>
-    <p class="question">Each strip is one year, January to December. Darker = more fires. Which year burned <b>most</b>?</p>
+    <p class="question">Each strip is one year, January to December. Green = no fires; darker red = more fires. Which year burned <b>most</b>?</p>
     <div class="levels">${chosen.map((y, i) => `<button type="button" class="pick" data-y="${y}">
       <span class="kicker">MYSTERY ${"ABCDEF"[i]}</span><span class="strip">${strip(y)}</span><span class="n"></span></button>`).join("")}</div>
     <div class="result" id="spot-result"></div>`);

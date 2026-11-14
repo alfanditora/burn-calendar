@@ -9,29 +9,61 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=6">
 </head>
 <body>
-  <header class="hud">
-    <div class="brand">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="topbar">
+    <button type="button" class="menu-btn" id="menu-btn" aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">☰</button>
+    <a class="brand" href="./" aria-label="Burn Calendar home">
       <canvas id="logo-flame" width="10" height="14" aria-hidden="true"></canvas>
-      <div>
-        <h1>BURN CALENDAR</h1>
-        <p class="tagline">25 years of satellite fire data in one pixel atlas</p>
-      </div>
-    </div>
+      <span>
+        <span class="title">BURN CALENDAR</span>
+        <span class="tagline">25 years of satellite fire data in one pixel atlas</span>
+      </span>
+    </a>
     <div class="player" aria-label="Your progress">
-      <div class="rank"><span class="lv" id="hud-level">LV 1</span> <span id="hud-rank">Rookie Ranger</span></div>
-      <div class="xpbar" role="progressbar" aria-label="Experience" aria-valuemin="0" aria-valuemax="100" id="hud-xpbar"><span id="hud-xp"></span></div>
-      <button type="button" class="badge-count" id="hud-badges" aria-label="Show badges">🏅 0/8</button>
-      <button type="button" class="badge-count" id="hud-share" aria-label="Create a share card">📤 SHARE</button>
+      <div class="rank"><span class="lv" id="hud-level">LV 1</span> <span id="hud-rank">Rookie Ranger</span>
+        <div class="xpbar" role="progressbar" aria-label="Experience" aria-valuemin="0" aria-valuemax="100" id="hud-xpbar"><span id="hud-xp"></span></div>
+      </div>
+      <button type="button" class="hud-btn" id="hud-badges" aria-label="Show badges">🏅 0/8</button>
+      <button type="button" class="hud-btn" id="hud-share" aria-label="Create a share card">📤<span class="hide-sm"> SHARE</span></button>
     </div>
   </header>
 
-  <nav class="regions" id="regions" aria-label="Choose an area"></nav>
+  <div class="shell">
+    <aside class="sidebar" id="sidebar" aria-label="Areas and sections">
+      <div class="side-head">
+        <span class="kicker">Menu</span>
+        <button type="button" class="close-btn" id="menu-close" aria-label="Close menu">✕</button>
+      </div>
+      <div class="side-player" aria-label="Your progress">
+        <span class="lv" id="side-level">LV 1</span> <span id="side-rank">Rookie Ranger</span>
+        <div class="xpbar"><span id="side-xp"></span></div>
+        <span class="muted small" id="side-xptext"></span>
+      </div>
+      <p class="side-title">📍 AREA</p>
+      <nav class="regions" id="regions" aria-label="Choose an area"></nav>
+      <p class="side-title">🧭 EXPLORE</p>
+      <nav class="side-nav" aria-label="Sections">
+        <button type="button" data-go="map">🗺️ Time Machine</button>
+        <button type="button" data-go="play">🎮 Play</button>
+        <button type="button" data-go="story">🛰️ Story</button>
+        <button type="button" data-go="lab">🔬 Data Lab</button>
+      </nav>
+      <div class="side-about">
+        <p class="side-title">ℹ️ ABOUT</p>
+        <p>Fire hotspots from three satellite sensors, harmonized into one record in NOAA-20 units.
+          Data: NASA FIRMS (MODIS, VIIRS).</p>
+      </div>
+    </aside>
+    <div class="scrim" id="scrim" hidden></div>
+
+  <main id="main">
+  <button type="button" class="area-chip" id="area-chip" aria-controls="sidebar">📍 <span class="area-name">Indonesia</span> ▾</button>
 
   <!-- Hero: the pixel map time machine -->
-  <section class="panel map-panel" aria-label="Fire time machine">
+  <section class="panel map-panel" id="map-panel" aria-label="Fire time machine">
     <div class="map-head">
       <div>
         <p class="kicker">Fire Time Machine</p>
@@ -68,7 +100,6 @@
     <button role="tab" id="tab-lab" aria-controls="view-lab" aria-selected="false">🔬 DATA LAB</button>
   </nav>
 
-  <main>
     <!-- PLAY -->
     <section id="view-play" role="tabpanel" aria-labelledby="tab-play">
       <div class="game-hub" id="game-hub"></div>
@@ -116,7 +147,6 @@
         </div>
         <p class="unit muted" id="unit"></p>
         <div class="cal-scroll"><table id="calendar" class="calendar"></table></div>
-        <p class="muted small">Tap a cell for the count, the sensor it comes from and the median of earlier years.</p>
       </div>
       <div class="panel">
         <details id="method">
@@ -125,13 +155,15 @@
         </details>
       </div>
     </section>
-  </main>
 
-  <footer>
-    Data: NASA FIRMS (MODIS, VIIRS). Counts are harmonized to NOAA-20 VIIRS units by Burn Calendar; they are estimates of
-    fire hotspots, not burned area. Land outlines: Natural Earth. Built for NASA Space Apps Challenge 2026.
-    <a href="https://github.com/alfanditora/burn-calendar">Code and method</a>
-  </footer>
+    <footer>
+      Data: NASA FIRMS (MODIS, VIIRS). Counts are harmonized to NOAA-20 VIIRS units by Burn Calendar; they are estimates of
+      fire hotspots, not burned area. Land outlines: Natural Earth. Built for NASA Space Apps Challenge 2026.
+      <a href="https://github.com/alfanditora/burn-calendar">Code and method</a>
+    </footer>
+  </main>
+  </div>
+
 
   <div id="tip" class="tip" role="tooltip" hidden></div>
   <div id="toasts" class="toasts" aria-live="polite"></div>
@@ -141,13 +173,13 @@
     <form method="dialog"><button class="px-btn">CLOSE</button></form>
   </dialog>
 
-  <script src="js/core.js"></script>
-  <script src="js/sprites.js"></script>
-  <script src="js/map.js"></script>
-  <script src="js/games.js"></script>
-  <script src="js/story.js"></script>
-  <script src="js/lab.js"></script>
-  <script src="js/share.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/core.js?v=6"></script>
+  <script src="js/sprites.js?v=6"></script>
+  <script src="js/map.js?v=6"></script>
+  <script src="js/games.js?v=6"></script>
+  <script src="js/story.js?v=6"></script>
+  <script src="js/lab.js?v=6"></script>
+  <script src="js/share.js?v=6"></script>
+  <script src="js/main.js?v=6"></script>
 </body>
 </html>

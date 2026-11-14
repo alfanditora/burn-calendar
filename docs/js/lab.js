@@ -7,32 +7,39 @@ function filteredCalendar() {
   return App.area.calendar.filter((c) => c.year >= lo && c.year <= hi);
 }
 
-function renderLegend(max) {
-  const stops = RAMP.map((c, i) => Math.round(Math.expm1((i / RAMP.length) * Math.log1p(max))));
-  $("legend").innerHTML = `<span>0</span><span class="ramp">${RAMP.map((c, i) =>
-    `<span style="background:${c}" title="from ${fmt(stops[i])}"></span>`).join("")}</span><span>${fmt(max)}</span>`;
+function renderLegend() {
+  $("legend").innerHTML = `<span class="lg-label">Hotspots per month:</span>` + BINS.map(([, col, label]) =>
+    `<span class="lg-item"><i style="background:${col}"></i>${label}</span>`).join("");
 }
+
+const SENSOR_SHORT = { MODIS: "MODIS", SNPP: "S-NPP", NOAA20: "N-20" };
 
 function renderCalendar() {
   const byKey = new Map(filteredCalendar().map((c) => [`${c.year}-${c.month}`, c]));
-  const max = Math.max(1, ...App.area.calendar.map((c) => c.count || 0));
   const [lo, hi] = yearRange();
-  let html = `<thead><tr><th class="year"></th>${MONTHS.map((m) =>
-    `<th><span class="long">${m}</span><span class="short">${m[0]}</span></th>`).join("")}<th class="total">Total</th><th class="sensor">Sensor</th></tr></thead><tbody>`;
+  const shown = App.grid ? App.grid.months[TM.idx] : null;
+  const totals = [];
+  for (let y = lo; y <= hi; y++) totals.push(MONTHS.reduce((t, _, m) => t + ((byKey.get(`${y}-${m + 1}`) || {}).count || 0), 0));
+  const maxTotal = Math.max(1, ...totals);
+  let html = `<thead><tr><th class="year">Year</th>${MONTHS.map((m) =>
+    `<th><span class="long">${m}</span><span class="short">${m[0]}</span></th>`).join("")}<th class="total">Year total</th><th class="sensor">Sensor</th></tr></thead><tbody>`;
   for (let y = lo; y <= hi; y++) {
-    const cells = []; let total = 0, n = 0; const sensors = new Set();
+    const cells = []; let n = 0; const sensors = new Set();
     for (let m = 1; m <= 12; m++) {
       const c = byKey.get(`${y}-${m}`);
       if (!c) { cells.push(`<td class="cell missing" aria-label="${MONTHS[m - 1]} ${y}: no data"></td>`); continue; }
-      total += c.count; n++; sensors.add(c.source);
-      cells.push(`<td class="cell${c.count ? "" : " zero"}" tabindex="0" data-y="${y}" data-m="${m}"` +
-        `${c.count ? ` style="background:${rampColour(c.count, max)}"` : ""} aria-label="${MONTHS[m - 1]} ${y}: ${fmt(c.count)} hotspots"></td>`);
+      n++; sensors.add(c.source);
+      const now = shown === `${y}-${String(m).padStart(2, "0")}` ? " now" : "";
+      cells.push(`<td class="cell${now}" tabindex="0" data-y="${y}" data-m="${m}" style="background:${rampColour(c.count)}"` +
+        ` aria-label="${MONTHS[m - 1]} ${y}: ${fmt(c.count)} hotspots"></td>`);
     }
-    html += `<tr><th class="year">${y}</th>${cells.join("")}<td class="total">${n === 12 ? fmt(total) : n ? `${fmt(total)}*` : ""}</td>` +
-      `<td class="sensor">${[...sensors].join(" + ")}</td></tr>`;
+    const total = totals[y - lo];
+    html += `<tr><th class="year">${y}</th>${cells.join("")}<td class="total"><span class="tbar" style="width:${Math.round(total / maxTotal * 100)}%"></span>` +
+      `<span class="tval">${n === 12 ? fmt(total) : n ? `${fmt(total)}*` : ""}</span></td>` +
+      `<td class="sensor">${[...sensors].map((s) => `<span class="chip ${s}">${SENSOR_SHORT[s]}</span>`).join("")}</td></tr>`;
   }
   $("calendar").innerHTML = html + "</tbody>";
-  renderLegend(max);
+  renderLegend();
 }
 
 function showCalTip(e) {
@@ -40,8 +47,9 @@ function showCalTip(e) {
   const tip = $("tip");
   if (!td) { tip.hidden = true; return; }
   const c = calEntry(Number(td.dataset.y), Number(td.dataset.m));
-  tip.innerHTML = `<b>${MONTHS[c.month - 1]} ${c.year}</b><br>${fmt(c.count)} hotspots (NOAA-20 units)<br>Sensor: ${SENSOR_NAME[c.source]}` +
-    (c.median != null ? `<br>Usual (median): ${fmt(c.median)} (${pct(c.anomaly_pct)})` : "");
+  tip.innerHTML = `<b>${MONTHS_LONG[c.month - 1]} ${c.year}</b><br>${fmt(c.count)} hotspots (NOAA-20 units)<br>Sensor: ${SENSOR_NAME[c.source]}` +
+    (c.median != null ? `<br>Usual (median): ${fmt(c.median)} (${pct(c.anomaly_pct)}, ${labelFor(c.anomaly_pct)})` : "") +
+    `<br><i>Tap to show this month on the map</i>`;
   tip.hidden = false;
   const r = td.getBoundingClientRect();
   tip.style.left = `${Math.min(window.innerWidth - 270, r.left)}px`;
@@ -135,7 +143,16 @@ function labInit() {
   $("download").addEventListener("click", downloadCSV);
   $("calendar").addEventListener("mouseover", showCalTip);
   $("calendar").addEventListener("focusin", showCalTip);
-  $("calendar").addEventListener("click", showCalTip);
+  $("calendar").addEventListener("click", (e) => {
+    const td = e.target.closest("td.cell[data-y]");
+    if (!td) return;
+    const key = `${td.dataset.y}-${String(td.dataset.m).padStart(2, "0")}`;
+    tmPause(); tmGo(App.grid.months.indexOf(key));
+    document.querySelectorAll("#calendar td.now").forEach((x) => x.classList.remove("now"));
+    td.classList.add("now");
+    $("tip").hidden = true;
+    $("map-panel").scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" });
+  });
   $("calendar").addEventListener("mouseleave", () => { $("tip").hidden = true; });
 }
 
@@ -145,6 +162,7 @@ function labOnArea() {
   $("from").innerHTML = opts; $("to").innerHTML = opts;
   $("from").value = years.find((y) => y >= 2001) ?? years[0];
   $("to").value = years[years.length - 1];
-  $("unit").textContent = `Unit: ${App.area.unit}. Pale tan = no hotspots; dashed = no data; * = partial year.`;
+  $("unit").innerHTML = `Each square is one month, coloured by its number of fire hotspots (${App.area.unit}). ` +
+    `Green = no fires · dashed = no data · * = partial year · outlined = the month on the map. Tap a month to see it on the map.`;
   renderCalendar(); renderAnomaly(); renderTrend(); renderMethod();
 }

@@ -34,31 +34,46 @@ function tmInit() {
   requestAnimationFrame(tmLoop);
 }
 
-// Build the static sea/land layer for the current region.
-function tmBuildBase() {
+// The part of the region grid that is drawn: the whole region, or a zoomed window around a province.
+function tmComputeView() {
   const g = App.grid;
-  TM.K = Math.max(4, Math.ceil(1100 / g.w));
-  const W = g.w * TM.K, H = g.h * TM.K;
+  if (App.areaId === App.gridRegion) return { x0: 0, y0: 0, w: g.w, h: g.h };
+  const [w, s, e, n] = App.area.bbox, pad = 3;
+  let x0 = Math.floor((w - g.bbox[0]) / g.deg) - pad, x1 = Math.ceil((e - g.bbox[0]) / g.deg) + pad;
+  let y0 = Math.floor((g.bbox[3] - n) / g.deg) - pad, y1 = Math.ceil((g.bbox[3] - s) / g.deg) + pad;
+  // Keep a landscape window (at least 2:1) so the map stays short on screen.
+  const minW = Math.ceil((y1 - y0) * 2);
+  if (x1 - x0 < minW) { const c = (x0 + x1) / 2; x0 = Math.round(c - minW / 2); x1 = x0 + minW; }
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  const vw = Math.min(g.w, x1 - x0), vh = Math.min(g.h, y1 - y0);
+  x0 = clamp(x0, 0, g.w - vw); y0 = clamp(y0, 0, g.h - vh);
+  return { x0, y0, w: vw, h: vh };
+}
+
+// Build the static sea/land layer for the current view.
+function tmBuildBase() {
+  const g = App.grid, v = TM.view;
+  TM.K = Math.min(28, Math.max(4, Math.ceil(1100 / v.w)));
+  const K = TM.K, W = v.w * K, H = v.h * K;
   TM.canvas.width = W; TM.canvas.height = H;
   TM.base = document.createElement("canvas");
   TM.base.width = W; TM.base.height = H;
   const b = TM.base.getContext("2d");
-  for (let i = 0; i < g.w * g.h; i++) {
-    const x = (i % g.w), y = Math.floor(i / g.w);
-    const land = g.land[i] === "1";
-    const dither = (x + y) % 2 === 0;
-    b.fillStyle = land ? (dither ? "#2f6b3f" : "#2b6339") : (dither ? "#0f1a3d" : "#0d1736");
-    b.fillRect(x * TM.K, y * TM.K, TM.K, TM.K);
+  const land = (x, y) => g.land[y * g.w + x] === "1";
+  const edge = Math.max(1, Math.round(K / 4));
+  for (let y = v.y0; y < v.y0 + v.h; y++) {
+    for (let x = v.x0; x < v.x0 + v.w; x++) {
+      const px = (x - v.x0) * K, py = (y - v.y0) * K, l = land(x, y), dither = (x + y) % 2 === 0;
+      b.fillStyle = l ? (dither ? "#2f6b3f" : "#2b6339") : (dither ? "#0f1a3d" : "#0d1736");
+      b.fillRect(px, py, K, K);
+      if (l) { // coastline highlight on the top and left edges facing the sea
+        b.fillStyle = "#4c8f57";
+        if (y > 0 && !land(x, y - 1)) b.fillRect(px, py, K, edge);
+        if (x > 0 && !land(x - 1, y)) b.fillRect(px, py, edge, K);
+      }
+    }
   }
-  // Coastline highlight: land cells next to sea get a lighter top-left edge.
-  b.fillStyle = "#4c8f57";
-  for (let i = 0; i < g.w * g.h; i++) {
-    if (g.land[i] !== "1") continue;
-    const x = i % g.w, y = Math.floor(i / g.w);
-    if (y > 0 && g.land[i - g.w] === "0") b.fillRect(x * TM.K, y * TM.K, TM.K, Math.max(1, TM.K / 4));
-    if (x > 0 && g.land[i - 1] === "0") b.fillRect(x * TM.K, y * TM.K, Math.max(1, TM.K / 4), TM.K);
-  }
-  // Colour scale: 99th percentile of all non-zero cell-months, on a log scale.
+  // Colour scale: 99th percentile of all non-zero cell-months in the region, on a log scale.
   const vals = [];
   for (const f of g.fires) for (let j = 1; j < f.length; j += 2) vals.push(f[j]);
   vals.sort((a, c) => a - c);
@@ -67,30 +82,30 @@ function tmBuildBase() {
 
 // Static overlay for the selected area, from the grid's per-area cell mask (cells touching the outline).
 function tmBuildOverlay() {
-  const g = App.grid, K = TM.K, mask = (g.areas || {})[App.areaId];
+  const g = App.grid, K = TM.K, v = TM.view, mask = (g.areas || {})[App.areaId];
   TM.overlay = null;
   if (!mask) return;
   const o = document.createElement("canvas");
   o.width = TM.canvas.width; o.height = TM.canvas.height;
   const c = o.getContext("2d");
   const inside = (x, y) => x >= 0 && y >= 0 && x < g.w && y < g.h && mask[y * g.w + x] === "1";
-  c.fillStyle = "rgba(8, 14, 34, 0.62)";
-  for (let y = 0; y < g.h; y++) for (let x = 0; x < g.w; x++) if (!inside(x, y)) c.fillRect(x * K, y * K, K, K);
-  const t = Math.max(2, Math.round(K / 3));
-  c.fillStyle = "#ffffff";
-  for (let y = 0; y < g.h; y++) {
-    for (let x = 0; x < g.w; x++) {
-      if (!inside(x, y)) continue;
-      if (!inside(x, y - 1)) c.fillRect(x * K, y * K, K, t);
-      if (!inside(x, y + 1)) c.fillRect(x * K, (y + 1) * K - t, K, t);
-      if (!inside(x - 1, y)) c.fillRect(x * K, y * K, t, K);
-      if (!inside(x + 1, y)) c.fillRect((x + 1) * K - t, y * K, t, K);
+  const t = Math.max(2, Math.round(K / 5));
+  for (let y = v.y0; y < v.y0 + v.h; y++) {
+    for (let x = v.x0; x < v.x0 + v.w; x++) {
+      const px = (x - v.x0) * K, py = (y - v.y0) * K;
+      if (!inside(x, y)) { c.fillStyle = "rgba(8, 14, 34, 0.62)"; c.fillRect(px, py, K, K); continue; }
+      c.fillStyle = "#ffffff";
+      if (!inside(x, y - 1)) c.fillRect(px, py, K, t);
+      if (!inside(x, y + 1)) c.fillRect(px, py + K - t, K, t);
+      if (!inside(x - 1, y)) c.fillRect(px, py, t, K);
+      if (!inside(x + 1, y)) c.fillRect(px + K - t, py, t, K);
     }
   }
   TM.overlay = o;
 }
 
 function tmOnArea() {
+  TM.view = tmComputeView();
   tmBuildBase();
   tmBuildOverlay();
   const n = App.grid.months.length;
@@ -119,6 +134,9 @@ function tmGo(i) {
     $("tm-sensor").textContent = "";
     $("tm-fact").textContent = "";
   }
+  // Keep the Data Lab calendar's "month on the map" outline in sync.
+  document.querySelectorAll("#calendar td.now").forEach((x) => x.classList.remove("now"));
+  document.querySelector(`#calendar td[data-y="${y}"][data-m="${m}"]`)?.classList.add("now");
   const note = (MOMENTS[App.areaId] || {})[g.months[TM.idx]];
   if (note && TM.playing) tmMoment(`★ ${note}`);
 }
@@ -173,8 +191,11 @@ function tmLoop(now) {
 
   // Fire cells.
   const hot = [];
+  const vw = TM.view;
   for (const [cell, v] of TM.fires) {
-    const x = (cell % g.w) * K, y = Math.floor(cell / g.w) * K;
+    const cx = cell % g.w - vw.x0, cy = Math.floor(cell / g.w) - vw.y0;
+    if (cx < 0 || cy < 0 || cx >= vw.w || cy >= vw.h) continue;
+    const x = cx * K, y = cy * K;
     const jitter = reducedMotion ? 0 : (((cell * 7 + TM.frame * 13) % 11) - 5) / 60;
     ctx.fillStyle = fireColour(v, jitter);
     ctx.fillRect(x, y, K, K);
@@ -210,8 +231,8 @@ function tmLoop(now) {
 
 function tmHover(ev) {
   const g = App.grid, r = TM.canvas.getBoundingClientRect();
-  const col = Math.floor((ev.clientX - r.left) / r.width * g.w);
-  const row = Math.floor((ev.clientY - r.top) / r.height * g.h);
+  const col = TM.view.x0 + Math.floor((ev.clientX - r.left) / r.width * TM.view.w);
+  const row = TM.view.y0 + Math.floor((ev.clientY - r.top) / r.height * TM.view.h);
   const cell = row * g.w + col;
   const f = TM.fires.find(([c]) => c === cell);
   const tip = $("tip");

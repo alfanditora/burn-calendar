@@ -6,7 +6,26 @@ function showTab(name) {
     $(`tab-${t}`).setAttribute("aria-selected", t === name);
     $(`view-${t}`).hidden = t !== name;
   }
+  document.querySelectorAll(".side-nav button").forEach((b) => b.setAttribute("aria-current", b.dataset.go === name));
   if (name === "story" && App.area) drawRelayChart();
+}
+
+// Sidebar: a fixed column on desktop, a slide-out drawer on phones and tablets.
+const isDrawer = () => window.matchMedia("(max-width: 1023px)").matches;
+function openMenu() {
+  $("sidebar").classList.add("open"); $("scrim").hidden = false;
+  $("menu-btn").setAttribute("aria-expanded", "true");
+  $("sidebar").querySelector("button[aria-pressed='true'], button")?.focus();
+}
+function closeMenu() {
+  $("sidebar").classList.remove("open"); $("scrim").hidden = true;
+  $("menu-btn").setAttribute("aria-expanded", "false");
+}
+function go(target) {
+  if (isDrawer()) closeMenu();
+  if (target === "map") { $("map-panel").scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" }); return; }
+  showTab(target);
+  document.querySelector(".tabs").scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" });
 }
 
 function renderRegions() {
@@ -29,7 +48,18 @@ async function main() {
 
   $("regions").addEventListener("click", (e) => {
     const b = e.target.closest("button[data-id]");
-    if (b) loadArea(b.dataset.id);
+    if (!b) return;
+    loadArea(b.dataset.id);
+    if (isDrawer()) { closeMenu(); $("map-panel").scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" }); }
+  });
+  $("menu-btn").addEventListener("click", openMenu);
+  $("area-chip").addEventListener("click", openMenu);
+  $("menu-close").addEventListener("click", closeMenu);
+  $("scrim").addEventListener("click", closeMenu);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
+  document.querySelector(".side-nav").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-go]");
+    if (b) go(b.dataset.go);
   });
   for (const t of ["play", "story", "lab"]) $(`tab-${t}`).addEventListener("click", () => showTab(t));
   $("hud-badges").addEventListener("click", () => { renderBadgeList(); $("badge-dialog").showModal(); });
@@ -50,7 +80,7 @@ async function main() {
   const start = App.index.find((a) => a.area_id === q.get("area")) || App.index[0];
   await loadArea(start.area_id);
   if (q.get("month") && App.grid.months.includes(q.get("month"))) tmGo(App.grid.months.indexOf(q.get("month")));
-  if (["play", "story", "lab"].includes(q.get("tab"))) showTab(q.get("tab"));
+  showTab(["play", "story", "lab"].includes(q.get("tab")) ? q.get("tab") : "play");
   // Redraw canvas text once the pixel font has loaded.
   document.fonts?.ready.then(() => { if (App.area) drawRelayChart(); });
 }

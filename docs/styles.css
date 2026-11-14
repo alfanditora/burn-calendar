@@ -34,14 +34,9 @@ body {
     var(--bg);
   min-height: 100vh;
 }
-.hud, .regions, .map-panel, .tabs, main, footer { max-width: 1180px; margin-left: auto; margin-right: auto; }
-.hud, .regions, .tabs, footer { padding: 0 16px; }
-main, section.map-panel { margin-left: max(16px, calc((100% - 1180px) / 2)); margin-right: max(16px, calc((100% - 1180px) / 2)); }
-section.map-panel { margin-top: 20px; margin-bottom: 20px; }
-h1, h2, .kicker, .px-btn, .lv, .month-label, .count, .tabs button, .score, .big-num {
+.title, h2, .kicker, .px-btn, .lv, .month-label, .count, .tabs button, .score, .big-num, .side-title {
   font-family: var(--title); font-weight: 400; letter-spacing: 0.02em;
 }
-h1 { font-size: 0.92rem; margin: 0; color: #fff; text-shadow: 3px 3px 0 var(--line); }
 h2 { font-size: 0.64rem; line-height: 1.6; margin: 0 0 10px; display: inline; }
 .kicker { font-size: 0.44rem; color: var(--muted); margin: 0 0 8px; text-transform: uppercase; }
 .muted { color: var(--muted); }
@@ -49,7 +44,7 @@ h2 { font-size: 0.64rem; line-height: 1.6; margin: 0 0 10px; display: inline; }
 a { color: var(--hi); }
 
 /* pixel border: a stepped frame drawn with box-shadow */
-.panel, .px-btn, .game-card, dialog, .regions button {
+.panel, .px-btn, .game-card, dialog {
   border: none;
   box-shadow:
     0 calc(-1 * var(--px)) 0 0 var(--line), 0 var(--px) 0 0 var(--line),
@@ -58,24 +53,10 @@ a { color: var(--hi); }
 .panel { background: var(--panel); padding: 18px; margin: 20px 0; }
 
 /* ---------- HUD ---------- */
-.hud { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; padding-top: 22px; }
-.brand { display: flex; align-items: center; gap: 12px; }
-#logo-flame { width: 30px; height: 42px; image-rendering: pixelated; }
-.tagline { margin: 6px 0 0; color: #2d2a12; font-size: 0.95rem; }
-.player { display: grid; grid-template-columns: auto auto auto; gap: 6px 12px; align-items: center; }
-.rank { font-size: 0.95rem; }
 .lv { font-size: 0.48rem; background: var(--hi); color: #fff; padding: 4px 6px; }
-.xpbar { grid-column: 1; width: 190px; height: 12px; background: var(--bg2); outline: 2px solid var(--line); }
 .xpbar span { display: block; height: 100%; width: 0; background: repeating-linear-gradient(90deg, var(--fire1) 0 6px, var(--fire2) 6px 8px); transition: width 0.5s steps(8); }
-.badge-count { grid-row: 1 / span 2; background: var(--panel2); color: var(--text); font: 600 0.95rem var(--body); padding: 8px 10px; cursor: pointer; border: 0; outline: 3px solid var(--line); }
 
 /* ---------- region cartridges ---------- */
-.regions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
-.regions button {
-  font: 600 0.95rem var(--body); color: var(--text); background: var(--panel2); padding: 8px 14px; cursor: pointer;
-}
-.regions button[aria-pressed="true"] { background: var(--leaf); color: #fff; }
-.regions button:hover { filter: brightness(1.15); }
 
 /* ---------- buttons ---------- */
 .px-btn {
@@ -186,24 +167,11 @@ button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-v
 /* ---------- data lab ---------- */
 .lab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
 .big { font: 0.8rem/1.5 var(--title); margin: 10px 0 6px; color: var(--hi); }
-.cal-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; align-items: center; }
+.cal-head { display: flex; flex-direction: column; gap: 10px; }
 .lab-controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; margin: 12px 0; }
 .lab-controls label { display: flex; flex-direction: column; font-size: 0.85rem; color: var(--muted); gap: 4px; }
 select { font: 600 1rem var(--body); padding: 6px 8px; background: var(--panel2); color: var(--text); border: 0; outline: 3px solid var(--line); }
 .cal-scroll { overflow-x: auto; }
-.calendar { border-collapse: separate; border-spacing: 2px; font-size: 0.85rem; }
-.calendar th { font-weight: 400; color: var(--muted); padding: 0 4px; }
-.calendar th.year { text-align: right; padding-right: 8px; }
-.calendar td.cell { width: 36px; min-width: 24px; height: 18px; cursor: pointer; }
-.calendar td.cell.zero { background: #e3d0a8; }
-.calendar td.cell.missing { background: transparent; outline: 1px dashed var(--line); }
-.calendar td.cell:hover { outline: 2px solid #fff; }
-.calendar td.total { padding-left: 10px; color: var(--muted); text-align: right; white-space: nowrap; }
-.calendar td.sensor { padding-left: 8px; color: var(--muted); white-space: nowrap; }
-.calendar th .short { display: none; }
-.legend { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--muted); }
-.legend .ramp { display: flex; }
-.legend .ramp span { width: 18px; height: 12px; }
 #method-body table { border-collapse: collapse; margin: 8px 0; font-size: 0.95rem; }
 #method-body td, #method-body th { border-bottom: 1px solid var(--line); padding: 6px 12px 6px 0; text-align: left; font-weight: 400; }
 #method-body th { color: var(--muted); }
@@ -213,8 +181,6 @@ summary { cursor: pointer; }
 
 /* ---------- toasts, tooltip, dialog ---------- */
 .tip { position: fixed; z-index: 1000; pointer-events: none; background: #3b2412; color: #fff; padding: 8px 10px; font-size: 0.9rem; max-width: 260px; box-shadow: 4px 4px 0 var(--fire3); }
-.toasts { position: fixed; right: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 10px; z-index: 1100; align-items: flex-end; }
-.toast { background: var(--panel2); padding: 10px 14px; box-shadow: 4px 4px 0 var(--fire3); animation: slide 0.25s steps(4); max-width: 300px; }
 .toast b { font: 0.44rem/1.8 var(--title); color: var(--hi); display: block; }
 @keyframes slide { from { transform: translateX(120%); } to { transform: none; } }
 dialog { background: var(--panel); color: var(--text); max-width: 520px; width: calc(100% - 32px); padding: 20px; }
@@ -223,14 +189,11 @@ dialog::backdrop { background: rgba(5, 3, 15, 0.75); }
 .badge-item { background: var(--panel2); padding: 10px; font-size: 0.95rem; }
 .badge-item.locked { opacity: 0.4; filter: grayscale(1); }
 .badge-item b { display: block; }
-footer { color: var(--muted); font-size: 0.85rem; padding-top: 10px; padding-bottom: 40px; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 760px) {
   body { font-size: 16px; }
   h1 { font-size: 0.68rem; }
-  .player { width: 100%; grid-template-columns: 1fr auto auto; }
-  .xpbar { width: 100%; }
   .month-label, .count { font-size: 0.8rem; }
   .panel { padding: 14px; }
   .game-hub, .lab-grid { grid-template-columns: 1fr; }
@@ -243,26 +206,154 @@ footer { color: var(--muted); font-size: 0.85rem; padding-top: 10px; padding-bot
   .badge-list { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
-  .calendar { width: 100%; table-layout: fixed; border-spacing: 1px; font-size: 0.7rem; }
-  .calendar th.year { width: 34px; padding-right: 4px; }
-  .calendar th .long { display: none; }
-  .calendar th .short { display: inline; }
-  .calendar td.cell { width: auto; min-width: 0; height: 16px; }
-  .calendar .sensor { display: none; }
-  .calendar td.total, .calendar th.total { width: 52px; padding-left: 4px; font-size: 0.62rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 
-/* HUD placement: rank + XP bar on the left, badge and share buttons on the right */
-.player .rank { grid-column: 1; grid-row: 1; }
-.player .xpbar { grid-column: 1; grid-row: 2; }
-#hud-badges { grid-column: 2; grid-row: 1 / span 2; }
-#hud-share { grid-column: 3; grid-row: 1 / span 2; }
 @media (max-width: 760px) {
-  .regions { flex-wrap: nowrap; overflow-x: auto; padding: 6px 16px 10px; gap: 10px; scrollbar-width: none; }
-  .regions::-webkit-scrollbar { display: none; }
   .counter { text-align: left; }
-  .regions button { white-space: nowrap; flex: 0 0 auto; font-size: 0.85rem; padding: 7px 10px; }
+}
+
+
+/* =========================================================================
+   Layout: sticky top bar, sidebar (drawer on phones), main column
+   ========================================================================= */
+.skip { position: absolute; left: -999px; top: 8px; background: #fff; color: #000; padding: 8px; z-index: 2000; }
+.skip:focus { left: 8px; }
+.topbar {
+  position: sticky; top: 0; z-index: 900; display: flex; align-items: center; gap: 14px; padding: 10px 20px;
+  background: repeating-linear-gradient(90deg, #8a5a2e 0 46px, #7f5229 46px 48px), #8a5a2e;
+  border-bottom: 4px solid var(--line); box-shadow: 0 4px 0 rgba(0,0,0,0.12);
+}
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; min-width: 0; }
+.brand > span { display: flex; flex-direction: column; min-width: 0; }
+.title { font-size: 0.8rem; color: #ffd43b; text-shadow: 2px 2px 0 #4a2a10; white-space: nowrap; }
+.tagline { color: #f7e9cb; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#logo-flame { width: 24px; height: 34px; image-rendering: pixelated; flex: 0 0 auto; }
+.player { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.rank { color: #fff; font-size: 0.9rem; display: grid; grid-template-columns: auto auto; gap: 4px 8px; align-items: center; }
+.rank .xpbar { grid-column: 1 / -1; }
+.lv { font-size: 0.42rem; background: var(--hi); color: #fff; padding: 4px 6px; }
+.xpbar { width: 170px; height: 10px; background: #4a2a10; outline: 2px solid #4a2a10; }
+.xpbar span { display: block; height: 100%; width: 0; background: repeating-linear-gradient(90deg, var(--fire1) 0 6px, var(--fire2) 6px 8px); transition: width 0.5s steps(8); }
+.hud-btn, .menu-btn, .close-btn {
+  background: var(--panel); color: var(--text); font: 1.1rem var(--body); padding: 6px 10px; border: 0;
+  outline: 3px solid #4a2a10; cursor: pointer; white-space: nowrap;
+}
+.hud-btn:hover, .menu-btn:hover { background: #fff; }
+.menu-btn { display: none; font-size: 1.3rem; line-height: 1; padding: 6px 10px; }
+
+.shell { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 24px; max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+.sidebar {
+  position: sticky; top: 76px; align-self: start; max-height: calc(100vh - 92px); overflow-y: auto;
+  margin-top: 20px; padding: 16px 14px; background: var(--panel);
+  box-shadow: 0 -4px 0 0 var(--line), 0 4px 0 0 var(--line), -4px 0 0 0 var(--line), 4px 0 0 0 var(--line);
+}
+.side-head { display: none; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.side-title { font-size: 0.42rem; color: var(--muted); margin: 16px 0 8px; }
+.sidebar > .side-title:first-of-type { margin-top: 0; }
+.side-about { margin-top: 18px; }
+.regions, .side-nav { display: flex; flex-direction: column; gap: 8px; }
+.regions button, .side-nav button {
+  text-align: left; font: 1.05rem/1.2 var(--body); color: var(--text); background: var(--panel2); padding: 9px 10px;
+  border: 0; border-left: 5px solid var(--line); cursor: pointer;
+}
+.regions button:hover, .side-nav button:hover { background: #f2dfb6; }
+.regions button[aria-pressed="true"] { background: var(--leaf); color: #fff; border-left-color: #1f5c1b; }
+.side-nav button[aria-current="true"] { background: var(--hi); color: #fff; border-left-color: #7a2a08; }
+.side-about { font-size: 0.95rem; color: var(--muted); }
+.side-about p { margin: 0; }
+main { min-width: 0; }
+.area-chip { display: none; }
+section.map-panel { margin-top: 20px; }
+footer { color: var(--muted); font-size: 0.9rem; padding: 10px 0 40px; }
+
+/* Toasts: bottom-right cards on desktop, full-width banners at the top on phones */
+.toasts { position: fixed; right: 20px; bottom: 20px; z-index: 1100; display: flex; flex-direction: column; gap: 10px; width: 320px; pointer-events: none; }
+.toast {
+  pointer-events: auto; cursor: pointer; background: var(--panel); color: var(--text); padding: 10px 14px;
+  border: 3px solid var(--line); box-shadow: 4px 4px 0 var(--hi); animation: toast-in 0.25s steps(4);
+}
+.toast b { font: 0.42rem/1.8 var(--title); color: var(--hi); display: block; }
+@keyframes toast-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 1023px) {
+  .menu-btn { display: block; }
+  .shell { display: block; padding: 0 14px; }
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0; z-index: 1000; width: min(300px, 86vw); max-height: none; margin: 0;
+    transform: translateX(-105%); transition: transform 0.2s steps(5); box-shadow: 4px 0 0 0 var(--line);
+  }
+  .sidebar.open { transform: none; }
+  .side-head { display: flex; }
+  .scrim { position: fixed; inset: 0; background: rgba(20, 12, 4, 0.5); z-index: 950; }
+  .area-chip {
+    display: inline-block; margin-top: 14px; font: 1.1rem var(--body); color: #fff; background: var(--leaf);
+    border: 0; outline: 3px solid #1f5c1b; padding: 7px 12px; cursor: pointer;
+  }
+}
+@media (max-width: 760px) {
+  .topbar { padding: 8px 12px; gap: 10px; }
+  .tagline, .rank #hud-rank, .hide-sm { display: none; }
+  .title { font-size: 0.6rem; }
+  .xpbar { width: 64px; }
+  .rank { grid-template-columns: auto; }
+  .hud-btn { padding: 5px 8px; font-size: 1rem; }
+  .toasts { left: 10px; right: 10px; top: 64px; bottom: auto; width: auto; }
+  .toast { box-shadow: 0 4px 0 var(--hi); }
+  section.map-panel { margin-top: 14px; }
+}
+
+
+/* ---------- monthly calendar (Data Lab) ---------- */
+.legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; font-size: 1rem; color: var(--text); }
+.legend .lg-label { color: var(--muted); }
+.legend .lg-item { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.legend .lg-item i { width: 18px; height: 18px; display: inline-block; outline: 1px solid rgba(74, 42, 16, 0.35); }
+.calendar { border-collapse: separate; border-spacing: 3px; font-size: 1rem; }
+.calendar thead th { font-weight: 400; color: var(--muted); padding: 0 2px 4px; position: sticky; top: 0; background: var(--panel); }
+.calendar th.year { text-align: right; padding-right: 8px; color: var(--text); font-weight: 400; }
+.calendar td.cell { width: 40px; min-width: 22px; height: 26px; cursor: pointer; outline: 1px solid rgba(74, 42, 16, 0.25); }
+.calendar td.cell.missing { background: transparent; outline: 1px dashed var(--line); cursor: default; }
+.calendar td.cell:hover, .calendar td.cell:focus { outline: 3px solid var(--text); outline-offset: -1px; }
+.calendar td.cell.now { outline: 3px solid #1e88e5; outline-offset: -1px; box-shadow: 0 0 0 2px #fff inset; }
+.calendar td.total { position: relative; min-width: 110px; padding: 0 6px 0 10px; text-align: right; white-space: nowrap; }
+.calendar .tbar { position: absolute; left: 10px; top: 6px; bottom: 6px; background: #f3c7a0; z-index: 0; max-width: calc(100% - 16px); }
+.calendar .tval { position: relative; z-index: 1; }
+.calendar td.sensor { padding-left: 8px; white-space: nowrap; }
+.calendar th .short { display: none; }
+.chip { display: inline-block; font-size: 0.85rem; padding: 0 5px; margin-right: 3px; color: #fff; }
+.chip.MODIS { background: #b7791f; } .chip.SNPP { background: #1c7ed6; } .chip.NOAA20 { background: #495057; }
+@media (max-width: 760px) {
+  .calendar { width: 100%; table-layout: fixed; border-spacing: 2px; font-size: 0.85rem; }
+  .calendar th.year { width: 40px; padding-right: 4px; }
+  .calendar th .long { display: none; }
+  .calendar th .short { display: inline; }
+  .calendar td.cell { width: auto; min-width: 0; height: 22px; }
+  .calendar .sensor { display: none; }
+  .calendar td.total, .calendar th.total { width: 62px; min-width: 0; padding-left: 4px; font-size: 0.8rem; }
+  .calendar .tbar { left: 4px; max-width: calc(100% - 6px); }
+  .legend { font-size: 0.9rem; gap: 4px 10px; }
+}
+/* the sticky top bar must not cover what a jump scrolls to */
+.panel, .tabs, section.map-panel { scroll-margin-top: 84px; }
+
+/* Player card in the sidebar: shown in the drawer on small phones, where the top bar has no room for it */
+.side-player { display: none; background: var(--panel2); padding: 10px; margin-bottom: 14px; font-size: 1.05rem; }
+.side-player .xpbar { width: 100%; margin: 8px 0 4px; }
+@media (max-width: 560px) {
+  .topbar .rank { display: none; }
+  .side-player { display: block; }
+}
+
+@media (max-width: 560px) {
+  .topbar { gap: 8px; }
+  .title { font-size: 0.45rem; }
+  #logo-flame { width: 18px; height: 26px; }
+  .hud-btn { padding: 4px 7px; }
+}
+@media (max-width: 400px) {
+  #logo-flame { display: none; }
+  .title { font-size: 0.42rem; }
 }

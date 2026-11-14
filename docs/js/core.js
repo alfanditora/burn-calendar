@@ -120,6 +120,10 @@ function renderHUD() {
   $("hud-xp").style.width = `${l.pct}%`;
   $("hud-xpbar").setAttribute("aria-valuenow", Math.round(l.pct));
   $("hud-badges").textContent = `🏅 ${Object.keys(Player.data.badges).length}/${Object.keys(BADGES).length}`;
+  $("side-level").textContent = `LV ${l.level}`;
+  $("side-rank").textContent = l.name;
+  $("side-xp").style.width = `${l.pct}%`;
+  $("side-xptext").textContent = `${fmt(Player.data.xp)} XP`;
 }
 
 function addXP(n) {
@@ -141,10 +145,14 @@ function award(id) {
 }
 
 function toast(title, text) {
+  const box = $("toasts");
+  while (box.children.length >= 2) box.firstChild.remove(); // at most two at a time
   const t = document.createElement("div");
   t.className = "toast";
+  t.setAttribute("role", "status");
   t.innerHTML = `<b>${title}</b>${text}`;
-  $("toasts").appendChild(t);
+  t.addEventListener("click", () => t.remove()); // tap to dismiss
+  box.appendChild(t);
   setTimeout(() => t.remove(), 3800);
 }
 
