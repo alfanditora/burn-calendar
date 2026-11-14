@@ -49,6 +49,28 @@
       <p class="hint">Each cell is one month. Hover or tap a cell for the count, the sensor it comes from and how it compares with the median of earlier years.</p>
     </section>
 
+    <section class="games" aria-label="Games">
+      <article class="card" id="game-season">
+        <p class="kicker">Game 1</p>
+        <h2>Guess the fire season</h2>
+        <p class="muted">Pick the 3 months you think have the most fires in <span class="g-area"></span>.</p>
+        <div class="month-picks" id="season-picks"></div>
+        <button type="button" id="season-check" disabled>Reveal</button>
+        <div id="season-result" aria-live="polite"></div>
+      </article>
+      <article class="card" id="game-normal">
+        <p class="kicker">Game 2</p>
+        <h2>Is this month normal?</h2>
+        <p id="normal-question"></p>
+        <div class="choice">
+          <button type="button" data-guess="above">More fires than usual</button>
+          <button type="button" data-guess="below">Fewer fires than usual</button>
+        </div>
+        <div id="normal-result" aria-live="polite"></div>
+        <p class="muted" id="normal-score"></p>
+      </article>
+    </section>
+
     <section class="card">
       <details id="method">
         <summary><h2>Method, validation and limits</h2></summary>

@@ -191,6 +191,112 @@ function highlightMap() {
   state.map.fitBounds([[s, w], [n, e]], { padding: [10, 10] });
 }
 
+// ---------- games (public view; real numbers from the area JSON only) ----------
+const game = { picks: new Set(), normal: null, score: 0, played: 0 };
+
+// Same thresholds as pipeline/config.py ANOMALY_LABELS.
+function labelFor(p) {
+  if (p == null) return "No baseline";
+  if (p >= 50) return "Well above normal";
+  if (p >= 15) return "Above normal";
+  if (p >= -15) return "Normal";
+  return "Below normal";
+}
+
+function completeYears() {
+  const n = new Map();
+  for (const c of state.area.calendar) n.set(c.year, (n.get(c.year) || 0) + 1);
+  return [...n].filter(([, k]) => k === 12).map(([y]) => y);
+}
+
+function monthlyAverages() {
+  const years = new Set(completeYears());
+  const sums = Array(12).fill(0);
+  for (const c of state.area.calendar) if (years.has(c.year)) sums[c.month - 1] += c.count;
+  return { avg: sums.map((s) => s / years.size), years: [...years].sort((a, b) => a - b) };
+}
+
+function initSeasonGame() {
+  game.picks.clear();
+  document.querySelectorAll(".g-area").forEach((e) => { e.textContent = state.area.name; });
+  $("season-picks").innerHTML = MONTHS.map((m, i) =>
+    `<button type="button" data-m="${i}" aria-pressed="false">${m}</button>`).join("");
+  $("season-check").disabled = true;
+  $("season-check").hidden = false;
+  $("season-result").innerHTML = "";
+}
+
+function toggleSeasonPick(e) {
+  const b = e.target.closest("button[data-m]");
+  if (!b || b.disabled) return;
+  const m = Number(b.dataset.m);
+  if (game.picks.has(m)) game.picks.delete(m);
+  else if (game.picks.size < 3) game.picks.add(m);
+  document.querySelectorAll("#season-picks button").forEach((x) =>
+    x.setAttribute("aria-pressed", game.picks.has(Number(x.dataset.m))));
+  $("season-check").disabled = game.picks.size !== 3;
+}
+
+function revealSeason() {
+  const { avg, years } = monthlyAverages();
+  const top = avg.map((v, i) => [v, i]).sort((a, b) => b[0] - a[0]).slice(0, 3).map(([, i]) => i);
+  const hits = top.filter((m) => game.picks.has(m)).length;
+  const share = top.reduce((s, m) => s + avg[m], 0) / avg.reduce((s, v) => s + v, 0) * 100;
+  const max = Math.max(...avg);
+  document.querySelectorAll("#season-picks button").forEach((b) => {
+    b.disabled = true;
+    if (top.includes(Number(b.dataset.m)) && game.picks.has(Number(b.dataset.m))) b.classList.add("hit");
+  });
+  const names = top.slice().sort((a, b) => a - b).map((m) => MONTHS[m]);
+  $("season-check").hidden = true;
+  $("season-result").innerHTML = `
+    <p class="result-line">You found ${hits} of 3${hits === 3 ? ". Perfect!" : hits ? "." : ". Try another area!"}</p>
+    <div class="bars" aria-hidden="true">${avg.map((v, i) =>
+      `<div class="${top.includes(i) ? "top" : ""}" style="height:${Math.max(2, v / max * 100)}%"></div>`).join("")}</div>
+    <div class="bar-labels" aria-hidden="true">${MONTHS.map((m) => `<span>${m[0]}</span>`).join("")}</div>
+    <p class="muted">Average hotspots per month, ${years[0]}–${years[years.length - 1]}. The busiest months are
+      ${names.join(", ")}, holding ${fmt(share)}% of a typical year's hotspots.
+      Data: NASA FIRMS, harmonized to NOAA-20 units.</p>
+    <button type="button" class="link-btn" id="season-again">Play again</button>`;
+  $("season-again").addEventListener("click", initSeasonGame);
+}
+
+function nextNormalQuestion() {
+  const pool = state.area.calendar.filter((c) =>
+    c.median != null && c.median > 0 && c.anomaly_pct != null && c.count !== c.median);
+  game.normal = pool[Math.floor(Math.random() * pool.length)];
+  const c = game.normal;
+  $("normal-question").innerHTML = `<strong>${MONTHS[c.month - 1]} ${c.year}</strong> in ${state.area.name}:
+    more or fewer fire hotspots than a usual ${MONTHS[c.month - 1]}?`;
+  $("normal-result").innerHTML = "";
+  document.querySelectorAll("#game-normal .choice button").forEach((b) => { b.disabled = false; });
+}
+
+function answerNormal(e) {
+  const b = e.target.closest("button[data-guess]");
+  if (!b || b.disabled) return;
+  const c = game.normal;
+  const truth = c.count > c.median ? "above" : "below";
+  const right = b.dataset.guess === truth;
+  game.played++; if (right) game.score++;
+  document.querySelectorAll("#game-normal .choice button").forEach((x) => { x.disabled = true; });
+  $("normal-result").innerHTML = `
+    <p class="result-line">${right ? "Correct!" : "Not this time."}
+      <span class="badge ${BADGE_CLASS[labelFor(c.anomaly_pct)]}">${labelFor(c.anomaly_pct)}</span></p>
+    <p class="muted">${fmt(c.count)} hotspots, against a median of ${fmt(c.median)} for ${MONTHS[c.month - 1]} in earlier years
+      (${pct(c.anomaly_pct)}). Sensor: ${SENSOR_NAME[c.source] || c.source}. Data: NASA FIRMS.</p>
+    <button type="button" class="link-btn" id="normal-next">Next month</button>`;
+  $("normal-next").addEventListener("click", nextNormalQuestion);
+  $("normal-score").textContent = `Score: ${game.score} of ${game.played}`;
+}
+
+function initGames() {
+  initSeasonGame();
+  game.score = 0; game.played = 0;
+  $("normal-score").textContent = "";
+  nextNormalQuestion();
+}
+
 // ---------- wiring ----------
 function fillYears() {
   const years = [...new Set(state.area.calendar.map((c) => c.year))].sort((a, b) => a - b);
@@ -205,7 +311,7 @@ async function selectArea(id) {
   $("area").value = id;
   $("unit").textContent = `Unit: ${state.area.unit}. Grey = no hotspots; dashed = no data. * = partial year.`;
   fillYears();
-  renderCalendar(); renderAnomaly(); renderTrend(); renderMethod(); highlightMap();
+  renderCalendar(); renderAnomaly(); renderTrend(); renderMethod(); highlightMap(); initGames();
 }
 
 async function main() {
@@ -224,6 +330,9 @@ async function main() {
     renderCalendar();
   });
   $("download").addEventListener("click", downloadCSV);
+  $("season-picks").addEventListener("click", toggleSeasonPick);
+  $("season-check").addEventListener("click", revealSeason);
+  $("game-normal").querySelector(".choice").addEventListener("click", answerNormal);
   $("calendar").addEventListener("mouseover", showTip);
   $("calendar").addEventListener("focusin", showTip);
   $("calendar").addEventListener("click", showTip);   // tap on touch screens
