@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parent.parent
 RAW_DIR = ROOT / "data" / "raw"
 PROCESSED_DIR = ROOT / "data" / "processed"
 SAMPLE_DIR = ROOT / "data" / "sample"
-WEB_DATA_DIR = ROOT / "web" / "data"     # run_all copies areas/ here for the static site
+WEB_DATA_DIR = ROOT / "docs" / "data"    # run_all copies areas/ here; docs/ is the GitHub Pages site
 
 # --- Areas -------------------------------------------------------------------
 # bbox = [west, south, east, north] in degrees.

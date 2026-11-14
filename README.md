@@ -6,6 +6,9 @@ Burn Calendar joins NASA FIRMS active-fire hotspots from three sensors (MODIS, V
 VIIRS NOAA-20) into one monthly record in **NOAA-20-equivalent hotspots per month**, then shows it
 as a burning-activity calendar with an anomaly badge, a Mann-Kendall trend test and a CSV download.
 
+**Live app:** https://alfanditora.github.io/burn-calendar/ (the static site lives in `docs/` and GitHub Pages
+redeploys it on every push to `main`).
+
 > Work in progress. Method details, limits and validation results will be filled in from the real run.
 
 ## Run it
