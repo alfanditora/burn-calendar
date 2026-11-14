@@ -14,9 +14,33 @@ function showTab(name) {
     $(`view-${t}`).hidden = t !== name;
     $(`tab-${t}`)?.setAttribute("aria-selected", t === name);
   }
-  document.querySelectorAll(".side-nav button").forEach((b) => b.setAttribute("aria-current", b.dataset.go === name));
   if (name === "story" && App.area) drawRelayChart();
+  navSpy();
 }
+
+// Side nav "you are here": highlight the section on screen (the last one whose top is above 35% of the
+// viewport; the last one at the very bottom of the page).
+function navSpy() {
+  if (mode() === "home") return;
+  const targets = mode() === "analyst"
+    ? [["map", "map-panel"], ["season", "season-panel"], ["lab", "view-lab"], ["data", "data-access"]]
+    : [["map", "map-panel"], ["season", "season-panel"], [exploreTab, null]];
+  const line = window.innerHeight * 0.35;
+  let current = "map";
+  for (const [go, id] of targets) {
+    const el = id ? $(id) : document.querySelector(".tabs");
+    if (el && el.getBoundingClientRect().top <= line) current = go;
+  }
+  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) current = targets[targets.length - 1][0];
+  document.querySelectorAll(".side-nav button").forEach((b) => b.setAttribute("aria-current", b.dataset.go === current));
+}
+let navSpyQueued = false;
+window.addEventListener("scroll", () => {
+  if (navSpyQueued) return;
+  navSpyQueued = true;
+  requestAnimationFrame(() => { navSpyQueued = false; navSpy(); });
+}, { passive: true });
+window.addEventListener("resize", navSpy);
 
 // Show a mode; push it to the address bar so Back returns to the home screen.
 function setMode(m, push = true) {
