@@ -23,9 +23,10 @@ REGIONS_GEOJSON = ROOT / "data" / "external" / "regions.geojson"
 # points and to frame the map. An area without "boundary" is counted by its bbox alone.
 AREAS = {
     "indonesia": {"name": "Indonesia", "bbox": [95.0, -11.0, 141.0, 6.0], "boundary": "indonesia"},
-    "riau": {"name": "Riau Province, Indonesia", "bbox": [100.0, -1.2, 104.0, 2.9], "boundary": "riau"},
+    "riau": {"name": "Riau Province, Indonesia", "bbox": [100.0, -1.2, 104.0, 2.9], "boundary": "riau",
+             "parent": "indonesia"},
     "central_kalimantan": {"name": "Central Kalimantan, Indonesia", "bbox": [110.7, -3.6, 116.0, 0.8],
-                           "boundary": "central_kalimantan"},
+                           "boundary": "central_kalimantan", "parent": "indonesia"},
     # Outside Indonesia, to show the method generalises: Kimberley, Top End, Gulf country, Cape York.
     "north_australia": {"name": "Northern Australia", "bbox": [121.0, -20.0, 146.0, -10.5],
                         "boundary": "north_australia"},
@@ -91,6 +92,9 @@ DRIFT_MAX_DIFF = 0.20               # > 20% difference -> calibrate on early yea
 # A link is "unstable" if the spread of its yearly ratios, (max - min) / median,
 # is above this. Then per-sensor percentile ranks are the recommended fallback.
 UNSTABLE_SPREAD = 0.50
+# If a small area's link is unstable and the area has a "parent" (see AREAS), use the parent's
+# factor instead, validated on the small area's own held-out years. Both errors are reported.
+PARENT_FALLBACK = True
 
 # --- Anomaly -----------------------------------------------------------------
 # anomaly_pct = (count - median) / median * 100, median over earlier complete years.

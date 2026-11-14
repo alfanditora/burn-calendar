@@ -42,14 +42,19 @@ def spread(yearly):
     return float((vals.max() - vals.min()) / np.median(vals))
 
 
-def validate(pair, holdout_years):
-    """Refit without the last N full years, predict them, report the errors."""
+def validate(pair, holdout_years, train_pair=None):
+    """Refit without the last N full years, predict them, report the errors.
+
+    train_pair: fit the factor on another area's pair instead (the parent area), still
+    leaving out the held-out years, then predict this area's held-out months.
+    """
     years = sorted(pair.loc[pair.groupby("year")["month"].transform("size") == 12, "year"].unique())
     if len(years) <= holdout_years:
         return {"holdout_years": [], "monthly_mape_pct": None, "yearly_error_pct": None,
                 "note": "not enough full overlap years to validate"}
     held = years[-holdout_years:]
-    train = pair[~pair["year"].isin(held)]
+    source = pair if train_pair is None else train_pair
+    train = source[~source["year"].isin(held)]
     test = pair[pair["year"].isin(held)].copy()
     factor = ratio(train)
     test["pred"] = test["source"] * factor
@@ -70,6 +75,33 @@ def validate(pair, holdout_years):
         "monthly_mape_pct": None if mape is None else round(mape, 1),
         "months_scored": int(len(big)),
         "yearly_error_pct": None if yearly_err is None else round(yearly_err, 1),
+    }
+
+
+def cross_validate(pair, train_pair=None):
+    """Leave-one-year-out: for each full overlap year, fit on the other years, predict that year.
+
+    Errors are count-weighted (sum |error| / sum observed), so quiet years with a handful of
+    hotspots do not dominate the way they do in a plain percentage error.
+    """
+    full = pair.groupby("year")["month"].transform("size") == 12
+    years = sorted(pair.loc[full, "year"].unique())
+    if len(years) < 3:
+        return {"years": [], "monthly_wape_pct": None, "yearly_wape_pct": None}
+    source = pair if train_pair is None else train_pair
+    abs_m = obs_m = abs_y = obs_y = 0.0
+    for y in years:
+        f = ratio(source[source["year"] != y])
+        test = pair[pair["year"] == y]
+        pred = test["source"] * f
+        abs_m += float((pred - test["target"]).abs().sum())
+        obs_m += float(test["target"].sum())
+        abs_y += abs(float(pred.sum() - test["target"].sum()))
+        obs_y += float(test["target"].sum())
+    return {
+        "years": [int(years[0]), int(years[-1])],
+        "monthly_wape_pct": round(abs_m / obs_m * 100, 1) if obs_m else None,
+        "yearly_wape_pct": round(abs_y / obs_y * 100, 1) if obs_y else None,
     }
 
 
@@ -114,12 +146,51 @@ def fit_link(counts, area_id, link_name):
         "unstable": unstable,
         "drift": drift,
         "validation": validate(pair, config.VALIDATION_HOLDOUT_YEARS),
+        "cross_validation": cross_validate(pair),
         "notes": notes,
     }
 
 
-def calibrate_area(counts, area_id):
-    return {name: fit_link(counts, area_id, name) for name in config.LINKS}
+def parent_fallback(counts, area_id, parent_id, link_name, own):
+    """Replace an unstable link with the parent area's factor, validated on this area's held-out years.
+
+    The MODIS/VIIRS ratio mostly reflects the sensors, so a large parent area (more fires every
+    year) estimates it more reliably than a small province with few fires in some years.
+    """
+    link = config.LINKS[link_name]
+    parent = fit_link(counts, parent_id, link_name)
+    if parent["factor"] is None or parent["unstable"]:
+        return own
+    parent_pair = _paired(counts, parent_id, link["source"], link["target"], tuple(parent["fit_years"]))
+    own_pair = _paired(counts, area_id, link["source"], link["target"], link["years"])
+    validation = validate(own_pair, config.VALIDATION_HOLDOUT_YEARS, train_pair=parent_pair)
+    out = dict(own)
+    out.update({
+        "factor": parent["factor"],
+        "factor_source": parent_id,
+        "fit_years": parent["fit_years"],
+        "own_factor": own["factor"],
+        "own_validation": own["validation"],
+        "own_cross_validation": own["cross_validation"],
+        "validation": validation,
+        "cross_validation": cross_validate(own_pair, train_pair=parent_pair),
+        "notes": own["notes"] + [
+            f"{link_name}: own ratio unstable, so the {parent_id} factor {parent['factor']} is used "
+            f"(own {own['factor']}); validated on this area's {validation['holdout_years']} months: "
+            f"{validation['monthly_mape_pct']}% monthly error vs {own['validation']['monthly_mape_pct']}% with its own factor."],
+    })
+    out["notes"][-1] += (f" Cross-validated weighted error: {out['cross_validation']['monthly_wape_pct']}% "
+                         f"(own factor: {own['cross_validation']['monthly_wape_pct']}%).")
+    return out
+
+
+def calibrate_area(counts, area_id, parent_id=None):
+    links = {name: fit_link(counts, area_id, name) for name in config.LINKS}
+    if parent_id and config.PARENT_FALLBACK:
+        for name, link in links.items():
+            if link["unstable"]:
+                links[name] = parent_fallback(counts, area_id, parent_id, name, link)
+    return links
 
 
 def harmonize(counts, area_id, links):

@@ -72,12 +72,15 @@ function renderTrend() {
 
 function renderMethod() {
   const m = App.area.method, links = m.links || {};
+  const p1 = (x) => (x != null ? fmt(x, 1) + "%" : "n/a");
+  const parentName = (id) => (App.index.find((a) => a.area_id === id) || {}).name || id;
   const row = (name, label) => {
-    const l = links[name] || {}, v = l.validation || {};
-    return `<tr><td>${label}</td><td>${fmt(m.factors[name], 3)}</td><td>${l.fit_years ? l.fit_years.join("–") : ""}</td>
+    const l = links[name] || {}, v = l.validation || {}, cv = l.cross_validation || {};
+    const from = l.factor_source ? `<br><span class="muted small">from ${parentName(l.factor_source)} (own ${fmt(l.own_factor, 2)} was unstable)</span>` : "";
+    return `<tr><td>${label}</td><td>${fmt(m.factors[name], 3)}${from}</td><td>${l.fit_years ? l.fit_years.join("–") : ""}</td>
       <td>${l.spread != null ? fmt(l.spread * 100) + "%" : "n/a"}${l.unstable ? " (unstable)" : ""}</td>
-      <td>${v.monthly_mape_pct != null ? fmt(v.monthly_mape_pct, 1) + "%" : "n/a"}</td>
-      <td>${v.yearly_error_pct != null ? fmt(v.yearly_error_pct, 1) + "%" : "n/a"}</td></tr>`;
+      <td><b>${p1(cv.monthly_wape_pct)}</b> / ${p1(cv.yearly_wape_pct)}</td>
+      <td>${p1(v.monthly_mape_pct)} / ${p1(v.yearly_error_pct)}</td></tr>`;
   };
   const drift = links.modis_to_snpp && links.modis_to_snpp.drift;
   $("method-body").innerHTML = `
@@ -85,12 +88,15 @@ function renderMethod() {
       (from Apr 2018), else Suomi NPP × factor, else MODIS × both factors. Each factor is the ratio of total hotspots seen by
       the two sensors over the months both were running.</p>
     <div class="table-scroll"><table>
-      <tr><th>Link</th><th>Factor</th><th>Fit years</th><th>Year-to-year spread</th><th>Monthly error</th><th>Yearly error</th></tr>
+      <tr><th>Link</th><th>Factor</th><th>Fit years</th><th>Year-to-year spread</th><th>Cross-validated error<br>(monthly / yearly)</th><th>Last 2 years held out<br>(monthly / yearly)</th></tr>
       ${row("modis_to_snpp", "MODIS → Suomi NPP")}${row("snpp_to_noaa20", "Suomi NPP → NOAA-20")}
     </table></div>
-    <p class="muted">Validation: the last two full overlap years are held out, factors are refitted without them, and the
-      held-out months are predicted. Monthly error = mean absolute percentage error over months with at least 10 hotspots.
-      Headline validation error: <b>${m.validation_error_pct != null ? fmt(m.validation_error_pct, 1) + "%" : "n/a"}</b>.</p>
+    <p class="muted">Validation: <b>cross-validated error</b> holds out each overlap year in turn, fits the factor on the
+      other years, predicts the held-out year and weights errors by the number of fires (sum of errors ÷ sum of observed
+      hotspots). The <b>last-2-years</b> check holds out only the two most recent overlap years (mean absolute
+      percentage error over months with at least 10 hotspots); it overstates error where those years were quiet.
+      Headline validation error: <b>${p1(m.validation_error_pct)}</b> (worse of the two links).
+      If a province's own ratio is unstable, the factor of its parent area is used instead.</p>
     ${drift ? `<p class="muted">Orbit-drift check (MODIS → Suomi NPP): ratio ${fmt(drift.early_ratio, 3)} in 2012–2018 vs
       ${fmt(drift.late_ratio, 3)} in 2019–2025 (${fmt(drift.diff_pct, 1)}% apart).
       ${drift.used_early_only ? "Above 20%, so only 2012–2018 was used." : "Within 20%, so all overlap years were used."}</p>` : ""}

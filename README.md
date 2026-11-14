@@ -55,29 +55,35 @@ percentile fallback, which ranks a month within the same calendar month of its o
 
 ## Results (run of Nov 14, 2026)
 
-Areas are counted inside their real borders (Natural Earth 1:10m). Calibration factors and hold-out validation error
-(monthly MAPE / yearly error, last two full overlap years held out):
+Areas are counted inside their real borders (Natural Earth 1:10m). For each link: the factor, the **cross-validated
+error** (each overlap year held out in turn, errors weighted by fire counts; monthly / yearly) and the brief's
+**last-2-years** check (monthly MAPE on 2024–2025):
 
-| Area | MODIS → Suomi NPP | Validation | Suomi NPP → NOAA-20 | Validation | Notes |
-| --- | --- | --- | --- | --- | --- |
-| Indonesia | 5.10 | 19.9% / 10.5% | 1.01 | 8.2% / 6.8% | drift 3.4% |
-| Riau Province, Indonesia | 4.87 | 164.9% / 64.4% | 1.02 | 13.8% / 13.0% | drift 34.6%, fitted on 2012–2018, unstable (percentile fallback offered) |
-| Central Kalimantan, Indonesia | 5.05 | 51.8% / 25.3% | 0.99 | 19.5% / 4.7% | drift 9.6%, unstable (percentile fallback offered) |
-| Northern Australia | 4.52 | 12.1% / 8.5% | 0.99 | 5.7% / 6.4% | drift 1.6% |
+| Area | MODIS → Suomi NPP | Cross-validated | Last 2 yrs | Suomi NPP → NOAA-20 | Cross-validated | Last 2 yrs | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Indonesia | 5.10 | **10.9%** / 6.7% | 19.9% | 1.01 | **4.9%** / 4.1% | 8.2% | drift 3.4% |
+| Riau Province, Indonesia | 5.10 (from Indonesia; own 4.87 unstable) | **21.5%** / 16.3% | 156.7% | 1.02 | **9.2%** / 4.7% | 13.8% | drift 34.6% |
+| Central Kalimantan, Indonesia | 5.10 (from Indonesia; own 5.05 unstable) | **16.3%** / 12.3% | 52.4% | 0.99 | **5.5%** / 3.3% | 19.5% | drift 9.6% |
+| Northern Australia | 4.52 | **7.6%** / 3.4% | 12.1% | 0.99 | **4.9%** / 4.0% | 5.7% | drift 1.6% |
 
 - VIIRS detects about **4.5–5.1× more hotspots than MODIS** over the same land, and the two VIIRS sensors agree within
   about 2%. The factors are close in two very different fire regimes: Indonesian peat and forest clearing, and
   Australian savanna burning. That supports one conversion chain for both.
-- Small provinces are harder. Riau's fire counts dropped about tenfold after 2015, so its yearly ratios are noisy;
-  the drift check fired and the link is flagged unstable. The app shows this and offers per-sensor percentile ranks.
+- **Headline validation error** (worse link, cross-validated): Indonesia 10.9%, Riau 21.5%, Central Kalimantan 16.3%,
+  Northern Australia 7.6%.
+- **Small provinces:** on their own, Riau's and Central Kalimantan's MODIS→VIIRS ratios swing from year to year
+  (few fires in recent years), so they use Indonesia's factor (5.10), which is close to their own (4.87, 5.05) and
+  validates slightly better. The last-2-years check looks much worse for them (157%, 52%) because 2024–2025 were
+  quiet years: Riau had about 3,000 hotspots a year then, against 117,000 at its peak, and percentage errors on
+  small counts explode. The cross-validated error weights every year by its fires and is the fairer measure.
 
 Trend (Mann-Kendall on yearly totals 2001–2025) and the latest complete month (Oct 2026, near-real-time data):
 
 | Area | Long-term trend | Oct 2026 vs median of earlier Octobers |
 | --- | --- | --- |
 | Indonesia | falling (p = 0.018, Sen's slope -11,151/yr) | Well above normal (+504%) |
-| Riau Province, Indonesia | falling (p = 0.004, Sen's slope -1,885/yr) | Below normal (-88%) |
-| Central Kalimantan, Indonesia | falling (p = 0.011, Sen's slope -1,828/yr) | Well above normal (+1343%) |
+| Riau Province, Indonesia | falling (p = 0.004, Sen's slope -1,963/yr) | Below normal (-88%) |
+| Central Kalimantan, Indonesia | falling (p = 0.008, Sen's slope -1,872/yr) | Well above normal (+1328%) |
 | Northern Australia | no clear trend (p = 0.944, Sen's slope -246/yr) | Below normal (-30%) |
 
 All three sensors independently show the 2026 Indonesian fire season (Aug–Oct); for Indonesia, October 2026 is the

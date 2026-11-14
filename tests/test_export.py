@@ -14,6 +14,7 @@ def test_end_to_end_on_sample(tmp_path):
         assert key in data
     assert data["method"]["factors"]["modis_to_snpp"] == 4.0
     assert data["method"]["validation_error_pct"] == 0.0
+    assert data["method"]["holdout_mape_pct"] == 0.0
     assert data["calendar"][0] == {"year": 2010, "month": 1, "count": 18.0, "source": "MODIS",
                                    "median": None, "anomaly_pct": None}
     assert data["latest"]["label"] == "Well above normal"

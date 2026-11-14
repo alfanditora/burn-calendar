@@ -15,6 +15,7 @@ def test_factors_recover_ground_truth(sample_counts):
         assert not link["unstable"]
         assert link["validation"]["monthly_mape_pct"] == pytest.approx(0.0)
         assert link["validation"]["holdout_years"] == [2024, 2025]
+        assert link["cross_validation"]["monthly_wape_pct"] == pytest.approx(0.0)
 
 
 def test_harmonized_series_is_one_unit(sample_counts):
@@ -59,3 +60,23 @@ def test_percentile_ranks():
     c = _counts([("a", y, 1, "MODIS", v) for y, v in zip(range(2001, 2005), [10, 20, 30, 40])])
     r = calibrate.percentile_ranks(c)
     assert list(r["pct_rank_within_sensor"]) == [25.0, 50.0, 75.0, 100.0]
+
+
+def test_unstable_province_uses_parent_factor():
+    rows = []
+    for y in range(2018, 2026):
+        for m in range(1, 13):
+            rows += [("big", y, m, "SNPP", 1000), ("big", y, m, "NOAA20", 1000)]       # stable ratio 1.0
+            small = 100 if y % 2 else 300                                              # ratio swings 1.0 / 3.0
+            rows += [("small", y, m, "SNPP", 100), ("small", y, m, "NOAA20", small)]
+    counts = _counts(rows)
+    own = calibrate.fit_link(counts, "small", "snpp_to_noaa20")
+    assert own["unstable"]
+    links = calibrate.calibrate_area(counts, "small", parent_id="big")
+    l = links["snpp_to_noaa20"]
+    assert l["factor"] == pytest.approx(1.0) and l["factor_source"] == "big"
+    assert l["own_factor"] == own["factor"]
+    assert l["validation"]["holdout_years"] == [2024, 2025]
+    assert l["validation"]["train_factor"] == pytest.approx(1.0)
+    # Without a parent nothing changes.
+    assert calibrate.calibrate_area(counts, "small")["snpp_to_noaa20"]["factor"] == own["factor"]

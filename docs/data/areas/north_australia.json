@@ -2826,7 +2826,9 @@
    "modis_to_snpp": 4.5234,
    "snpp_to_noaa20": 0.9925
   },
-  "validation_error_pct": 12.1,
+  "validation_error_pct": 7.6,
+  "validation_metric": "leave-one-year-out, count-weighted monthly error (worse of the two links)",
+  "holdout_mape_pct": 12.1,
   "links": {
    "modis_to_snpp": {
     "factor": 4.5234,
@@ -2869,6 +2871,14 @@
      "months_scored": 24,
      "yearly_error_pct": 8.5
     },
+    "cross_validation": {
+     "years": [
+      2013,
+      2025
+     ],
+     "monthly_wape_pct": 7.6,
+     "yearly_wape_pct": 3.4
+    },
     "notes": []
    },
    "snpp_to_noaa20": {
@@ -2901,10 +2911,18 @@
      "months_scored": 24,
      "yearly_error_pct": 6.4
     },
+    "cross_validation": {
+     "years": [
+      2019,
+      2025
+     ],
+     "monthly_wape_pct": 4.9,
+     "yearly_wape_pct": 4.0
+    },
     "notes": []
    }
   },
   "fallback_percentiles_recommended": false,
-  "notes": "Cleaning: MODIS confidence >= 30, VIIRS confidence in ['h', 'n'], day/night kept: ['D', 'N']. Factor = sum(target)/sum(source) over overlap months. Validation holds out the last 2 full overlap years; monthly MAPE skips months with < 10 target hotspots. Anomaly = vs median of the same month in earlier complete years. Areas follow real borders (Natural Earth 1:10m admin-1); Northern Australia is Australian land north of 20\u00b0S, 121-146\u00b0E. Counts are hotspots, not burned area."
+  "notes": "Cleaning: MODIS confidence >= 30, VIIRS confidence in ['h', 'n'], day/night kept: ['D', 'N']. Factor = sum(target)/sum(source) over overlap months. Validation holds out the last 2 full overlap years (monthly MAPE skips months with < 10 target hotspots); headline error = leave-one-year-out, count-weighted. Unstable provincial links use the parent area's factor. Anomaly = vs median of the same month in earlier complete years. Areas follow real borders (Natural Earth 1:10m admin-1); Northern Australia is Australian land north of 20\u00b0S, 121-146\u00b0E. Counts are hotspots, not burned area."
  }
 }

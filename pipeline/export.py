@@ -16,8 +16,9 @@ def _config_notes():
         f"Cleaning: MODIS confidence >= {config.MODIS_MIN_CONFIDENCE}, VIIRS confidence in "
         f"{sorted(config.VIIRS_KEEP_CONFIDENCE)}, day/night kept: {sorted(config.KEEP_DAYNIGHT)}. "
         f"Factor = sum(target)/sum(source) over overlap months. Validation holds out the last "
-        f"{config.VALIDATION_HOLDOUT_YEARS} full overlap years; monthly MAPE skips months with "
-        f"< {config.VALIDATION_MIN_MONTH_COUNT} target hotspots. Anomaly = vs median of the same "
+        f"{config.VALIDATION_HOLDOUT_YEARS} full overlap years (monthly MAPE skips months with "
+        f"< {config.VALIDATION_MIN_MONTH_COUNT} target hotspots); headline error = leave-one-year-out, count-weighted. "
+        f"Unstable provincial links use the parent area's factor. Anomaly = vs median of the same "
         f"month in earlier complete years. Areas follow real borders (Natural Earth 1:10m admin-1); "
         f"Northern Australia is Australian land north of 20°S, 121-146°E. Counts are hotspots, not burned area."
     )
@@ -25,7 +26,7 @@ def _config_notes():
 
 def build_area(counts, area_id, area):
     """Return (area_json, monthly_rows) for one area."""
-    links = calibrate.calibrate_area(counts, area_id)
+    links = calibrate.calibrate_area(counts, area_id, area.get("parent"))
     h = calibrate.harmonize(counts, area_id, links)
     series = trend.add_anomaly(trend.selected_series(h))
 
@@ -33,8 +34,12 @@ def build_area(counts, area_id, area):
                    on=["year", "month"], how="left")
     rows = calibrate.percentile_ranks(rows)
 
-    errors = [l["validation"]["monthly_mape_pct"] for l in links.values()
-              if l["validation"].get("monthly_mape_pct") is not None]
+    # Headline = the worse link's leave-one-year-out count-weighted monthly error. The brief's
+    # last-two-years MAPE is kept as holdout_mape_pct (it overstates error when those years are quiet).
+    errors = [l["cross_validation"]["monthly_wape_pct"] for l in links.values()
+              if l["cross_validation"].get("monthly_wape_pct") is not None]
+    holdout = [l["validation"]["monthly_mape_pct"] for l in links.values()
+               if l["validation"].get("monthly_mape_pct") is not None]
     notes = [_config_notes()] + [n for l in links.values() for n in l["notes"]]
 
     data = {
@@ -66,6 +71,8 @@ def build_area(counts, area_id, area):
             "factors": {name: l["factor"] for name, l in links.items()},
             # Headline = the worse of the two links, so we never overstate accuracy.
             "validation_error_pct": max(errors) if errors else None,
+            "validation_metric": "leave-one-year-out, count-weighted monthly error (worse of the two links)",
+            "holdout_mape_pct": max(holdout) if holdout else None,
             "links": links,
             "fallback_percentiles_recommended": any(l["unstable"] for l in links.values()),
             "notes": " ".join(notes),
