@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=12">
+  <link rel="stylesheet" href="styles.css?v=13">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -296,6 +296,14 @@
 
 
   <div id="tip" class="tip" role="tooltip" hidden></div>
+  <!-- Floating month stepper: shown once the map's own controls scroll out of view -->
+  <nav class="fnav" id="fnav" aria-label="Change month" hidden>
+    <button type="button" class="px-btn small" data-step="-12" aria-label="Previous year">◀◀<span class="hide-xs"> YEAR</span></button>
+    <button type="button" class="px-btn small" data-step="-1" aria-label="Previous month">◀</button>
+    <button type="button" class="fnav-month" id="fnav-month" title="Back to the map"></button>
+    <button type="button" class="px-btn small" data-step="1" aria-label="Next month">▶</button>
+    <button type="button" class="px-btn small" data-step="12" aria-label="Next year"><span class="hide-xs">YEAR </span>▶▶</button>
+  </nav>
   <div id="toasts" class="toasts" aria-live="polite"></div>
   <dialog id="badge-dialog" class="panel">
     <h2>Badges</h2>
@@ -303,15 +311,15 @@
     <form method="dialog"><button class="px-btn">CLOSE</button></form>
   </dialog>
 
-  <script src="js/core.js?v=12"></script>
-  <script src="js/sprites.js?v=12"></script>
-  <script src="js/map.js?v=12"></script>
-  <script src="js/games.js?v=12"></script>
-  <script src="js/story.js?v=12"></script>
-  <script src="js/lab.js?v=12"></script>
-  <script src="js/season.js?v=12"></script>
-  <script src="js/province.js?v=12"></script>
-  <script src="js/share.js?v=12"></script>
-  <script src="js/main.js?v=12"></script>
+  <script src="js/core.js?v=13"></script>
+  <script src="js/sprites.js?v=13"></script>
+  <script src="js/map.js?v=13"></script>
+  <script src="js/games.js?v=13"></script>
+  <script src="js/story.js?v=13"></script>
+  <script src="js/lab.js?v=13"></script>
+  <script src="js/season.js?v=13"></script>
+  <script src="js/province.js?v=13"></script>
+  <script src="js/share.js?v=13"></script>
+  <script src="js/main.js?v=13"></script>
 </body>
 </html>

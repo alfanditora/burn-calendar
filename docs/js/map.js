@@ -107,6 +107,7 @@ function tmInit() {
   $("layer-unusual").addEventListener("click", () => setLayer("unusual"));
   TM.canvas.addEventListener("mousemove", tmHover);
   TM.canvas.addEventListener("mouseleave", () => { $("tip").hidden = true; });
+  fnavInit();
   requestAnimationFrame(tmLoop);
 }
 
@@ -207,6 +208,7 @@ function tmGo(i) {
     ? "Not enough earlier years for this month yet (needs 5). Pick a later month." : "";
   const [y, m] = g.months[TM.idx].split("-").map(Number);
   $("tm-month").textContent = `${MONTHS[m - 1].toUpperCase()} ${y}`;
+  fnavUpdate();
   const e = calEntry(y, m);
   if (e) {
     $("tm-count").textContent = fmt(e.count);
@@ -225,6 +227,32 @@ function tmGo(i) {
   if (typeof provinceOnMonth === "function") provinceOnMonth();
   const note = (MOMENTS[App.areaId] || {})[g.months[TM.idx]];
   if (note && TM.playing) tmMoment(`★ ${note}`);
+}
+
+// Floating month stepper: the same steps as the map controls, so the panels below can be read while stepping.
+function fnavUpdate() {
+  const n = App.grid.months.length;
+  $("fnav-month").textContent = $("tm-month").textContent;
+  document.querySelectorAll("#fnav [data-step]").forEach((b) => {
+    const s = Number(b.dataset.step);
+    b.disabled = s < 0 ? TM.idx === 0 : TM.idx === n - 1;
+  });
+}
+function fnavInit() {
+  const nav = $("fnav");
+  nav.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    if (b.id === "fnav-month") { $("map-panel").scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" }); return; }
+    tmPause();
+    const n = App.grid.months.length, s = Number(b.dataset.step);
+    tmGo(Math.max(0, Math.min(n - 1, TM.idx + s)));  // a year step stops at the first or last month
+  });
+  let controlsVisible = true;
+  const show = () => { nav.hidden = controlsVisible || mode() === "home" || !App.grid; };
+  new IntersectionObserver(([en]) => { controlsVisible = en.isIntersecting; show(); })
+    .observe(document.querySelector(".tm-controls"));
+  new MutationObserver(show).observe(document.body, { attributes: true, attributeFilter: ["data-mode"] });
 }
 
 function tmFact(e) {
