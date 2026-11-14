@@ -11,6 +11,8 @@ ROOT = Path(__file__).resolve().parent.parent
 RAW_DIR = ROOT / "data" / "raw"
 PROCESSED_DIR = ROOT / "data" / "processed"
 SAMPLE_DIR = ROOT / "data" / "sample"
+# Natural Earth 1:50m land (public domain), for the pixel map land mask.
+LAND_GEOJSON = ROOT / "data" / "external" / "ne_50m_land.geojson"
 WEB_DATA_DIR = ROOT / "docs" / "data"    # run_all copies areas/ here; docs/ is the GitHub Pages site
 
 # --- Areas -------------------------------------------------------------------

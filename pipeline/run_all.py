@@ -8,10 +8,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from pipeline import bin as binning  # noqa: E402  (`bin` shadows a builtin)
-from pipeline import config, export, load  # noqa: E402
+from pipeline import config, export, grid, load  # noqa: E402
 
 
-def run(raw_dir=None, out_dir=None, areas=None, web_dir=None):
+def run(raw_dir=None, out_dir=None, areas=None, web_dir=None, regions=None):
     cleaned, raw_stats = load.load_all(raw_dir)
     print(f"Loaded {raw_stats['rows'].sum():,} raw rows, kept {len(cleaned):,} after cleaning.")
     print(load.summarize(cleaned).to_string(index=False))
@@ -22,11 +22,15 @@ def run(raw_dir=None, out_dir=None, areas=None, web_dir=None):
 
     out = export.export_all(counts, out_dir, areas)
     print(f"\nWrote outputs to {out}")
+    for path in grid.export_grids(cleaned, out, regions):
+        print(f"Wrote pixel-map grid {path.name} ({path.stat().st_size / 1e6:.1f} MB)")
     if web_dir:
-        target = Path(web_dir) / "areas"
-        shutil.rmtree(target, ignore_errors=True)
-        shutil.copytree(Path(out) / "areas", target)
-        print(f"Copied area files to {target}")
+        for sub_dir in ["areas", "grid"]:
+            target = Path(web_dir) / sub_dir
+            shutil.rmtree(target, ignore_errors=True)
+            if (Path(out) / sub_dir).exists():
+                shutil.copytree(Path(out) / sub_dir, target)
+        print(f"Copied area and grid files to {web_dir}")
     return out
 
 

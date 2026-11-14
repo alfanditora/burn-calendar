@@ -50,6 +50,12 @@ def build_area(counts, area_id, area):
         ],
         "yearly": [{"year": int(r.year), "count": round(float(r.count), 1)}
                    for r in trend.yearly_totals(series).itertuples()],
+        # Raw (unconverted) yearly totals per sensor, full years only: shows why harmonizing is needed.
+        "raw_yearly": {
+            sensor: [{"year": int(y), "count": int(g["raw_count"].sum())}
+                     for y, g in hs.groupby("year") if len(g) == 12]
+            for sensor, hs in h.groupby("sensor")
+        },
         "trend": trend.trend_test(series),
         "latest": trend.latest(series) if len(series) else None,
         "method": {

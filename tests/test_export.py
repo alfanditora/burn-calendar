@@ -23,3 +23,14 @@ def test_end_to_end_on_sample(tmp_path):
                                     "source_used", "median_same_month", "anomaly_pct"]
     index = json.loads((tmp_path / "areas" / "index.json").read_text())
     assert index[0]["area_id"] == "sample_box"
+
+
+def test_grid_matches_calendar(tmp_path):
+    run_all.run(config.SAMPLE_DIR, tmp_path, SAMPLE_AREAS, regions={"sample_box": [100.0, 0.0, 102.0, 2.0]})
+    g = json.loads((tmp_path / "grid" / "sample_box.json").read_text())
+    area = json.loads((tmp_path / "areas" / "sample_box.json").read_text())
+    assert (g["w"], g["h"]) == (8, 8) and len(g["land"]) == 64
+    assert len(g["fires"]) == len(area["calendar"]) == len(g["months"])
+    # Sum of cell values ~= calendar count for each month (cell values are rounded).
+    for flat, cal in zip(g["fires"], area["calendar"]):
+        assert abs(sum(flat[1::2]) - cal["count"]) <= len(flat) // 2
