@@ -380,6 +380,8 @@ function tmDrawUnusual(ctx, K, g, vw) {
 }
 
 function tmHover(ev) {
+  // No tooltip while drawing an area: it would cover the box being drawn.
+  if (typeof Prov !== "undefined" && (Prov.drawMode || Prov.drag)) { $("tip").hidden = true; return; }
   const g = App.grid, r = TM.canvas.getBoundingClientRect();
   const col = TM.view.x0 + Math.floor((ev.clientX - r.left) / r.width * TM.view.w);
   const row = TM.view.y0 + Math.floor((ev.clientY - r.top) / r.height * TM.view.h);

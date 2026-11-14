@@ -1,0 +1,367 @@
+<!doctype html>
+<!-- Generated with assistance from Claude Code (Anthropic), reviewed by the team. -->
+<!-- Animated scenes for the Burn Calendar pitch video, in the app's pixel style and with the app's real data.
+     Every frame is drawn by render(scene, t): no clocks, so frames are exact. Served at the app's origin. -->
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#8fd35a; --panel:#f7e9cb; --panel2:#ebd3a5; --line:#7a4a22; --text:#2d2a12; --muted:#6b5634;
+  --fire1:#ffd43b; --fire2:#ff922b; --fire3:#f03e3e; --hi:#c2410c; --leaf:#3f9b3a; --navy:#0d1736; --navy2:#16224a;
+  --title:"Press Start 2P", monospace; --body:"VT323", monospace; --px:8px; }
+* { box-sizing:border-box; margin:0; }
+html, body { width:1920px; height:1080px; overflow:hidden; background:var(--navy); }
+.scene { position:absolute; inset:0; display:none; overflow:hidden; font-family:var(--body); color:var(--text); }
+.grass { background: radial-gradient(ellipse at top, #c8f191 0%, transparent 65%),
+  repeating-linear-gradient(45deg, transparent 0 28px, rgba(255,255,255,0.06) 28px 32px), var(--bg); }
+.night { background: var(--navy); color:#f7e9cb; }
+.px { box-shadow: 0 calc(-1*var(--px)) 0 0 var(--line), 0 var(--px) 0 0 var(--line), calc(-1*var(--px)) 0 0 0 var(--line), var(--px) 0 0 0 var(--line), 14px 14px 0 8px rgba(60,30,10,0.35); }
+.panel { position:absolute; background:var(--panel); padding:44px 56px; }
+.kicker { font-family:var(--title); font-size:22px; color:var(--hi); letter-spacing:2px; }
+.h { font-family:var(--title); line-height:1.35; }
+.abs { position:absolute; }
+.v { will-change: transform, opacity; }
+.tag { font-family:var(--title); font-size:18px; padding:12px 16px; color:#fff; display:inline-block; }
+canvas { image-rendering: pixelated; }
+.sprite { image-rendering: pixelated; }
+</style></head>
+<body>
+
+<!-- 1 TITLE -->
+<section class="scene night" id="title">
+  <canvas id="t-map" class="abs" width="184" height="68" style="left:40px; top:400px; width:1840px; height:680px"></canvas>
+  <div class="abs" style="inset:0; background:linear-gradient(180deg, rgba(13,23,54,1) 0%, rgba(13,23,54,0.9) 36%, rgba(13,23,54,0.1) 62%)"></div>
+  <p class="abs v kicker" id="t-tag" style="left:120px; top:90px; color:#ffb347">NASA SPACE APPS 2026 · TEAM KUMAR</p>
+  <canvas id="t-flame" class="abs sprite v" width="7" height="9" style="left:120px; top:170px; width:84px; height:108px"></canvas>
+  <h1 class="abs h" id="t-title" style="left:236px; top:190px; font-size:92px; color:#ffd43b; text-shadow:8px 8px 0 #c2410c; font-weight:400"></h1>
+  <p class="abs v" id="t-sub" style="left:124px; top:330px; font-size:56px; color:#f7e9cb">25 years of satellite fire data in one pixel atlas</p>
+  <p class="abs v kicker" id="t-month" style="left:124px; top:420px; font-size:22px; color:#ffd43b; background:rgba(13,23,54,0.85); padding:12px 14px"></p>
+</section>
+
+<!-- 2 PROBLEM -->
+<section class="scene grass" id="problem">
+  <div class="panel px v" id="p-panel" style="left:100px; top:70px; width:1720px; height:800px">
+    <p class="kicker">THE PROBLEM</p>
+    <h2 class="h" style="font-size:40px; margin-top:22px">3 SATELLITES · 3 DIFFERENT COUNTS</h2>
+  </div>
+  <div class="abs" id="p-rows" style="left:180px; top:300px; width:1040px"></div>
+  <div class="abs v" id="p-big" style="left:1300px; top:290px; width:460px; background:#0d1736; padding:40px 36px; color:#f7e9cb">
+    <p class="h" id="p-num" style="font-size:96px; color:#ffd43b; text-shadow:6px 6px 0 #c2410c">1.0×</p>
+    <p style="font-size:42px; line-height:1.1; margin-top:26px">more hotspots seen by VIIRS than MODIS, over the same land</p>
+    <div style="display:flex; gap:26px; align-items:flex-end; margin-top:30px">
+      <div><div style="width:120px; height:120px; background:#ff922b"></div><p style="font-size:30px">MODIS 1 km</p></div>
+      <div><div style="width:120px; height:120px; display:grid; grid-template-columns:repeat(3,1fr); gap:3px">
+        <i style="background:#f03e3e"></i><i style="background:#ff922b"></i><i style="background:#ffd43b"></i><i style="background:#ff922b"></i><i style="background:#f03e3e"></i><i style="background:#ff922b"></i><i style="background:#ffd43b"></i><i style="background:#ff922b"></i><i style="background:#f03e3e"></i></div><p style="font-size:30px">VIIRS 375 m</p></div>
+    </div>
+  </div>
+  <div class="abs v" id="p-bottom" style="left:180px; top:740px; width:1060px; display:flex; gap:28px; align-items:center">
+    <p class="h" style="font-size:40px; color:#c2410c; white-space:nowrap">2005 ≠ 2025</p>
+    <p style="font-size:42px; line-height:1">raw counts from different years can’t be compared</p>
+  </div>
+</section>
+
+<!-- 3 CHAIN -->
+<section class="scene night" id="chain">
+  <div class="abs" style="inset:0; background-image:linear-gradient(rgba(255,255,255,0.035) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,0.035) 2px, transparent 2px); background-size:40px 40px"></div>
+  <p class="abs kicker v" id="c-kick" style="left:140px; top:90px; color:#ffb347">OUR SOLUTION</p>
+  <h2 class="abs h v" id="c-title" style="left:140px; top:140px; font-size:46px; color:#f7e9cb">ONE RECORD IN NOAA-20 UNITS</h2>
+  <div class="abs" id="c-chain" style="left:140px; top:300px; width:1640px; height:240px"></div>
+  <div class="abs v" id="c-cal" style="left:140px; top:620px; width:1640px">
+    <p class="h" style="font-size:24px; color:#ffb347; margin-bottom:22px">ONE CONSISTENT RECORD · INDONESIA · HOTSPOTS PER YEAR, 2001–2025</p>
+    <div id="c-years" style="display:flex; gap:8px; align-items:flex-end; height:200px"></div>
+  </div>
+</section>
+
+<!-- 5 METHOD -->
+<section class="scene grass" id="method">
+  <div class="panel px" style="left:100px; top:70px; width:1720px; height:800px">
+    <p class="kicker">NASA DATA &amp; METHOD</p>
+  </div>
+  <div class="abs v" id="m-count" style="left:156px; top:170px">
+    <p class="h" id="m-num" style="font-size:84px; color:#c2410c; text-shadow:6px 6px 0 #ffd43b">0</p>
+    <p style="font-size:48px; margin-top:10px">FIRMS hotspots · MODIS + VIIRS Suomi NPP + VIIRS NOAA-20 · 2000–2026</p>
+  </div>
+  <div class="abs" id="m-steps" style="left:156px; top:420px; display:flex; gap:22px"></div>
+  <div class="abs v" id="m-val" style="left:156px; top:600px; width:1600px">
+    <p class="h" style="font-size:24px; color:#6b5634; margin-bottom:22px">CROSS-VALIDATED ERROR · EACH OVERLAP YEAR HELD OUT</p>
+    <div id="m-bars"></div>
+  </div>
+</section>
+
+<!-- 6 FINDINGS -->
+<section class="scene grass" id="findings">
+  <div class="panel px" style="left:100px; top:70px; width:1040px; height:800px">
+    <p class="kicker">FINDINGS · INDONESIA</p>
+    <p class="h" style="font-size:24px; margin-top:18px; color:#6b5634">HOTSPOTS PER YEAR (NOAA-20 UNITS)</p>
+  </div>
+  <canvas id="f-chart" class="abs" width="960" height="560" style="left:140px; top:230px"></canvas>
+  <p class="abs v h" id="f-2015" style="font-size:22px; background:#c92a2a; color:#fff; padding:12px 14px"></p>
+  <p class="abs v h" id="f-trend" style="left:150px; top:808px; font-size:20px; color:#c2410c; background:#f7e9cb; padding:10px 12px">TREND: FALLING · -11,151 / YEAR · p = 0.018</p>
+  <div class="panel px v" id="f-oct" style="left:1220px; top:70px; width:600px; height:370px; padding:34px 40px">
+    <p class="kicker">OCTOBER 2026</p>
+    <p class="h" style="font-size:72px; color:#c92a2a; margin-top:18px; text-shadow:5px 5px 0 #ffd43b">+504%</p>
+    <p style="font-size:38px; margin-top:12px; line-height:1.05">vs a usual October · the most since 2015</p>
+    <div id="f-octbars" style="margin-top:22px"></div>
+  </div>
+  <div class="panel px v" id="f-sig" style="left:1220px; top:500px; width:600px; height:370px; padding:34px 40px">
+    <p class="kicker">EARLY SIGNAL</p>
+    <p class="h" style="font-size:56px; margin-top:16px; color:#2b8a3e">12 OF 15</p>
+    <p style="font-size:34px; margin-top:8px; line-height:1.05">quiet Jun–Jul run-up → quiet Aug–Oct peak · a pattern, not a forecast</p>
+    <div id="f-grid" style="display:flex; gap:8px; margin-top:20px"></div>
+  </div>
+</section>
+
+<!-- 7 CLOSE -->
+<section class="scene night" id="close">
+  <canvas id="e-map" class="abs" width="184" height="68" style="left:40px; top:360px; width:1840px; height:680px; opacity:0.35"></canvas>
+  <h2 class="abs h" id="e-title" style="left:120px; top:110px; font-size:52px; color:#ffd43b; text-shadow:6px 6px 0 #c2410c"></h2>
+  <div class="abs" id="e-roles" style="left:120px; top:250px; display:flex; gap:28px"></div>
+  <div class="abs v" id="e-url" style="left:120px; top:500px; background:#f7e9cb; padding:30px 40px; color:#2d2a12">
+    <p class="kicker">TRY IT · OPEN DATA · NO LOGIN</p>
+    <p class="h" style="font-size:44px; margin-top:20px; color:#c2410c">alfanditora.github.io/burn-calendar<span id="e-caret">▮</span></p>
+  </div>
+  <div class="abs v" id="e-credits" style="left:120px; top:730px; width:1680px; font-size:32px; line-height:1.25; color:#cfd6e6">
+    <p style="color:#ffd43b; font-family:var(--title); font-size:20px; margin-bottom:14px">TEAM KUMAR · ALFANDITORA RAIS AKBAR · NASA SPACE APPS CHALLENGE 2026</p>
+    <p>Data: NASA FIRMS (MODIS, VIIRS) · Borders: Natural Earth · Narration: AI voice (Microsoft neural text-to-speech)</p>
+    <p>Music: original 8-bit, generated in code · Video and app built with Claude Code assistance, reviewed by the team</p>
+  </div>
+</section>
+
+<!-- 30-SECOND VERSION: intro and future -->
+<section class="scene night" id="intro">
+  <canvas id="i-map" class="abs" width="184" height="68" style="left:40px; top:400px; width:1840px; height:680px; opacity:0.28"></canvas>
+  <canvas id="i-flame" class="abs sprite v" width="7" height="9" style="left:880px; top:150px; width:140px; height:180px"></canvas>
+  <p class="abs h" id="i-hi" style="left:0; width:1920px; top:400px; text-align:center; font-size:56px; color:#f7e9cb"></p>
+  <p class="abs v" id="i-team" style="left:0; width:1920px; top:520px; text-align:center"><span class="tag" style="background:#c2410c; font-size:40px; padding:22px 30px">TEAM KUMAR</span></p>
+  <p class="abs v kicker" id="i-ev" style="left:0; width:1920px; top:680px; text-align:center; color:#ffb347; font-size:26px">NASA SPACE APPS CHALLENGE 2026 · JAKARTA</p>
+</section>
+<section class="scene night" id="future">
+  <canvas id="u-map" class="abs" width="184" height="68" style="left:40px; top:400px; width:1840px; height:680px; opacity:0.3"></canvas>
+  <p class="abs kicker v" id="u-kick" style="left:120px; top:90px; color:#ffb347; font-size:26px">WHAT IT CAN BECOME</p>
+  <div class="abs" id="u-chips" style="left:120px; top:160px; width:1680px; display:flex; gap:28px"></div>
+  <div class="abs v" id="u-url" style="left:120px; top:470px; background:#f7e9cb; padding:30px 40px; color:#2d2a12">
+    <p class="kicker">BURN CALENDAR · TRY IT NOW · OPEN DATA</p>
+    <p class="h" style="font-size:44px; margin-top:20px; color:#c2410c">alfanditora.github.io/burn-calendar<span id="u-caret">▮</span></p>
+  </div>
+  <div class="abs v" id="u-cred" style="left:120px; top:700px; width:1700px; font-size:27px; line-height:1.25; color:#cfd6e6">
+    <p style="color:#ffd43b; font-family:var(--title); font-size:20px; margin-bottom:12px">TEAM KUMAR · ALFANDITORA RAIS AKBAR · NASA SPACE APPS 2026</p>
+    <p>Data: NASA FIRMS (MODIS, VIIRS) · Borders: Natural Earth · AI narration (Microsoft neural TTS) · Original 8-bit music · Built with Claude Code</p>
+  </div>
+</section>
+
+<script src="/js/sprites.js"></script>
+<script>
+// ---------- helpers: everything is a pure function of time ----------
+const $ = (id) => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const ease = (x) => { x = clamp(x); return 1 - Math.pow(1 - x, 3); };
+const steps = (x, n = 6) => Math.floor(clamp(x) * n) / n;           // pixel-style stepped motion
+function show(el, t, t0, { dur = 0.4, dy = 40, pop = false } = {}) {   // appear at t0
+  const p = clamp((t - t0) / dur);
+  el.style.opacity = p > 0 ? steps(p, 4) : 0;
+  el.style.transform = pop ? `scale(${0.6 + 0.4 * steps(ease(p), 5)})` : `translateY(${(1 - steps(ease(p), 6)) * dy}px)`;
+}
+const typed = (text, t, t0, cps = 18) => text.slice(0, Math.max(0, Math.floor((t - t0) * cps)));
+const fmt = (n, d = 0) => Number(n).toLocaleString("en-US", { maximumFractionDigits: d, minimumFractionDigits: d });
+function hash(i) { let x = Math.sin(i * 12.9898) * 43758.5453; return x - Math.floor(x); }
+
+// ---------- data from the app ----------
+let G, A, PROV;
+const FIRE_RAMP = ["#5c1a0b", "#8f2410", "#c2361b", "#e8590c", "#ff922b", "#ffc234", "#ffe066", "#fff3bf"];
+function vmaxOf(g) { const v = []; for (const f of g.fires) for (let j = 1; j < f.length; j += 2) v.push(f[j]); v.sort((a, b) => a - b); return Math.max(2, v[Math.floor(v.length * 0.99)]); }
+let VMAX;
+function drawMap(cv, month, t, t0, t1, dim = 1) {
+  const ctx = cv.getContext("2d"), g = G;
+  ctx.clearRect(0, 0, g.w, g.h);
+  for (let c = 0; c < g.w * g.h; c++) {
+    const x = c % g.w, y = (c / g.w) | 0, d = (x + y) % 2;
+    ctx.fillStyle = g.land[c] === "1" ? (d ? "#2f6b3f" : "#2b6339") : (d ? "#0f1a3d" : "#0d1736");
+    ctx.fillRect(x, y, 1, 1);
+  }
+  const f = g.fires[g.months.indexOf(month)];
+  for (let j = 0; j < f.length; j += 2) {
+    const c = f[j], v = f[j + 1], at = t0 + hash(c) * (t1 - t0);
+    if (t < at) continue;
+    const grow = clamp((t - at) / 0.5);
+    const flick = ((c * 7 + Math.floor(t * 11) * 13) % 11 - 5) / 60;
+    const k = clamp(Math.log1p(v) / Math.log1p(VMAX) * grow + flick, 0, 0.999);
+    ctx.fillStyle = FIRE_RAMP[Math.floor(k * FIRE_RAMP.length)];
+    ctx.fillRect(c % g.w, (c / g.w) | 0, 1, 1);
+  }
+}
+function flame(cv, t) { const ctx = cv.getContext("2d"); ctx.clearRect(0, 0, 7, 9); drawSprite(ctx, SPRITES.flame[Math.floor(t * 6) % 3], 0, 0, 1); }
+
+// ---------- scenes ----------
+const R = {};
+R.title = (t) => {
+  drawMap($("t-map"), "2015-09", t, 0.2, 4.6);
+  flame($("t-flame"), t);
+  show($("t-flame"), t, 0.4, { pop: true });
+  $("t-title").textContent = typed("BURN CALENDAR", t, 0.6, 14);
+  show($("t-sub"), t, 1.8);
+  show($("t-tag"), t, 0.2, { dy: -20 });
+  $("t-month").textContent = t > 0.6 ? "INDONESIA · SEP 2015 · REAL FIRMS DATA" : "";
+  show($("t-month"), t, 0.6, { dy: 20 });
+};
+
+const ROWS = [["MODIS", "Terra + Aqua · 1 km", 2000.83, 2027, "#a65e1e", "RETIRING"], ["VIIRS SUOMI NPP", "375 m", 2012.05, 2026.84, "#1c6fbf", "STOPPED NOV 2, 2026"], ["VIIRS NOAA-20", "375 m · continues", 2018.25, 2026.9, "#3d4650", "NOW"]];
+function buildProblem() {
+  $("p-rows").innerHTML = ROWS.map((r, i) => `<div style="display:flex; align-items:center; gap:24px; height:120px">
+    <div style="width:330px"><p style="font-size:44px; line-height:1">${r[0]}</p><p style="font-size:30px; color:#6b5634">${r[1]}</p></div>
+    <div style="position:relative; width:680px; height:54px; background:#e6d3aa"><div id="bar${i}" style="position:absolute; top:0; height:54px; background:${r[4]}"></div>
+      <p class="tag" id="btag${i}" style="position:absolute; right:-12px; top:-46px; background:${i === 1 ? "#c92a2a" : i === 0 ? "#7a4a22" : "#2b8a3e"}; font-size:14px; padding:8px 10px; white-space:nowrap">${r[5]}</p></div></div>`).join("")
+    + `<div style="position:relative; margin-left:354px; width:680px; height:40px">${[2000, 2010, 2020].map((y) => `<p style="position:absolute; left:${(y - 2000) / 27 * 680}px; font-size:30px; color:#6b5634">${y}</p>`).join("")}</div>`;
+}
+R.problem = (t) => {
+  show($("p-panel"), t, 0, { dy: 30 });
+  ROWS.forEach((r, i) => {
+    const p = ease((t - (1.0 + i * 1.1)) / 1.2), x0 = (r[2] - 2000) / 27 * 680, w = (r[3] - r[2]) / 27 * 680;
+    const bar = $(`bar${i}`); bar.style.left = x0 + "px"; bar.style.width = Math.max(0, w * steps(p, 24)) + "px";
+    if (i === 0) bar.style.background = t > 13.6 ? `linear-gradient(90deg, #a65e1e 80%, #e6d3aa)` : "#a65e1e";
+    show($(`btag${i}`), t, i === 2 ? 4.6 : i === 1 ? 13.2 : 14.0, { pop: true });
+  });
+  show($("p-big"), t, 6.7, { pop: true });
+  $("p-num").textContent = fmt(1 + 4.1 * ease((t - 7.0) / 2.2), 1) + "×";
+  show($("p-bottom"), t, 17.3);
+};
+
+function buildChain() {
+  const box = (x, name, yrs, hi) => `<div class="v" id="cb-${name.replace(/\W/g, "")}" style="position:absolute; left:${x}px; top:0; width:400px; height:200px; background:${hi ? "#c2410c" : "#f7e9cb"}; color:${hi ? "#fff" : "#2d2a12"}; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; box-shadow:0 0 0 8px #7a4a22">
+      <p class="h" style="font-size:34px">${name}</p><p style="font-size:44px">${yrs}</p></div>`;
+  const arrow = (x, f, id) => `<div style="position:absolute; left:${x}px; top:70px; width:220px; height:60px">
+      <div id="${id}-line" style="position:absolute; left:10px; top:22px; height:16px; background:#ffd43b"></div>
+      <p class="h v" id="${id}-f" style="position:absolute; left:20px; top:-64px; font-size:34px; color:#ffd43b">${f}</p>
+      <div id="${id}-dot" style="position:absolute; top:14px; width:32px; height:32px; background:#fff3bf"></div></div>`;
+  $("c-chain").innerHTML = box(0, "MODIS", "2000–2012") + arrow(410, "×5.10", "a1") + box(620, "SUOMI NPP", "2012–2018") + arrow(1030, "×1.01", "a2") + box(1240, "NOAA-20", "2018–now", true);
+  const yr = A.yearly.filter((y) => y.year >= 2001), max = Math.max(...yr.map((y) => y.count));
+  $("c-years").innerHTML = yr.map((y) => `<div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%">
+      <div class="yb" data-h="${Math.max(6, y.count / max * 160)}" style="width:100%; height:0; background:${y.year === 2015 ? "#f03e3e" : y.year === 2026 ? "#ffd43b" : "#ff922b"}"></div>
+      <p style="font-size:24px; color:#cfd6e6; margin-top:6px">${String(y.year).slice(2)}</p></div>`).join("");
+}
+R.chain = (t) => {
+  show($("c-kick"), t, 0.1, { dy: -20 }); show($("c-title"), t, 0.3);
+  ["MODIS", "SUOMINPP", "NOAA20"].forEach((n, i) => show($(`cb-${n}`), t, 1.0 + i * 0.9, { pop: true }));
+  [["a1", 6.5], ["a2", 9.6]].forEach(([id, t0]) => {
+    const p = ease((t - (t0 - 0.8)) / 0.8);
+    $(`${id}-line`).style.width = 200 * steps(p, 10) + "px";
+    show($(`${id}-f`), t, t0, { pop: true });
+    const d = $(`${id}-dot`), q = ((t - t0) % 1.2) / 1.2;
+    d.style.opacity = t > t0 ? 1 : 0; d.style.left = (10 + steps(q, 8) * 170) + "px";
+  });
+  show($("c-cal"), t, 11.2);
+  document.querySelectorAll("#c-years .yb").forEach((b, i) => {
+    const p = ease((t - 11.4 - i * 0.06) / 0.5);
+    b.style.height = steps(p, 6) * Number(b.dataset.h) + "px";
+  });
+};
+
+function buildMethod() {
+  const st = [["⬇", "DOWNLOAD", "FIRMS area API"], ["🧹", "CLEAN", "confident fires only"], ["🗺", "COUNT", "inside real borders"], ["⚖", "CALIBRATE", "on overlap years"], ["🎯", "TEST", "hold each year out"]];
+  $("m-steps").innerHTML = st.map((s, i) => `<div class="v" id="ms${i}" style="width:300px; background:#ebd3a5; padding:18px 20px; box-shadow:0 0 0 6px #7a4a22">
+      <p style="font-size:44px; line-height:1">${s[0]} <span class="h" style="font-size:20px">${s[1]}</span></p><p style="font-size:32px; margin-top:8px">${s[2]}</p></div>`).join("");
+  $("m-bars").innerHTML = [["INDONESIA", 10.9], ["NORTHERN AUSTRALIA", 7.6]].map((r, i) => `<div style="display:flex; align-items:center; gap:24px; margin-bottom:18px">
+      <p class="h" style="width:480px; font-size:22px">${r[0]}</p>
+      <div style="width:900px; height:44px; background:#e6d3aa; position:relative"><div id="mb${i}" data-w="${r[1] / 25 * 900}" style="height:44px; width:0; background:${i ? "#2b8a3e" : "#c2410c"}"></div></div>
+      <p class="h" id="mv${i}" style="font-size:30px; width:160px">${r[1]}%</p></div>`).join("");
+}
+R.method = (t) => {
+  show($("m-count"), t, 0.2);
+  $("m-num").textContent = fmt(Math.round(28949121 * ease((t - 0.4) / 3.2)));
+  for (let i = 0; i < 5; i++) show($(`ms${i}`), t, [3.6, 4.6, 5.6, 7.6, 10.0][i], { pop: true });
+  show($("m-val"), t, 12.9);
+  for (let i = 0; i < 2; i++) { const b = $(`mb${i}`); b.style.width = steps(ease((t - 13.3 - i * 1.6) / 1.0), 12) * b.dataset.w + "px"; $(`mv${i}`).style.opacity = t > 13.6 + i * 1.6 ? 1 : 0; }
+};
+
+let FY;
+function buildFindings() {
+  FY = A.yearly.filter((y) => y.year >= 2001 && y.year <= 2025);
+  $("f-octbars").innerHTML = [["usual Oct", 29316, "#868e96"], ["Oct 2026", 176996, "#c92a2a"]].map((r, i) => `<div style="display:flex; align-items:center; gap:14px; margin-top:6px">
+      <p style="width:130px; font-size:28px">${r[0]}</p><div id="ob${i}" data-w="${r[1] / 176996 * 300}" style="height:26px; width:0; background:${r[2]}"></div><p style="font-size:28px">${fmt(r[1])}</p></div>`).join("");
+  $("f-grid").innerHTML = Array.from({ length: 15 }, (_, i) => `<div id="fg${i}" style="width:28px; height:28px; background:#c9b896"></div>`).join("");
+}
+R.findings = (t) => {
+  const cv = $("f-chart"), ctx = cv.getContext("2d"), W = 960, H = 560, max = 860000;
+  ctx.clearRect(0, 0, W, H);
+  const bw = W / FY.length;
+  FY.forEach((y, i) => {
+    const p = steps(ease((t - 0.3 - i * 0.05) / 0.6), 6), h = y.count / max * (H - 40) * p;
+    ctx.fillStyle = y.year === 2015 ? "#f03e3e" : "#ff922b";
+    ctx.fillRect(i * bw + 4, H - 30 - h, bw - 8, h);
+    if (y.year % 5 === 0) { ctx.fillStyle = "#6b5634"; ctx.font = "26px VT323"; ctx.fillText(y.year, i * bw - 4, H - 4); }
+  });
+  // Sen's slope line from the app's trend (slope per year; intercept = median of y - slope * x).
+  const slope = A.trend.slope_per_year, xs = FY.map((y) => y.year), rs = FY.map((y) => y.count - slope * y.year).sort((a, b) => a - b);
+  const b0 = rs[Math.floor(rs.length / 2)], p = clamp((t - 3.4) / 1.4);
+  if (p > 0) {
+    ctx.strokeStyle = "#7a1010"; ctx.lineWidth = 8; ctx.setLineDash([18, 12]); ctx.beginPath();
+    const yAt = (yr) => H - 30 - (slope * yr + b0) / max * (H - 40);
+    const x1 = xs[0] + (xs[xs.length - 1] - xs[0]) * steps(p, 10);
+    ctx.moveTo(bw / 2, yAt(xs[0])); ctx.lineTo((x1 - xs[0]) * bw + bw / 2, yAt(x1)); ctx.stroke(); ctx.setLineDash([]);
+  }
+  const i15 = FY.findIndex((y) => y.year === 2015), lab = $("f-2015");
+  lab.textContent = "2015 · 812,705 · WORST YEAR";
+  lab.style.left = (140 + i15 * bw - 170) + "px"; lab.style.top = (230 + H - 30 - 812705 / max * (H - 40) - 70) + "px";
+  show(lab, t, 1.6, { pop: true });
+  show($("f-trend"), t, 4.4);
+  show($("f-oct"), t, 5.8, { pop: true });
+  for (let i = 0; i < 2; i++) { const b = $(`ob${i}`); b.style.width = steps(ease((t - 6.6 - i * 0.8) / 0.9), 10) * b.dataset.w + "px"; }
+  show($("f-sig"), t, 11.3, { pop: true });
+  for (let i = 0; i < 15; i++) $(`fg${i}`).style.background = t > 12.0 + i * 0.12 ? (i < 12 ? "#2b8a3e" : "#868e96") : "#c9b896";
+};
+
+const ROLES = [["🚒", "DISASTER AGENCIES"], ["🌱", "LAND MANAGERS"], ["🔬", "RESEARCHERS"], ["👥", "THE PUBLIC"]];
+function buildClose() {
+  $("e-roles").innerHTML = ROLES.map((r, i) => `<div class="v" id="er${i}" style="width:390px; background:#16224a; padding:26px 24px; box-shadow:0 0 0 6px #ffb347">
+      <p style="font-size:70px; line-height:1">${r[0]}</p><p class="h" style="font-size:20px; color:#f7e9cb; margin-top:16px">${r[1]}</p></div>`).join("");
+}
+R.close = (t) => {
+  drawMap($("e-map"), "2026-10", t, 0, 3);
+  $("e-title").textContent = typed("FROM HOTSPOTS TO DECISIONS", t, 0.3, 16);
+  ROLES.forEach((_, i) => show($(`er${i}`), t, 4.2 + i * 0.7, { pop: true }));
+  show($("e-url"), t, 8.8);
+  $("e-caret").style.opacity = Math.floor(t * 2.5) % 2 ? 0 : 1;
+  show($("e-credits"), t, 11.6);
+};
+
+
+// ---------- 30-second version ----------
+const CHIPS = [["⚠", "EARLY WARNINGS", "for disaster agencies"], ["🗺", "EVERY PROVINCE", "and any area you draw"], ["🌱", "PEAT MAPS", "to act before the smoke"]];
+function buildFuture() {
+  $("u-chips").innerHTML = CHIPS.map((c, i) => `<div class="v" id="uc${i}" style="flex:1; background:#16224a; padding:26px 26px; box-shadow:0 0 0 6px #ffb347">
+      <p style="font-size:64px; line-height:1">${c[0]}</p><p class="h" style="font-size:24px; color:#ffd43b; margin-top:18px">${c[1]}</p>
+      <p style="font-size:40px; color:#f7e9cb; margin-top:8px">${c[2]}</p></div>`).join("");
+}
+R.intro = (t) => {
+  drawMap($("i-map"), "2019-09", t, 0, 2.5);
+  flame($("i-flame"), t); show($("i-flame"), t, 0.05, { pop: true });
+  $("i-hi").textContent = typed("HI, I'M ALFANDITO RAIS AKBAR", t, 0.15, 30);
+  show($("i-team"), t, 1.0, { pop: true });
+  show($("i-ev"), t, 1.4);
+};
+R.problem30 = (t) => {
+  $("p-panel").querySelector(".kicker").textContent = "CHALLENGE · HARMONIZATION OF MODIS AND VIIRS HOT SPOTS";
+  R.problem(t * 3.9);
+};
+R.title30 = (t) => R.title(t * 1.5);
+R.chain30 = (t) => R.chain(t * 4.2);
+R.future = (t) => {
+  drawMap($("u-map"), "2026-10", t, 0, 2);
+  show($("u-kick"), t, 0.05, { dy: -20 });
+  CHIPS.forEach((_, i) => show($(`uc${i}`), t, 0.25 + i * 0.9, { pop: true }));
+  show($("u-url"), t, 4.3);
+  $("u-caret").style.opacity = Math.floor(t * 2.5) % 2 ? 0 : 1;
+  show($("u-cred"), t, 5.0);
+};
+window.ready = (async () => {
+  [G, A] = await Promise.all([fetch("/data/grid/indonesia.json").then((r) => r.json()), fetch("/data/areas/indonesia.json").then((r) => r.json())]);
+  VMAX = vmaxOf(G);
+  buildProblem(); buildChain(); buildMethod(); buildFindings(); buildClose(); buildFuture();
+  await document.fonts.ready;
+  return true;
+})();
+window.render = (scene, t) => {
+  const sec = { problem30: "problem", title30: "title", chain30: "chain" }[scene] || scene;
+  document.querySelectorAll(".scene").forEach((s) => { s.style.display = s.id === sec ? "block" : "none"; });
+  R[scene](t);
+};
+</script>
+</body></html>

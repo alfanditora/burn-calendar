@@ -262,9 +262,9 @@ function setDrawMode(on) {
 // Live outline while dragging (called from the map's render loop).
 function drawBoxPreview(ctx, K) {
   if (!Prov.drag) return;
-  const b = dragBox(Prov.drag), v = TM.view, t = Math.max(2, Math.round(K / 5));
+  const b = dragBox(Prov.drag), v = TM.view, t = Math.max(3, Math.round(K / 3));
   const x = (b.x0 - v.x0) * K, y = (b.y0 - v.y0) * K, w = (b.x1 - b.x0 + 1) * K, h = (b.y1 - b.y0 + 1) * K;
-  ctx.fillStyle = "rgba(255, 224, 102, 0.25)"; ctx.fillRect(x, y, w, h);
+  ctx.fillStyle = "rgba(255, 224, 102, 0.4)"; ctx.fillRect(x, y, w, h);
   ctx.fillStyle = "#ffe066";
   ctx.fillRect(x, y, w, t); ctx.fillRect(x, y + h - t, w, t); ctx.fillRect(x, y, t, h); ctx.fillRect(x + w - t, y, t, h);
 }

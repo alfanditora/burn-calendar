@@ -15,3 +15,16 @@ __pycache__/
 
 # Large Natural Earth source files (regions.geojson is built from them and committed)
 data/external/ne_10m_*
+
+# Video build outputs (large; rebuilt by the scripts in video/)
+video/clips/
+video/cards/
+video/voice*/
+video/segments*/
+video/fonts/
+video/preview/
+video/sheet*/
+video/*.mp4
+video/*.wav
+video/*.ass
+video/*.log
