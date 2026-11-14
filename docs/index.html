@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=7">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -23,21 +23,63 @@
       </span>
     </a>
     <div class="player" aria-label="Your progress">
-      <div class="rank"><span class="lv" id="hud-level">LV 1</span> <span id="hud-rank">Rookie Ranger</span>
+      <div class="rank explore-only"><span class="lv" id="hud-level">LV 1</span> <span id="hud-rank">Rookie Ranger</span>
         <div class="xpbar" role="progressbar" aria-label="Experience" aria-valuemin="0" aria-valuemax="100" id="hud-xpbar"><span id="hud-xp"></span></div>
       </div>
-      <button type="button" class="hud-btn" id="hud-badges" aria-label="Show badges">🏅 0/8</button>
-      <button type="button" class="hud-btn" id="hud-share" aria-label="Create a share card">📤<span class="hide-sm"> SHARE</span></button>
+      <button type="button" class="hud-btn explore-only" id="hud-badges" aria-label="Show badges">🏅 0/8</button>
+      <button type="button" class="hud-btn explore-only" id="hud-share" aria-label="Create a share card">📤<span class="hide-sm"> SHARE</span></button>
+      <button type="button" class="hud-btn mode-btn" id="mode-btn" aria-label="Change mode"></button>
     </div>
   </header>
 
-  <div class="shell">
+  <!-- Home: choose a mode -->
+  <section class="home" id="home" aria-labelledby="home-title" hidden>
+    <div class="home-hero">
+      <p class="kicker">NASA FIRMS hotspots · MODIS + VIIRS harmonized</p>
+      <h1 id="home-title">How much is burning?</h1>
+      <p class="lead">25 years of satellite fire detections over Indonesia and Northern Australia, joined into one
+        consistent monthly record. Choose how you want to look at it.</p>
+      <div class="home-stats" id="home-stats"></div>
+    </div>
+    <div class="mode-cards">
+      <article class="mode-card" data-mode="explore">
+        <canvas data-icon="joystick" aria-hidden="true"></canvas>
+        <p class="kicker">For everyone</p>
+        <h2>Explore &amp; Play</h2>
+        <p>See the scale of 25 years of fire the fun way.</p>
+        <ul>
+          <li>A pixel time machine of every month since 2000</li>
+          <li>Four quick games with XP and badges</li>
+          <li>The story of three satellites becoming one record</li>
+        </ul>
+        <button type="button" class="px-btn primary">▶ START EXPLORING</button>
+      </article>
+      <article class="mode-card" data-mode="analyst">
+        <canvas data-icon="chart" aria-hidden="true"></canvas>
+        <p class="kicker">For researchers, planners and emergency managers</p>
+        <h2>Analyst View</h2>
+        <p>The numbers, the method and the data files. No games.</p>
+        <ul>
+          <li>Latest month vs normal, and the long-term trend test</li>
+          <li>Month-by-month calendar with CSV download</li>
+          <li>Open CSV/JSON files and how the conversion was validated</li>
+        </ul>
+        <button type="button" class="px-btn primary">▶ OPEN ANALYST VIEW</button>
+      </article>
+    </div>
+    <p class="home-note">Burn Calendar is a <b>monthly record for planning and research</b>, not a live alert system.
+      For fires burning right now, use the <a href="https://firms.modaps.eosdis.nasa.gov/map/" rel="noopener">NASA FIRMS Fire Map</a>.
+      A hotspot is a satellite pixel with a fire in it: that includes agricultural, land-clearing, peat and planned
+      savanna burns, not only wildfires.</p>
+  </section>
+
+  <div class="shell" id="shell" hidden>
     <aside class="sidebar" id="sidebar" aria-label="Areas and sections">
       <div class="side-head">
         <span class="kicker">Menu</span>
         <button type="button" class="close-btn" id="menu-close" aria-label="Close menu">✕</button>
       </div>
-      <div class="side-player" aria-label="Your progress">
+      <div class="side-player explore-only" aria-label="Your progress">
         <span class="lv" id="side-level">LV 1</span> <span id="side-rank">Rookie Ranger</span>
         <div class="xpbar"><span id="side-xp"></span></div>
         <span class="muted small" id="side-xptext"></span>
@@ -47,9 +89,11 @@
       <p class="side-title">🧭 EXPLORE</p>
       <nav class="side-nav" aria-label="Sections">
         <button type="button" data-go="map">🗺️ Time Machine</button>
-        <button type="button" data-go="play">🎮 Play</button>
-        <button type="button" data-go="story">🛰️ Story</button>
-        <button type="button" data-go="lab">🔬 Data Lab</button>
+        <button type="button" data-go="play" class="explore-only">🎮 Play</button>
+        <button type="button" data-go="story" class="explore-only">🛰️ Story</button>
+        <button type="button" data-go="lab" class="analyst-only">📊 Analysis</button>
+        <button type="button" data-go="data" class="analyst-only">⬇ Open data</button>
+        <button type="button" data-go="home">🏠 Switch mode</button>
       </nav>
       <div class="side-about">
         <p class="side-title">ℹ️ ABOUT</p>
@@ -94,10 +138,9 @@
     </div>
   </section>
 
-  <nav class="tabs" role="tablist" aria-label="Sections">
+  <nav class="tabs explore-only" role="tablist" aria-label="Sections">
     <button role="tab" id="tab-play" aria-controls="view-play" aria-selected="true">🎮 PLAY</button>
     <button role="tab" id="tab-story" aria-controls="view-story" aria-selected="false">🛰️ STORY</button>
-    <button role="tab" id="tab-lab" aria-controls="view-lab" aria-selected="false">🔬 DATA LAB</button>
   </nav>
 
     <!-- PLAY -->
@@ -130,7 +173,19 @@
     </section>
 
     <!-- DATA LAB -->
-    <section id="view-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+    <section id="view-lab" aria-label="Analysis" hidden>
+      <div class="panel care">
+        <p class="kicker">Read before use</p>
+        <ul>
+          <li><b>Not a live alert system.</b> Monthly totals, updated when the pipeline is rebuilt
+            (latest complete month: <span id="care-latest">n/a</span>). For fires burning now, use the
+            <a href="https://firms.modaps.eosdis.nasa.gov/map/" rel="noopener">NASA FIRMS Fire Map</a> or FIRMS area alerts.</li>
+          <li><b>Hotspots are not only wildfires.</b> They include agricultural, land-clearing, peat and planned savanna
+            burns. A high month can mean more planned burning, not a disaster.</li>
+          <li><b>Hotspots are not fires or burned area.</b> One large fire gives many hotspots; cloud and smoke can hide fires.
+            Counts are estimates in NOAA-20 units; see the validation error under Method.</li>
+        </ul>
+      </div>
       <div class="lab-grid">
         <article class="panel" id="anomaly" aria-live="polite"></article>
         <article class="panel" id="trend" aria-live="polite"></article>
@@ -148,6 +203,7 @@
         <p class="unit muted" id="unit"></p>
         <div class="cal-scroll"><table id="calendar" class="calendar"></table></div>
       </div>
+      <div class="panel" id="data-access"></div>
       <div class="panel">
         <details id="method">
           <summary><h2>Method, validation and limits</h2></summary>
@@ -173,13 +229,13 @@
     <form method="dialog"><button class="px-btn">CLOSE</button></form>
   </dialog>
 
-  <script src="js/core.js?v=6"></script>
-  <script src="js/sprites.js?v=6"></script>
-  <script src="js/map.js?v=6"></script>
-  <script src="js/games.js?v=6"></script>
-  <script src="js/story.js?v=6"></script>
-  <script src="js/lab.js?v=6"></script>
-  <script src="js/share.js?v=6"></script>
-  <script src="js/main.js?v=6"></script>
+  <script src="js/core.js?v=7"></script>
+  <script src="js/sprites.js?v=7"></script>
+  <script src="js/map.js?v=7"></script>
+  <script src="js/games.js?v=7"></script>
+  <script src="js/story.js?v=7"></script>
+  <script src="js/lab.js?v=7"></script>
+  <script src="js/share.js?v=7"></script>
+  <script src="js/main.js?v=7"></script>
 </body>
 </html>

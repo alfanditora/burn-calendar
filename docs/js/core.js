@@ -145,6 +145,7 @@ function award(id) {
 }
 
 function toast(title, text) {
+  if (document.body.dataset.mode !== "explore") return; // no game pop-ups in the analyst view
   const box = $("toasts");
   while (box.children.length >= 2) box.firstChild.remove(); // at most two at a time
   const t = document.createElement("div");

@@ -4,16 +4,21 @@ NASA Space Apps 2026: *Harmonization of MODIS and VIIRS Hot Spots*.
 
 Burn Calendar joins NASA FIRMS active-fire hotspots from three sensors (MODIS, VIIRS Suomi NPP,
 VIIRS NOAA-20) into one monthly record in **NOAA-20-equivalent hotspots per month**, then shows it
-as a pixel-art **Fire Atlas**: a time machine map of 25 years of fire seasons, four games, a story of the
-satellite handover, and a Data Lab with the burning-activity calendar, anomaly badge, Mann-Kendall trend test and
-CSV download.
+as a pixel-art **Fire Atlas**. A home screen offers two modes:
+
+- **Explore & Play** (public): a time machine map of 25 years of fire seasons, four games with XP and badges, and
+  the story of the satellite handover.
+- **Analyst View** (researchers, planners, emergency managers): the same map without games, plus the anomaly badge,
+  Mann-Kendall trend test, burning-activity calendar, CSV download, open CSV/JSON file links, the method and
+  validation, and a "read before use" note (monthly, not a live alert system; hotspots include planned and
+  agricultural burns, not only wildfires).
 
 **Live app:** https://alfanditora.github.io/burn-calendar/ (the static site lives in `docs/` and GitHub Pages
 redeploys it on every push to `main`).
 
 ![Burn Calendar: the Fire Time Machine on September 2015](docs/screenshots/hero-indonesia-2015.png)
 
-Deep links work too, e.g. `?area=riau&month=2015-09&tab=story`. More screenshots are in `docs/screenshots/`.
+Deep links work too, e.g. `?mode=analyst&area=riau&month=2015-09` or `?mode=explore&area=riau&tab=story`. More screenshots are in `docs/screenshots/`.
 
 ## Run it
 

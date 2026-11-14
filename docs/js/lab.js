@@ -112,6 +112,7 @@ function renderMethod() {
     <ul>
       <li>Converted counts are estimates; the factor can vary by region and season.</li>
       <li>Hotspots are satellite fire detections, not burned area; small or short fires can be missed.</li>
+      <li>Hotspots are not only wildfires: they include agricultural, land-clearing, peat and planned (prescribed) burns.</li>
       <li>Areas follow real borders from Natural Earth (1:10m). Northern Australia is defined as Australian land north of 20°S. Hotspots exactly on a border or coastline can fall either side.</li>
       <li>Volcanoes, gas flares and other static sources are removed using FIRMS type flags.</li>
       <li>The most recent months use near-real-time (NRT) data, which FIRMS later replaces with standard data.</li>
@@ -119,6 +120,42 @@ function renderMethod() {
     <h3>Data</h3>
     <p class="muted">NASA FIRMS active fire data: MODIS Collection 6.1 (from Nov 2000), VIIRS Suomi NPP 375 m (Jan 2012 to
       Nov 2026), VIIRS NOAA-20 375 m (from Apr 2018). Notes: ${m.notes}</p>`;
+}
+
+// Open data: the static files behind this view, ready for scripts, spreadsheets and GIS.
+function renderDataAccess() {
+  const id = App.areaId, abs = (p) => new URL(p, location.href).href;
+  const files = [
+    [`data/areas/${id}.csv`, "Every month: raw count per sensor, harmonized count, sensor used, median, anomaly %, percentile rank."],
+    [`data/areas/${id}.json`, "The same series plus the trend test, the latest month and the method and validation details."],
+    [`data/grid/${App.gridRegion}.json`, "The 0.25° (about 25 km) monthly grid behind the map, in NOAA-20 units."],
+    ["data/areas/index.json", "The list of areas with their bounding boxes."],
+  ];
+  $("data-access").innerHTML = `
+    <p class="kicker">Open data</p>
+    <h2>Use this data in your own tools</h2>
+    <p class="muted">Static files, free to use, no key needed. Data: NASA FIRMS (MODIS, VIIRS), harmonized by Burn Calendar.</p>
+    <ul class="file-list">${files.map(([p, d]) => `<li><a href="${p}" download>${p.replace(/^data\/(areas\/)?/, "")}</a> ${d}</li>`).join("")}</ul>
+    <p class="muted">Python:</p>
+    <pre class="code">import pandas as pd
+df = pd.read_csv("${abs(files[0][0])}")</pre>
+    <div class="share-link">
+      <p class="muted">Link to this view (area and the month on the map):</p>
+      <code id="view-link"></code>
+      <button type="button" class="px-btn small" id="copy-link">COPY LINK</button>
+    </div>`;
+  updateViewLink();
+  $("copy-link").addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText($("view-link").textContent); $("copy-link").textContent = "COPIED ✓"; }
+    catch (e) { $("copy-link").textContent = "SELECT AND COPY"; }
+    setTimeout(() => { if ($("copy-link")) $("copy-link").textContent = "COPY LINK"; }, 2000);
+  });
+}
+function updateViewLink() {
+  if (!$("view-link") || !App.grid) return;
+  const u = new URL(location.pathname, location.origin);
+  u.search = new URLSearchParams({ mode: "analyst", area: App.areaId, month: App.grid.months[TM.idx] }).toString();
+  $("view-link").textContent = u.href;
 }
 
 function downloadCSV() {
@@ -164,5 +201,7 @@ function labOnArea() {
   $("to").value = years[years.length - 1];
   $("unit").innerHTML = `Each square is one month, coloured by its number of fire hotspots (${App.area.unit}). ` +
     `Green = no fires · dashed = no data · * = partial year · outlined = the month on the map. Tap a month to see it on the map.`;
-  renderCalendar(); renderAnomaly(); renderTrend(); renderMethod();
+  const l = App.area.latest;
+  $("care-latest").textContent = `${MONTHS_LONG[l.month - 1]} ${l.year}`;
+  renderCalendar(); renderAnomaly(); renderTrend(); renderMethod(); renderDataAccess();
 }

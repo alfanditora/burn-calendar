@@ -137,6 +137,7 @@ function tmGo(i) {
   // Keep the Data Lab calendar's "month on the map" outline in sync.
   document.querySelectorAll("#calendar td.now").forEach((x) => x.classList.remove("now"));
   document.querySelector(`#calendar td[data-y="${y}"][data-m="${m}"]`)?.classList.add("now");
+  if (typeof updateViewLink === "function") updateViewLink();
   const note = (MOMENTS[App.areaId] || {})[g.months[TM.idx]];
   if (note && TM.playing) tmMoment(`★ ${note}`);
 }

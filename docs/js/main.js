@@ -1,13 +1,59 @@
 // Generated with assistance from Claude Code (Anthropic), reviewed by the team.
-// Start-up: player HUD, region buttons, tabs, and wiring every view to the selected area.
+// Start-up: home screen and modes, player HUD, region buttons, tabs, and wiring every view to the selected area.
+
+// ---------- modes: home (choose), explore (public, gamified), analyst (numbers and data) ----------
+const MODES = ["explore", "analyst"];
+const mode = () => document.body.dataset.mode;
+let exploreTab = "play";
 
 function showTab(name) {
+  if (mode() === "analyst") name = "lab";
+  else if (name === "lab") name = exploreTab;
+  if (name !== "lab") exploreTab = name;
   for (const t of ["play", "story", "lab"]) {
-    $(`tab-${t}`).setAttribute("aria-selected", t === name);
     $(`view-${t}`).hidden = t !== name;
+    $(`tab-${t}`)?.setAttribute("aria-selected", t === name);
   }
   document.querySelectorAll(".side-nav button").forEach((b) => b.setAttribute("aria-current", b.dataset.go === name));
   if (name === "story" && App.area) drawRelayChart();
+}
+
+// Show a mode; push it to the address bar so Back returns to the home screen.
+function setMode(m, push = true) {
+  document.body.dataset.mode = m;
+  $("home").hidden = m !== "home";
+  $("shell").hidden = m === "home";
+  closeMenu();
+  if (m === "home") {
+    if (push) $("home").querySelector(".mode-card button").focus({ preventScroll: true });
+  } else {
+    $("mode-btn").innerHTML = m === "analyst" ? "📊<span class=\"hide-sm\"> ANALYST</span> ⇄" : "🎮<span class=\"hide-sm\"> EXPLORE</span> ⇄";
+    $("mode-btn").title = "Switch mode";
+    showTab(m === "analyst" ? "lab" : exploreTab);
+  }
+  window.scrollTo(0, 0);
+  if (push) {
+    const q = new URLSearchParams(location.search);
+    if (m === "home") { for (const k of ["mode", "tab", "month"]) q.delete(k); } else q.set("mode", m);
+    const s = q.toString();
+    history.pushState({ mode: m }, "", s ? `?${s}` : location.pathname);
+  }
+}
+
+// Mode from a link: ?mode=..., or implied by an older deep link (?tab=lab is the analyst view).
+function modeFromURL(q) {
+  if (MODES.includes(q.get("mode"))) return q.get("mode");
+  if (q.get("tab") === "lab") return "analyst";
+  if (q.has("area") || q.has("month") || q.has("tab")) return "explore";
+  return "home";
+}
+
+function renderHomeStats() {
+  const cal = App.area.calendar, first = cal[0], last = App.area.latest;
+  $("home-stats").innerHTML = [
+    `🗓️ ${MONTHS[first.month - 1]} ${first.year} – ${MONTHS[last.month - 1]} ${last.year}`,
+    "🛰️ 3 satellite sensors", `📍 ${App.index.length} areas`,
+  ].map((s) => `<span>${s}</span>`).join("");
 }
 
 // Sidebar: a fixed column on desktop, a slide-out drawer on phones and tablets.
@@ -23,9 +69,12 @@ function closeMenu() {
 }
 function go(target) {
   if (isDrawer()) closeMenu();
-  if (target === "map") { $("map-panel").scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" }); return; }
+  const smooth = { behavior: reducedMotion ? "auto" : "smooth" };
+  if (target === "home") { setMode("home"); return; }
+  if (target === "map") { $("map-panel").scrollIntoView(smooth); return; }
+  if (target === "data") { $("data-access").scrollIntoView(smooth); return; }
   showTab(target);
-  document.querySelector(".tabs").scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" });
+  (mode() === "analyst" ? $("view-lab") : document.querySelector(".tabs")).scrollIntoView(smooth);
 }
 
 function renderRegions() {
@@ -34,6 +83,16 @@ function renderRegions() {
 }
 
 async function main() {
+  const q = new URLSearchParams(location.search);
+  // Show the right screen at once, before the data arrives.
+  setMode(modeFromURL(q), false);
+  history.replaceState({ mode: mode() }, "", location.href);
+  document.querySelectorAll(".mode-card canvas").forEach((c) => c.replaceWith(Object.assign(iconCanvas(c.dataset.icon), { ariaHidden: "true" })));
+  document.querySelectorAll(".mode-card").forEach((card) => card.addEventListener("click", () => setMode(card.dataset.mode)));
+  window.addEventListener("popstate", () => setMode(modeFromURL(new URLSearchParams(location.search)), false));
+  document.querySelector(".brand").addEventListener("click", (e) => { e.preventDefault(); setMode("home"); });
+  $("mode-btn").addEventListener("click", () => setMode("home"));
+
   Player.load();
   renderHUD();
   animateLogo();
@@ -61,7 +120,7 @@ async function main() {
     const b = e.target.closest("button[data-go]");
     if (b) go(b.dataset.go);
   });
-  for (const t of ["play", "story", "lab"]) $(`tab-${t}`).addEventListener("click", () => showTab(t));
+  for (const t of ["play", "story"]) $(`tab-${t}`).addEventListener("click", () => showTab(t));
   $("hud-badges").addEventListener("click", () => { renderBadgeList(); $("badge-dialog").showModal(); });
   $("hud-share").addEventListener("click", shareCard);
   window.addEventListener("scroll", () => { $("tip").hidden = true; }, { passive: true });
@@ -75,12 +134,13 @@ async function main() {
   onAreaChange(labOnArea);
   onAreaChange(() => { if (!$("game-stage").hidden) closeStage(); });
   renderHub();
-  // Deep links: ?area=riau&month=2015-09&tab=story
-  const q = new URLSearchParams(location.search);
+  // Deep links: ?mode=analyst&area=riau&month=2015-09 (older ?tab=play|story|lab links still work)
   const start = App.index.find((a) => a.area_id === q.get("area")) || App.index[0];
   await loadArea(start.area_id);
+  renderHomeStats();
   if (q.get("month") && App.grid.months.includes(q.get("month"))) tmGo(App.grid.months.indexOf(q.get("month")));
-  showTab(["play", "story", "lab"].includes(q.get("tab")) ? q.get("tab") : "play");
+  if (["play", "story"].includes(q.get("tab"))) exploreTab = q.get("tab");
+  if (mode() !== "home") showTab(exploreTab);
   // Redraw canvas text once the pixel font has loaded.
   document.fonts?.ready.then(() => { if (App.area) drawRelayChart(); });
 }

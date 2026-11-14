@@ -18,6 +18,8 @@ const SPRITES = {
   calendar: [".r....r.", "wrwwwwrw", "rrrrrrrr", "wwwwwwww", "wkwkwowk", "wwwwwwww", "wkwowkwk", "wwwwwwww"],
   flag: [".r......", ".rrr....", ".rrrrr..", ".rrr....", ".r......", ".w......", ".w......", "www....."],
   question: ["..yyyy..", ".yy..yy.", ".....yy.", "....yy..", "...yy...", "...yy...", "........", "...yy..."],
+  joystick: ["...rr...", "..rrrr..", "...rr...", "...kk...", "...kk...", ".kkkkkk.", "kgyggrgk", "kkkkkkkk"],
+  chart: ["......r.", "......r.", "...o..r.", "...o..r.", "y..o..r.", "y..o..r.", "y..o..r.", "kkkkkkkk"],
 };
 
 function drawSprite(ctx, rows, x, y, s, palette = PAL) {

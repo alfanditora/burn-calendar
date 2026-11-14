@@ -44,7 +44,7 @@ h2 { font-size: 0.64rem; line-height: 1.6; margin: 0 0 10px; display: inline; }
 a { color: var(--hi); }
 
 /* pixel border: a stepped frame drawn with box-shadow */
-.panel, .px-btn, .game-card, dialog {
+.panel, .px-btn, .game-card, .mode-card, dialog {
   border: none;
   box-shadow:
     0 calc(-1 * var(--px)) 0 0 var(--line), 0 var(--px) 0 0 var(--line),
@@ -356,4 +356,59 @@ footer { color: var(--muted); font-size: 0.9rem; padding: 10px 0 40px; }
 @media (max-width: 400px) {
   #logo-flame { display: none; }
   .title { font-size: 0.42rem; }
+}
+
+/* =========================================================================
+   Modes: home screen (choose), explore (public), analyst (numbers and data)
+   ========================================================================= */
+[hidden] { display: none !important; }
+body[data-mode="analyst"] .explore-only, body:not([data-mode="analyst"]) .analyst-only { display: none !important; }
+body[data-mode="home"] .player, body[data-mode="home"] .menu-btn { display: none; }
+
+.home { max-width: 1100px; margin: 0 auto; padding: 34px 20px 40px; }
+.home-hero { text-align: center; }
+.home-hero h1 { font: 1.1rem/1.6 var(--title); color: var(--hi); margin: 0 0 12px; text-shadow: 3px 3px 0 #f7e9cb; }
+.home-hero .lead { font-size: 1.25rem; max-width: 760px; margin: 0 auto; }
+.home-stats { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px 18px; margin-top: 18px; }
+.home-stats span { background: var(--panel); padding: 4px 12px; outline: 3px solid var(--line); font-size: 1.05rem; }
+.mode-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin: 34px 0 28px; }
+.mode-card {
+  background: var(--panel); padding: 22px; display: flex; flex-direction: column; gap: 4px; cursor: pointer;
+  transition: transform 0.08s steps(2);
+}
+.mode-card:hover { transform: translateY(-3px); background: #fbf1da; }
+.mode-card canvas { width: 64px; height: 64px; image-rendering: pixelated; margin-bottom: 10px; }
+.mode-card h2 { display: block; font-size: 0.8rem; color: var(--hi); margin: 0 0 8px; }
+.mode-card p { margin: 0 0 6px; }
+.mode-card ul { margin: 6px 0 18px; padding-left: 1.1em; }
+.mode-card li { margin: 3px 0; }
+.mode-card .px-btn { align-self: flex-start; margin-top: auto; font-size: 0.5rem; padding: 12px 14px; }
+.mode-card[data-mode="analyst"] .px-btn { background: var(--normal); }
+.home-note { background: var(--panel2); padding: 12px 16px; border-left: 5px solid var(--line); font-size: 1.05rem; margin: 0; }
+.mode-btn { font-size: 1rem; }
+
+/* analyst view */
+.care { background: #fff4e0; border-left: 6px solid var(--above); }
+.care ul { margin: 0; padding-left: 1.1em; }
+.care li { margin: 4px 0; }
+.file-list { padding-left: 1.1em; margin: 10px 0; }
+.file-list li { margin: 6px 0; }
+.file-list a { font-weight: 700; margin-right: 6px; }
+pre.code, .share-link code {
+  background: #2d2a12; color: #f7e9cb; font: 0.95rem/1.35 ui-monospace, Consolas, monospace; padding: 10px 12px;
+  overflow-x: auto; margin: 4px 0 12px;
+}
+.share-link code { display: block; word-break: break-all; white-space: normal; }
+#data-access h2 { display: block; }
+
+@media (max-width: 760px) {
+  .home { padding: 22px 14px 32px; }
+  .home-hero h1 { font-size: 0.72rem; }
+  .home-hero .lead { font-size: 1.05rem; }
+  .mode-cards { grid-template-columns: 1fr; gap: 26px; margin: 26px 0 22px; }
+  .mode-card h2 { font-size: 0.64rem; }
+  .mode-card { padding: 16px; }
+  .mode-card canvas { width: 44px; height: 44px; margin-bottom: 6px; }
+  .home-stats { gap: 8px; margin-top: 14px; }
+  .home-stats span { font-size: 0.95rem; padding: 2px 8px; }
 }
