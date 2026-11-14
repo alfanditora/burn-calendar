@@ -28,5 +28,15 @@
    116.0,
    0.8
   ]
+ },
+ {
+  "area_id": "north_australia",
+  "name": "Northern Australia",
+  "bbox": [
+   121.0,
+   -20.0,
+   146.0,
+   -10.5
+  ]
  }
 ]
