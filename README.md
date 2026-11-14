@@ -108,6 +108,14 @@ normal (season tracker against the median, lowest and highest earlier years, plu
 the fire season? Where is it unusual (25 km cells most above their own median for that month, named by province)?
 And does the run-up tell us anything about the peak?
 
+**Routine or unusual, not wildfire or not.** A FIRMS hotspot is any vegetation fire; the data cannot say whether it is a
+wildfire, farm burning, land clearing or a planned burn. So the map never labels a cause. Instead the "Routine or
+unusual?" layer greys out cells burning 50–150% of their usual amount for that month (the same burning repeats every
+year: often farming, savanna or planned burns) and colours cells above or below that. A cell at 2× its usual or
+more is called "far above normal: more likely an uncontrolled fire". The 🔥 flames on the main map only mark the
+busiest cells of the month (more than half the top of the colour scale), not wildfires. Land-cover and peatland
+overlays would narrow down causes and are listed as next steps.
+
 **Early signal (hindcast, 2006–2026):** the "run-up" is the 2 months before the 3 busiest months. Each window is
 compared with the median of the same window in *earlier* complete years only (what was known at the time); above
 normal = at least +15%. Settings are in `config.py`.
@@ -135,6 +143,8 @@ normal = at least +15%. Settings are in `config.py`.
 - Converted counts are estimates; a single ratio per area cannot capture every seasonal or regional difference.
 - Hotspots are fire detections, not burned area. Small, short or cloud-covered fires can be missed.
 - Hotspots are not only wildfires: they include agricultural, land-clearing, peat and planned (prescribed) burns.
+  "Routine or unusual" is the closest the data allows. Next step: a land-cover (MODIS MCD12Q1) and peatland
+  overlay to separate likely farm burning from forest and peat fires.
 - Burn Calendar is a monthly record for planning and research, not a live alert system; for active fires use the
   NASA FIRMS Fire Map.
 - The early signal is a historical pattern over about 20 years, not a forecast.

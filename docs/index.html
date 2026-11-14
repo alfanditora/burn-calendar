@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=9">
+  <link rel="stylesheet" href="styles.css?v=10">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -123,7 +123,7 @@
     </div>
     <div class="layer-toggle" role="group" aria-label="Map layer">
       <button type="button" class="px-btn small" id="layer-fires" aria-pressed="true">🔥 ALL FIRES</button>
-      <button type="button" class="px-btn small" id="layer-unusual" aria-pressed="false">⚠ WHAT'S UNUSUAL</button>
+      <button type="button" class="px-btn small" id="layer-unusual" aria-pressed="false">⚠ ROUTINE OR UNUSUAL?</button>
       <span class="muted small" id="unusual-note"></span>
     </div>
     <div class="map-wrap" id="map-wrap">
@@ -140,13 +140,18 @@
     </div>
     <div class="map-legend" id="legend-fires">
       <span class="lg-sea"></span> sea <span class="lg-land"></span> land
-      <span class="lg-fire"></span> fewer fires <span class="lg-fire hot"></span> more fires
-      <span class="muted">· white line = area border · 1 pixel ≈ 25 km · NOAA-20-equivalent hotspots</span>
+      <span class="lg-fire"></span> fewer hotspots <span class="lg-fire hot"></span> more hotspots
+      · 🔥 = busiest places this month
+      <span class="muted">· a hotspot is any vegetation fire seen from space: wildfire, farm burning, land clearing or a
+      planned burn. The satellite cannot tell which. · white line = area border · 1 pixel ≈ 25 km ·
+      NOAA-20-equivalent hotspots</span>
     </div>
     <div class="map-legend" id="legend-unusual" hidden>
-      <span class="lg-less"></span> fewer than usual <span class="lg-more"></span> more than usual
-      <span class="lg-more hot"></span> far more than usual
-      <span class="muted">· usual = median of the same month in earlier years · white frames = top 5 unusual places</span>
+      <span class="lg-routine"></span> routine (about the usual amount) <span class="lg-less"></span> quieter than usual
+      <span class="lg-more"></span> more than usual <span class="lg-more hot"></span> far more than usual
+      <span class="muted">· routine burning repeats every year (often farming, savanna or planned burns); burning far above
+      a place's normal is more likely uncontrolled, but the cause cannot be confirmed from space · usual = median of the
+      same month in earlier years · white frames = top 5 unusual places</span>
     </div>
   </section>
 
@@ -282,14 +287,14 @@
     <form method="dialog"><button class="px-btn">CLOSE</button></form>
   </dialog>
 
-  <script src="js/core.js?v=9"></script>
-  <script src="js/sprites.js?v=9"></script>
-  <script src="js/map.js?v=9"></script>
-  <script src="js/games.js?v=9"></script>
-  <script src="js/story.js?v=9"></script>
-  <script src="js/lab.js?v=9"></script>
-  <script src="js/season.js?v=9"></script>
-  <script src="js/share.js?v=9"></script>
-  <script src="js/main.js?v=9"></script>
+  <script src="js/core.js?v=10"></script>
+  <script src="js/sprites.js?v=10"></script>
+  <script src="js/map.js?v=10"></script>
+  <script src="js/games.js?v=10"></script>
+  <script src="js/story.js?v=10"></script>
+  <script src="js/lab.js?v=10"></script>
+  <script src="js/season.js?v=10"></script>
+  <script src="js/share.js?v=10"></script>
+  <script src="js/main.js?v=10"></script>
 </body>
 </html>

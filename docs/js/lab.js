@@ -113,7 +113,10 @@ function renderMethod() {
       Season tracker: hotspots from January to the month on the map, against the same months in earlier complete years
       (median, lowest and highest); "most like" = the earlier year with the closest cumulative curve so far.
       Unusual places: each 25 km cell's hotspots minus the median of the same month in earlier complete years
-      (at least 5), ranked by the extra hotspots; names from Natural Earth admin-1.</p>
+      (at least 5), ranked by the extra hotspots; names from Natural Earth admin-1. On the map a cell is
+      "routine" when it has 50–150% of its usual amount (usual at least 1), and "far above normal" at 2× usual or more
+      (or any hotspots where there are usually almost none). Routine vs unusual is the only distinction made: FIRMS
+      cannot tell a wildfire from farm burning, land clearing or a planned burn.</p>
     <h3>Limits</h3>
     <ul>
       <li>Converted counts are estimates; the factor can vary by region and season.</li>

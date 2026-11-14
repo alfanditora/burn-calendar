@@ -37,6 +37,30 @@ function cellAnomaly(i) {
   return res;
 }
 
+// Routine vs unusual for one cell-month. A hotspot is any vegetation fire (wildfire, farm burning, clearing),
+// so the cause is never named: only whether this place is burning about as much as in most earlier years.
+const ROUTINE_BAND = [0.5, 1.5];   // within 50%-150% of the cell's usual amount = routine
+const ROUTINE_COLOUR = "#9a9486";
+function burnKind(r) {
+  if (!r) return null;
+  if (r.med >= 1 && r.v >= ROUTINE_BAND[0] * r.med && r.v <= ROUTINE_BAND[1] * r.med) return "routine";
+  if (r.ex >= 1) return "more";
+  if (r.ex <= -1) return "less";
+  return null;
+}
+function burnKindText(r, month) {
+  const k = burnKind(r), mon = MONTHS[month - 1];
+  if (k === "routine") return `<i>Routine:</i> about the usual amount for ${mon} here (usually ${fmt(r.med)})`;
+  if (k === "less") return `<i>Quieter</i> than usual for ${mon} here (usually ${fmt(r.med)})`;
+  if (k === "more") {
+    const usual = r.med < 1 ? "usually almost none" : `usually ${fmt(r.med)}`;
+    return r.med < 1 || r.v >= 2 * r.med
+      ? `<i>Unusual:</i> far above normal for ${mon} here (${usual}). More likely an uncontrolled fire.`
+      : `<i>Above normal</i> for ${mon} here (${usual})`;
+  }
+  return "";
+}
+
 // Cell helpers shared with the season panel.
 function cellInArea(cell) { const mask = (App.grid.areas || {})[App.areaId]; return !mask || mask[cell] === "1"; }
 function cellPlace(cell) {
@@ -264,10 +288,11 @@ function tmLoop(now) {
     const jitter = reducedMotion ? 0 : (((cell * 7 + TM.frame * 13) % 11) - 5) / 60;
     ctx.fillStyle = fireColour(v, jitter);
     ctx.fillRect(x, y, K, K);
-    if (v > TM.vmax * 0.5) hot.push([x, y, v]);
+    if (v > TM.vmax * 0.5) hot.push([x, y, v, cell]);
   }
-  // Flame sprites on the hottest cells (limited for speed).
+  // Flame sprites on the busiest cells (more than half the top of the colour scale; at most 60, for speed).
   hot.sort((a, b) => b[2] - a[2]);
+  TM.flames = new Set(hot.slice(0, 60).map((h) => h[3]));
   const s = K / 4;
   for (const [x, y] of hot.slice(0, 60)) {
     drawSprite(ctx, SPRITES.flame[(TM.frame + x) % 3], x + K / 2 - 3.5 * s, y + K - 9 * s, s);
@@ -298,12 +323,16 @@ function tmDrawUnusual(ctx, K, g, vw) {
   const scale = Math.log1p(TM.vmax);
   const pos = (c) => [(c % g.w - vw.x0) * K, (Math.floor(c / g.w) - vw.y0) * K];
   for (const [cell, r] of (TM.anom ? TM.anom.cells : [])) {
-    if (Math.abs(r.ex) < 1) continue;
+    const kind = burnKind(r);
+    if (!kind) continue;
     const [x, y] = pos(cell);
     if (x < 0 || y < 0 || x >= vw.w * K || y >= vw.h * K) continue;
-    const ramp = r.ex > 0 ? MORE_RAMP : LESS_RAMP;
-    const t = Math.min(0.999, Math.log1p(Math.abs(r.ex)) / scale);
-    ctx.fillStyle = ramp[Math.floor(t * ramp.length)];
+    if (kind === "routine") ctx.fillStyle = ROUTINE_COLOUR;
+    else {
+      const ramp = kind === "more" ? MORE_RAMP : LESS_RAMP;
+      const t = Math.min(0.999, Math.log1p(Math.abs(r.ex)) / scale);
+      ctx.fillStyle = ramp[Math.floor(t * ramp.length)];
+    }
     ctx.fillRect(x, y, K, K);
   }
   // Blinking frames on the top unusual places (and the one picked from the list).
@@ -325,14 +354,18 @@ function tmHover(ev) {
   const cell = row * g.w + col;
   const tip = $("tip"), place = cellPlace(cell);
   const near = `near ${place.name ? `${place.name}, ` : ""}${place.where}`;
+  const month = Number(g.months[TM.idx].split("-")[1]);
+  const an = cellAnomaly(TM.idx), a = an.n >= MIN_BASE_YEARS ? an.cells.get(cell) : null; // cached per month
+  const kind = a ? burnKindText(a, month) : "";
+  const cause = "<span class=\"muted\">Satellites see heat, not the cause: wildfire, farm burning or land clearing look alike.</span>";
   if (TM.layer === "unusual") {
-    const r = TM.anom && TM.anom.cells.get(cell);
-    if (!r) { tip.hidden = true; return; }
-    tip.innerHTML = `<b>${fmt(r.v)} hotspots</b>, usually ${fmt(r.med)}<br>${r.ex >= 0 ? "+" : ""}${fmt(r.ex)} vs the same month in earlier years<br>${near}`;
+    if (!a) { tip.hidden = true; return; }
+    tip.innerHTML = `<b>${fmt(a.v)} hotspot${fmt(a.v) === "1" ? "" : "s"}</b>, usually ${fmt(a.med)} (${a.ex >= 0 ? "+" : ""}${fmt(a.ex)})<br>${kind}<br>${near}<br>${cause}`;
   } else {
     const f = TM.fires.find(([c]) => c === cell);
     if (!f) { tip.hidden = true; return; }
-    tip.innerHTML = `<b>${fmt(f[1])} hotspots</b> this month<br>${near}`;
+    const flame = TM.flames && TM.flames.has(cell) ? "<br>🔥 One of the busiest places on the map this month." : "";
+    tip.innerHTML = `<b>${fmt(f[1])} hotspot${fmt(f[1]) === "1" ? "" : "s"}</b> this month${flame}${kind ? `<br>${kind}` : ""}<br>${near}<br>${cause}`;
   }
   tip.hidden = false;
   tip.style.left = `${Math.min(window.innerWidth - 270, ev.clientX + 12)}px`;
