@@ -27,9 +27,11 @@ function setMode(m, push = true) {
   if (m === "home") {
     if (push) $("home").querySelector(".mode-card button").focus({ preventScroll: true });
   } else {
-    $("mode-btn").innerHTML = m === "analyst" ? "📊<span class=\"hide-sm\"> ANALYST</span> ⇄" : "🎮<span class=\"hide-sm\"> EXPLORE</span> ⇄";
+    $("mode-btn").innerHTML = m === "analyst" ? "<span class=\"hide-xs\">📊</span><span class=\"hide-sm\"> ANALYST</span> ⇄"
+      : "<span class=\"hide-xs\">🎮</span><span class=\"hide-sm\"> EXPLORE</span> ⇄";
     $("mode-btn").title = "Switch mode";
     showTab(m === "analyst" ? "lab" : exploreTab);
+    seasonOnMonth(); // the season panel shows more detail in the analyst view
   }
   window.scrollTo(0, 0);
   if (push) {
@@ -56,6 +58,18 @@ function renderHomeStats() {
   ].map((s) => `<span>${s}</span>`).join("");
 }
 
+// Home: the latest complete month in every area, each a shortcut into Explore.
+async function renderHomeNow() {
+  const areas = await Promise.all(App.index.map((a) => getJSON(`data/areas/${a.area_id}.json`)));
+  $("home-now").innerHTML = `<p class="kicker">Right now · latest complete month</p><div class="now-list">` +
+    areas.map((a) => {
+      const l = a.latest, s = a.season;
+      return `<button type="button" class="now-chip" data-area="${a.area_id}"><b>${a.name.replace(", Indonesia", "")}</b>
+        <span class="badge ${BADGE_CLASS[l.label] || "none"}">${l.label}</span>
+        <span>${MONTHS[l.month - 1]} ${l.year} · ${pct(l.anomaly_pct)} vs usual${s ? ` · season ${s.season_label}` : ""}</span></button>`;
+    }).join("") + "</div>";
+}
+
 // Sidebar: a fixed column on desktop, a slide-out drawer on phones and tablets.
 const isDrawer = () => window.matchMedia("(max-width: 1023px)").matches;
 function openMenu() {
@@ -73,6 +87,7 @@ function go(target) {
   if (target === "home") { setMode("home"); return; }
   if (target === "map") { $("map-panel").scrollIntoView(smooth); return; }
   if (target === "data") { $("data-access").scrollIntoView(smooth); return; }
+  if (target === "season") { $("season-panel").scrollIntoView(smooth); return; }
   showTab(target);
   (mode() === "analyst" ? $("view-lab") : document.querySelector(".tabs")).scrollIntoView(smooth);
 }
@@ -125,7 +140,14 @@ async function main() {
   $("hud-share").addEventListener("click", shareCard);
   window.addEventListener("scroll", () => { $("tip").hidden = true; }, { passive: true });
 
+  $("home-now").addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-area]");
+    if (!b) return;
+    await loadArea(b.dataset.area);
+    setMode("explore");
+  });
   tmInit();
+  seasonInit();
   storyInit();
   labInit();
   onAreaChange(renderRegions);
@@ -138,11 +160,12 @@ async function main() {
   const start = App.index.find((a) => a.area_id === q.get("area")) || App.index[0];
   await loadArea(start.area_id);
   renderHomeStats();
+  renderHomeNow();
   if (q.get("month") && App.grid.months.includes(q.get("month"))) tmGo(App.grid.months.indexOf(q.get("month")));
   if (["play", "story"].includes(q.get("tab"))) exploreTab = q.get("tab");
   if (mode() !== "home") showTab(exploreTab);
   // Redraw canvas text once the pixel font has loaded.
-  document.fonts?.ready.then(() => { if (App.area) drawRelayChart(); });
+  document.fonts?.ready.then(() => { if (App.area) { drawRelayChart(); seasonOnMonth(); } });
 }
 
 main();

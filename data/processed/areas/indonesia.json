@@ -2926,7 +2926,7 @@
   "notes": "Cleaning: MODIS confidence >= 30, VIIRS confidence in ['h', 'n'], day/night kept: ['D', 'N']. Factor = sum(target)/sum(source) over overlap months. Validation holds out the last 2 full overlap years (monthly MAPE skips months with < 10 target hotspots); headline error = leave-one-year-out, count-weighted. Unstable provincial links use the parent area's factor. Anomaly = vs median of the same month in earlier complete years. Areas follow real borders (Natural Earth 1:10m admin-1); Northern Australia is Australian land north of 20\u00b0S, 121-146\u00b0E. Counts are hotspots, not burned area."
  },
  "season": {
-  "method": "Monthly medians over complete years; fire season = the shortest run of consecutive months holding at least 80% of a typical year; peak = the 2 consecutive months with the highest medians.",
+  "method": "Monthly medians over complete years; fire season = the shortest run of consecutive months holding at least 80% of a typical year; peak = the 3 consecutive months with the highest medians.",
   "years": [
    2001,
    2025
@@ -2969,13 +2969,14 @@
   "season_share_pct": 82.6,
   "peak_months": [
    8,
-   9
+   9,
+   10
   ],
-  "peak_label": "Aug\u2013Sep",
-  "peak_share_pct": 58.2
+  "peak_label": "Aug\u2013Oct",
+  "peak_share_pct": 74.2
  },
  "early_warning": {
-  "method": "Hindcast: lead = the 2 months before the 2-month peak; each window is compared with the median of the same window in earlier complete years (at least 5); above normal = at least +15%. Spearman rank correlation with a one-sided permutation test (10000 shuffles, seed 0). A historical pattern, not a forecast.",
+  "method": "Hindcast: lead = the 2 months before the 3-month peak; each window is compared with the median of the same window in earlier complete years (at least 5); above normal = at least +15%. Spearman rank correlation with a one-sided permutation test (10000 shuffles, seed 0). A historical pattern, not a forecast.",
   "lead_months": [
    6,
    7
@@ -2983,9 +2984,10 @@
   "lead_label": "Jun\u2013Jul",
   "peak_months": [
    8,
-   9
+   9,
+   10
   ],
-  "peak_label": "Aug\u2013Sep",
+  "peak_label": "Aug\u2013Oct",
   "above_pct": 15.0,
   "years_scored": [
    2006,
@@ -2994,93 +2996,93 @@
   "n": 21,
   "lead_above_peak_above": 3,
   "lead_above_peak_not": 3,
-  "lead_not_peak_above": 2,
-  "lead_not_peak_not": 13,
+  "lead_not_peak_above": 3,
+  "lead_not_peak_not": 12,
   "hit_rate_pct": 50.0,
-  "base_rate_pct": 23.8,
-  "quiet_rate_pct": 86.7,
-  "spearman": 0.752,
-  "p_value": 0.0002,
+  "base_rate_pct": 28.6,
+  "quiet_rate_pct": 80.0,
+  "spearman": 0.76,
+  "p_value": 0.0001,
   "years": [
    {
     "year": 2006,
     "lead_anomaly_pct": 50.2,
-    "peak_anomaly_pct": 115.9
+    "peak_anomaly_pct": 199.6
    },
    {
     "year": 2007,
     "lead_anomaly_pct": -48.2,
-    "peak_anomaly_pct": -49.8
+    "peak_anomaly_pct": -49.5
    },
    {
     "year": 2008,
     "lead_anomaly_pct": -23.2,
-    "peak_anomaly_pct": -36.5
+    "peak_anomaly_pct": -38.5
    },
    {
     "year": 2009,
     "lead_anomaly_pct": 123.5,
-    "peak_anomaly_pct": 92.3
+    "peak_anomaly_pct": 81.6
    },
    {
     "year": 2010,
     "lead_anomaly_pct": -73.1,
-    "peak_anomaly_pct": -80.0
+    "peak_anomaly_pct": -71.5
    },
    {
     "year": 2011,
     "lead_anomaly_pct": 60.4,
-    "peak_anomaly_pct": 14.4
+    "peak_anomaly_pct": 9.6
    },
    {
     "year": 2012,
     "lead_anomaly_pct": 41.4,
-    "peak_anomaly_pct": 4.8
+    "peak_anomaly_pct": 12.8
    },
    {
     "year": 2013,
     "lead_anomaly_pct": 83.6,
-    "peak_anomaly_pct": -45.6
+    "peak_anomaly_pct": -34.5
    },
    {
     "year": 2014,
     "lead_anomaly_pct": 11.1,
-    "peak_anomaly_pct": 0.5
+    "peak_anomaly_pct": 47.5
    },
    {
     "year": 2015,
     "lead_anomaly_pct": 0.1,
-    "peak_anomaly_pct": 158.8
+    "peak_anomaly_pct": 269.8
    },
    {
     "year": 2016,
     "lead_anomaly_pct": -79.8,
-    "peak_anomaly_pct": -72.8
+    "peak_anomaly_pct": -73.2
    },
    {
     "year": 2017,
     "lead_anomaly_pct": -76.2,
-    "peak_anomaly_pct": -76.6
+    "peak_anomaly_pct": -72.9
    },
    {
     "year": 2018,
     "lead_anomaly_pct": -66.2,
-    "peak_anomaly_pct": -41.6
+    "peak_anomaly_pct": -31.0
    },
    {
     "year": 2019,
     "lead_anomaly_pct": -58.0,
-    "peak_anomaly_pct": 57.4
+    "peak_anomaly_pct": 74.2
    },
    {
     "year": 2020,
     "lead_anomaly_pct": -81.4,
-    "peak_anomaly_pct": -76.9
+    "peak_anomaly_pct": -73.8
    },
    {
     "year": 2021,
     "lead_anomaly_pct": -72.6,
-    "peak_anomaly_pct": -86.6
+    "peak_anomaly_pct": -82.1
    },
    {
     "year": 2022,
@@ -3090,22 +3092,22 @@
    {
     "year": 2023,
     "lead_anomaly_pct": -45.1,
-    "peak_anomaly_pct": -22.3
+    "peak_anomaly_pct": 4.8
    },
    {
     "year": 2024,
     "lead_anomaly_pct": -46.5,
-    "peak_anomaly_pct": -58.8
+    "peak_anomaly_pct": -62.6
    },
    {
     "year": 2025,
     "lead_anomaly_pct": -19.2,
-    "peak_anomaly_pct": -67.3
+    "peak_anomaly_pct": -70.4
    },
    {
     "year": 2026,
     "lead_anomaly_pct": 31.8,
-    "peak_anomaly_pct": 174.7
+    "peak_anomaly_pct": 221.2
    }
   ]
  }

@@ -8,7 +8,57 @@ const SPEEDS = [[1, 450], [2, 220], [4, 110]];
 const TM = {
   idx: 0, playing: false, speed: 0, timer: null, frame: 0, K: 6,
   canvas: null, ctx: null, base: null, vmax: 1, fires: [], embers: [], played: 0, momentUntil: 0,
+  layer: "fires", anom: null, anomCache: new Map(), focus: null,
 };
+// "Unusual" layer: more fires than usual (warm) or fewer (cool), vs the same month in earlier years.
+const MORE_RAMP = ["#ffe8a3", "#ffc234", "#ff922b", "#f03e3e", "#c92a2a", "#7a1010"];
+const LESS_RAMP = ["#a5d8ff", "#74c0fc", "#4dabf7", "#1c7ed6"];
+const MIN_BASE_YEARS = 5; // same as config.MIN_BASELINE_YEARS
+
+// Per-cell anomaly for grid month i: value, median of the same month in earlier complete years, excess.
+function cellAnomaly(i) {
+  if (TM.anomCache.has(i)) return TM.anomCache.get(i);
+  const g = App.grid, [y, m] = g.months[i].split("-").map(Number);
+  const asMap = (k) => { const f = g.fires[k], out = new Map(); for (let j = 0; j < f.length; j += 2) out.set(f[j], f[j + 1]); return out; };
+  const years = completeYears().filter((yy) => yy < y);
+  const base = years.map((yy) => g.months.indexOf(`${yy}-${String(m).padStart(2, "0")}`)).filter((k) => k >= 0).map(asMap);
+  const res = { n: base.length, cells: new Map() };
+  if (base.length >= MIN_BASE_YEARS) {
+    const now = asMap(i), keys = new Set(now.keys());
+    for (const b of base) for (const c of b.keys()) keys.add(c);
+    for (const c of keys) {
+      const vals = base.map((b) => b.get(c) || 0).sort((a, b) => a - b), h = vals.length >> 1;
+      const med = vals.length % 2 ? vals[h] : (vals[h - 1] + vals[h]) / 2;
+      const v = now.get(c) || 0;
+      if (v || med) res.cells.set(c, { v, med, ex: v - med });
+    }
+  }
+  TM.anomCache.set(i, res);
+  return res;
+}
+
+// Cell helpers shared with the season panel.
+function cellInArea(cell) { const mask = (App.grid.areas || {})[App.areaId]; return !mask || mask[cell] === "1"; }
+function cellPlace(cell) {
+  const g = App.grid, col = cell % g.w, row = Math.floor(cell / g.w);
+  const lat = g.bbox[3] - (row + 0.5) * g.deg, lon = g.bbox[0] + (col + 0.5) * g.deg;
+  const k = (g.cell_name || [])[cell], name = k >= 0 ? g.names[k] : null;
+  const where = `${fmt(Math.abs(lat), 1)}°${lat < 0 ? "S" : "N"} ${fmt(lon, 1)}°E`;
+  return { name, where, lat, lon };
+}
+function topUnusual(i, n = 10) {
+  const a = cellAnomaly(i);
+  return [...a.cells].filter(([c, r]) => r.ex > 0 && cellInArea(c)).sort((p, q) => q[1].ex - p[1].ex).slice(0, n)
+    .map(([cell, r]) => ({ cell, ...r, ...cellPlace(cell) }));
+}
+function setLayer(layer) {
+  TM.layer = layer;
+  $("layer-fires").setAttribute("aria-pressed", layer === "fires");
+  $("layer-unusual").setAttribute("aria-pressed", layer === "unusual");
+  $("legend-fires").hidden = layer !== "fires";
+  $("legend-unusual").hidden = layer !== "unusual";
+  tmGo(TM.idx);
+}
 
 // Notes for well-documented events, shown when the Time Machine reaches them.
 const MOMENTS = {
@@ -29,6 +79,8 @@ function tmInit() {
     $("tm-speed").textContent = `${SPEEDS[TM.speed][0]}×`;
     if (TM.playing) { tmPause(); tmPlay(); }
   });
+  $("layer-fires").addEventListener("click", () => setLayer("fires"));
+  $("layer-unusual").addEventListener("click", () => setLayer("unusual"));
   TM.canvas.addEventListener("mousemove", tmHover);
   TM.canvas.addEventListener("mouseleave", () => { $("tip").hidden = true; });
   requestAnimationFrame(tmLoop);
@@ -112,6 +164,7 @@ function tmOnArea() {
   $("tm-slider").max = n - 1;
   $("tm-area").textContent = `Hotspots · ${App.area.name}`;
   TM.embers = [];
+  TM.anomCache = new Map(); TM.focus = null;
   tmGo(n - 1); // start on the latest month
 }
 
@@ -122,6 +175,10 @@ function tmGo(i) {
   const flat = g.fires[TM.idx];
   TM.fires = [];
   for (let j = 0; j < flat.length; j += 2) TM.fires.push([flat[j], flat[j + 1]]);
+  TM.anom = TM.layer === "unusual" ? cellAnomaly(TM.idx) : null;
+  TM.marks = TM.layer === "unusual" ? topUnusual(TM.idx, 5).map((r) => r.cell) : [];
+  $("unusual-note").textContent = TM.anom && TM.anom.n < MIN_BASE_YEARS
+    ? "Not enough earlier years for this month yet (needs 5). Pick a later month." : "";
   const [y, m] = g.months[TM.idx].split("-").map(Number);
   $("tm-month").textContent = `${MONTHS[m - 1].toUpperCase()} ${y}`;
   const e = calEntry(y, m);
@@ -138,6 +195,7 @@ function tmGo(i) {
   document.querySelectorAll("#calendar td.now").forEach((x) => x.classList.remove("now"));
   document.querySelector(`#calendar td[data-y="${y}"][data-m="${m}"]`)?.classList.add("now");
   if (typeof updateViewLink === "function") updateViewLink();
+  if (typeof seasonOnMonth === "function") seasonOnMonth();
   const note = (MOMENTS[App.areaId] || {})[g.months[TM.idx]];
   if (note && TM.playing) tmMoment(`★ ${note}`);
 }
@@ -190,9 +248,15 @@ function tmLoop(now) {
   const { ctx, K } = TM, g = App.grid;
   ctx.drawImage(TM.base, 0, 0);
 
+  const vw = TM.view;
+  if (TM.layer === "unusual") {
+    tmDrawUnusual(ctx, K, g, vw);
+    if (TM.overlay) ctx.drawImage(TM.overlay, 0, 0);
+    if (TM.momentUntil && now > TM.momentUntil) { $("tm-moment").hidden = true; TM.momentUntil = 0; }
+    return;
+  }
   // Fire cells.
   const hot = [];
-  const vw = TM.view;
   for (const [cell, v] of TM.fires) {
     const cx = cell % g.w - vw.x0, cy = Math.floor(cell / g.w) - vw.y0;
     if (cx < 0 || cy < 0 || cx >= vw.w || cy >= vw.h) continue;
@@ -230,16 +294,46 @@ function tmLoop(now) {
   if (TM.momentUntil && now > TM.momentUntil) { $("tm-moment").hidden = true; TM.momentUntil = 0; }
 }
 
+function tmDrawUnusual(ctx, K, g, vw) {
+  const scale = Math.log1p(TM.vmax);
+  const pos = (c) => [(c % g.w - vw.x0) * K, (Math.floor(c / g.w) - vw.y0) * K];
+  for (const [cell, r] of (TM.anom ? TM.anom.cells : [])) {
+    if (Math.abs(r.ex) < 1) continue;
+    const [x, y] = pos(cell);
+    if (x < 0 || y < 0 || x >= vw.w * K || y >= vw.h * K) continue;
+    const ramp = r.ex > 0 ? MORE_RAMP : LESS_RAMP;
+    const t = Math.min(0.999, Math.log1p(Math.abs(r.ex)) / scale);
+    ctx.fillStyle = ramp[Math.floor(t * ramp.length)];
+    ctx.fillRect(x, y, K, K);
+  }
+  // Blinking frames on the top unusual places (and the one picked from the list).
+  const on = reducedMotion || TM.frame % 8 < 5, t = Math.max(2, Math.round(K / 5));
+  for (const cell of [...TM.marks, TM.focus].filter((c) => c != null)) {
+    const [x, y] = pos(cell);
+    if (!on && cell !== TM.focus) continue;
+    ctx.fillStyle = cell === TM.focus ? "#1e88e5" : "#ffffff";
+    const pad = cell === TM.focus ? Math.round(K / 2) : 0;
+    ctx.fillRect(x - pad, y - pad, K + 2 * pad, t); ctx.fillRect(x - pad, y + K + pad - t, K + 2 * pad, t);
+    ctx.fillRect(x - pad, y - pad, t, K + 2 * pad); ctx.fillRect(x + K + pad - t, y - pad, t, K + 2 * pad);
+  }
+}
+
 function tmHover(ev) {
   const g = App.grid, r = TM.canvas.getBoundingClientRect();
   const col = TM.view.x0 + Math.floor((ev.clientX - r.left) / r.width * TM.view.w);
   const row = TM.view.y0 + Math.floor((ev.clientY - r.top) / r.height * TM.view.h);
   const cell = row * g.w + col;
-  const f = TM.fires.find(([c]) => c === cell);
-  const tip = $("tip");
-  if (!f) { tip.hidden = true; return; }
-  const lat = g.bbox[3] - (row + 0.5) * g.deg, lon = g.bbox[0] + (col + 0.5) * g.deg;
-  tip.innerHTML = `<b>${fmt(f[1])} hotspots</b> this month<br>near ${fmt(Math.abs(lat), 2)}°${lat < 0 ? "S" : "N"}, ${fmt(lon, 2)}°E`;
+  const tip = $("tip"), place = cellPlace(cell);
+  const near = `near ${place.name ? `${place.name}, ` : ""}${place.where}`;
+  if (TM.layer === "unusual") {
+    const r = TM.anom && TM.anom.cells.get(cell);
+    if (!r) { tip.hidden = true; return; }
+    tip.innerHTML = `<b>${fmt(r.v)} hotspots</b>, usually ${fmt(r.med)}<br>${r.ex >= 0 ? "+" : ""}${fmt(r.ex)} vs the same month in earlier years<br>${near}`;
+  } else {
+    const f = TM.fires.find(([c]) => c === cell);
+    if (!f) { tip.hidden = true; return; }
+    tip.innerHTML = `<b>${fmt(f[1])} hotspots</b> this month<br>${near}`;
+  }
   tip.hidden = false;
   tip.style.left = `${Math.min(window.innerWidth - 270, ev.clientX + 12)}px`;
   tip.style.top = `${ev.clientY + 12}px`;

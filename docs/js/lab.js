@@ -108,6 +108,12 @@ function renderMethod() {
     ${drift ? `<p class="muted">Orbit-drift check (MODIS → Suomi NPP): ratio ${fmt(drift.early_ratio, 3)} in 2012–2018 vs
       ${fmt(drift.late_ratio, 3)} in 2019–2025 (${fmt(drift.diff_pct, 1)}% apart).
       ${drift.used_early_only ? "Above 20%, so only 2012–2018 was used." : "Within 20%, so all overlap years were used."}</p>` : ""}
+    <h3>Season, early signal and unusual places</h3>
+    <p class="muted">${App.area.season ? App.area.season.method : ""} ${App.area.early_warning ? App.area.early_warning.method : ""}
+      Season tracker: hotspots from January to the month on the map, against the same months in earlier complete years
+      (median, lowest and highest); "most like" = the earlier year with the closest cumulative curve so far.
+      Unusual places: each 25 km cell's hotspots minus the median of the same month in earlier complete years
+      (at least 5), ranked by the extra hotspots; names from Natural Earth admin-1.</p>
     <h3>Limits</h3>
     <ul>
       <li>Converted counts are estimates; the factor can vary by region and season.</li>

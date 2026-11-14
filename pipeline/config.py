@@ -110,7 +110,8 @@ ANOMALY_LABELS = [
 # Fire season = the shortest run of consecutive months that holds at least this share of a
 # typical year's hotspots (sum of the monthly medians over complete years).
 SEASON_SHARE = 0.80
-PEAK_WINDOW_MONTHS = 2              # peak = the N consecutive months with the highest medians
+PEAK_WINDOW_MONTHS = 3              # peak season = the N consecutive months with the highest medians
+                                    # (3, not 2: a 2-month window put Riau's peak at Jul-Aug and left out September)
 LEAD_MONTHS = 2                     # early signal = the N months just before the peak
 EARLY_WARNING_ABOVE_PCT = 15.0      # "above normal" = at least +15% (same as the Above normal label)
 MIN_BASELINE_YEARS = 5              # an anomaly needs at least this many earlier complete years

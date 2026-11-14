@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=7">
+  <link rel="stylesheet" href="styles.css?v=9">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -40,6 +40,7 @@
       <p class="lead">25 years of satellite fire detections over Indonesia and Northern Australia, joined into one
         consistent monthly record. Choose how you want to look at it.</p>
       <div class="home-stats" id="home-stats"></div>
+      <div class="home-now" id="home-now" aria-live="polite"></div>
     </div>
     <div class="mode-cards">
       <article class="mode-card" data-mode="explore">
@@ -49,8 +50,8 @@
         <p>See the scale of 25 years of fire the fun way.</p>
         <ul>
           <li>A pixel time machine of every month since 2000</li>
-          <li>Four quick games with XP and badges</li>
-          <li>The story of three satellites becoming one record</li>
+          <li>Is this a bad fire year? Where is it unusual? What can I do?</li>
+          <li>Four quick games with XP and badges, and the satellite story</li>
         </ul>
         <button type="button" class="px-btn primary">▶ START EXPLORING</button>
       </article>
@@ -60,9 +61,9 @@
         <h2>Analyst View</h2>
         <p>The numbers, the method and the data files. No games.</p>
         <ul>
-          <li>Latest month vs normal, and the long-term trend test</li>
-          <li>Month-by-month calendar with CSV download</li>
-          <li>Open CSV/JSON files and how the conversion was validated</li>
+          <li>Season tracker, early signal and the most unusual places</li>
+          <li>A situation brief to copy or print</li>
+          <li>Anomaly, trend, calendar, CSV/JSON files and the method</li>
         </ul>
         <button type="button" class="px-btn primary">▶ OPEN ANALYST VIEW</button>
       </article>
@@ -89,6 +90,7 @@
       <p class="side-title">🧭 EXPLORE</p>
       <nav class="side-nav" aria-label="Sections">
         <button type="button" data-go="map">🗺️ Time Machine</button>
+        <button type="button" data-go="season">📈 This season</button>
         <button type="button" data-go="play" class="explore-only">🎮 Play</button>
         <button type="button" data-go="story" class="explore-only">🛰️ Story</button>
         <button type="button" data-go="lab" class="analyst-only">📊 Analysis</button>
@@ -119,6 +121,11 @@
         <p class="sensor" id="tm-sensor"></p>
       </div>
     </div>
+    <div class="layer-toggle" role="group" aria-label="Map layer">
+      <button type="button" class="px-btn small" id="layer-fires" aria-pressed="true">🔥 ALL FIRES</button>
+      <button type="button" class="px-btn small" id="layer-unusual" aria-pressed="false">⚠ WHAT'S UNUSUAL</button>
+      <span class="muted small" id="unusual-note"></span>
+    </div>
     <div class="map-wrap" id="map-wrap">
       <canvas id="pixmap" aria-label="Pixel map of fire hotspots"></canvas>
       <div class="moment" id="tm-moment" hidden></div>
@@ -131,11 +138,57 @@
       <input type="range" id="tm-slider" min="0" max="0" value="0" aria-label="Month">
       <button type="button" class="px-btn" id="tm-speed" aria-label="Playback speed">1×</button>
     </div>
-    <div class="map-legend">
+    <div class="map-legend" id="legend-fires">
       <span class="lg-sea"></span> sea <span class="lg-land"></span> land
       <span class="lg-fire"></span> fewer fires <span class="lg-fire hot"></span> more fires
       <span class="muted">· white line = area border · 1 pixel ≈ 25 km · NOAA-20-equivalent hotspots</span>
     </div>
+    <div class="map-legend" id="legend-unusual" hidden>
+      <span class="lg-less"></span> fewer than usual <span class="lg-more"></span> more than usual
+      <span class="lg-more hot"></span> far more than usual
+      <span class="muted">· usual = median of the same month in earlier years · white frames = top 5 unusual places</span>
+    </div>
+  </section>
+
+  <!-- This season: tracker, fire season, early signal, unusual places, brief / what to do -->
+  <section class="panel season-panel" id="season-panel" aria-labelledby="season-title">
+    <p class="kicker" id="season-kicker">This season</p>
+    <h2 id="season-title">How is this year going?</h2>
+    <p class="season-headline" id="season-headline" aria-live="polite"></p>
+    <div class="season-grid">
+      <div class="tracker">
+        <canvas id="tracker" aria-label="Hotspots so far this year compared with earlier years"></canvas>
+        <p class="muted small" id="tracker-legend"></p>
+        <article class="mini-card" id="season-unusual"></article>
+      </div>
+      <div class="season-cards">
+        <article class="mini-card" id="season-when"></article>
+        <article class="mini-card" id="season-signal"></article>
+      </div>
+    </div>
+    <article class="mini-card analyst-only" id="brief">
+      <div class="brief-head">
+        <h3>Situation brief</h3>
+        <span class="brief-actions">
+          <button type="button" class="px-btn small" id="brief-copy">COPY TEXT</button>
+          <button type="button" class="px-btn small" id="brief-print">PRINT / PDF</button>
+        </span>
+      </div>
+      <pre id="brief-text"></pre>
+    </article>
+    <article class="mini-card explore-only todo" id="season-todo">
+      <h3>What can I do?</h3>
+      <ul>
+        <li><b>Don't burn to clear land or rubbish</b> in the dry season, especially on peat: peat fires smoulder
+          underground for weeks and are very hard to put out.</li>
+        <li><b>Report a fire early</b> to your local fire brigade or disaster agency. Small fires are the easy ones to stop.</li>
+        <li><b>On smoky days</b>, stay indoors with windows closed, wear a well-fitted N95/KN95-type mask outside,
+          and look after children, older people and anyone with asthma or heart disease.</li>
+        <li><b>Follow official warnings</b> from your national weather, air-quality and disaster services.</li>
+        <li><b>Not every fire is a disaster.</b> In Northern Australia, rangers burn early in the dry season on
+          purpose, so later fires are smaller.</li>
+      </ul>
+    </article>
   </section>
 
   <nav class="tabs explore-only" role="tablist" aria-label="Sections">
@@ -229,13 +282,14 @@
     <form method="dialog"><button class="px-btn">CLOSE</button></form>
   </dialog>
 
-  <script src="js/core.js?v=7"></script>
-  <script src="js/sprites.js?v=7"></script>
-  <script src="js/map.js?v=7"></script>
-  <script src="js/games.js?v=7"></script>
-  <script src="js/story.js?v=7"></script>
-  <script src="js/lab.js?v=7"></script>
-  <script src="js/share.js?v=7"></script>
-  <script src="js/main.js?v=7"></script>
+  <script src="js/core.js?v=9"></script>
+  <script src="js/sprites.js?v=9"></script>
+  <script src="js/map.js?v=9"></script>
+  <script src="js/games.js?v=9"></script>
+  <script src="js/story.js?v=9"></script>
+  <script src="js/lab.js?v=9"></script>
+  <script src="js/season.js?v=9"></script>
+  <script src="js/share.js?v=9"></script>
+  <script src="js/main.js?v=9"></script>
 </body>
 </html>

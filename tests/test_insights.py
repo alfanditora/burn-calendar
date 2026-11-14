@@ -15,7 +15,7 @@ def calendar(scale_by_year, shape=SHAPE, base=1.0, years=range(2005, 2020)):
 
 
 def test_season_is_shortest_run_holding_the_share():
-    p = insights.season_profile(calendar({}))
+    p = insights.season_profile(calendar({}), peak_n=2)
     # medians: 100 + 100 + 20 + 20 + 8 x 1 = 248; Aug-Sep alone hold 200 / 248 = 81% >= 80%
     assert p["season_months"] == [8, 9]
     assert p["season_label"] == "Aug–Sep"
@@ -38,7 +38,7 @@ def test_early_warning_hindcast_known_answer():
     shape = {6: 10, 7: 10, 8: 100, 9: 100}
     scale = {2012: 2.0, 2014: 3.0, 2016: 0.5, 2017: 2.5, 2019: 4.0}
     cal = calendar(scale, shape=shape)
-    p = insights.season_profile(cal)
+    p = insights.season_profile(cal, peak_n=2)
     e = insights.early_warning(cal, p)
     assert e["lead_months"] == [6, 7] and e["peak_months"] == [8, 9]
     # Baseline = earlier complete years only, at least 5: first scored year is 2005 + 5.
@@ -55,7 +55,7 @@ def test_early_warning_hindcast_known_answer():
 def test_early_warning_reports_a_lead_without_a_peak_yet():
     cal = calendar({}, shape={6: 10, 7: 10, 8: 100, 9: 100})
     cal = [c for c in cal if not (c["year"] == 2019 and c["month"] >= 8)]  # season still running
-    e = insights.early_warning(cal, insights.season_profile(cal))
+    e = insights.early_warning(cal, insights.season_profile(cal, peak_n=2))
     last = e["years"][-1]
     assert last["year"] == 2019 and last["peak_anomaly_pct"] is None
     assert e["years_scored"][-1] == 2018

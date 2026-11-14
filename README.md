@@ -29,6 +29,8 @@ python pipeline/fetch_firms.py --region indonesia  # download FIRMS history via 
 python pipeline/fetch_firms.py --region north_australia
 python pipeline/inspect_raw.py                     # list data/raw files and print their headers
 python pipeline/run_all.py                         # rebuild everything in data/processed from data/raw
+python pipeline/insights.py                        # optional fast path: recompute season/early signal/cell names
+                                                   # over existing outputs (no raw data needed; run_all does this too)
 python -m pytest                                   # tests run on the SYNTHETIC files in data/sample
 ```
 
@@ -44,12 +46,13 @@ The FIRMS API key, if it is used, is read from the `FIRMS_MAP_KEY` environment v
 | Download | `pipeline/fetch_firms.py` | Area API in 5-day chunks for one box; resumable, rate-limit aware, SP first then NRT |
 | Settings | `pipeline/config.py` | Areas, thresholds, overlap years: every choice that changes results |
 | Load | `pipeline/load.py` | Normalise columns, map satellites to MODIS/SNPP/NOAA20, drop low confidence, prefer SP over NRT |
-| Borders | `pipeline/regions.py` | Builds `data/external/regions.geojson` (real outlines) from Natural Earth 1:10m admin-1 |
+| Borders | `pipeline/regions.py` | Builds `data/external/regions.geojson` (real outlines) and `admin1.geojson` (province/state names) from Natural Earth 1:10m admin-1 |
 | Bin | `pipeline/bin.py` | Monthly counts per area (inside its real border) and sensor, zero-filled only in fully covered months |
 | Calibrate | `pipeline/calibrate.py` | Ratio factors on overlap years, drift check, stability, hold-out validation, harmonized series |
 | Trend | `pipeline/trend.py` | Mann-Kendall + Sen's slope (yearly and seasonal), anomaly vs median of earlier years |
+| Insights | `pipeline/insights.py` | Fire-season months, busiest months, and the early-signal hindcast (does an above-normal run-up predict an above-normal peak?) |
 | Export | `pipeline/export.py` | `monthly_counts.csv`, `areas/{id}.json` + `.csv`, `areas/index.json` |
-| Pixel map | `pipeline/grid.py` | Harmonized counts per 0.25° cell and month + land mask, `grid/{region}.json` for the Time Machine |
+| Pixel map | `pipeline/grid.py` | Harmonized counts per 0.25° cell and month + land mask + province name per cell, `grid/{region}.json` for the Time Machine |
 
 ### Notes on the monthly_counts table
 
@@ -98,10 +101,43 @@ highest October since 2015. The largest year in the record is 2015 (the Southeas
 the box also caught fires in neighbouring Jambi, West Sumatra and North Sumatra. Inside Riau Province's real border
 the same month is "Below normal" (−88%).
 
+### From data to decisions: season, early signal, unusual places
+
+The app does not stop at "what happened". For the month on the map it answers: is this year running ahead of
+normal (season tracker against the median, lowest and highest earlier years, plus the closest earlier year)? When is
+the fire season? Where is it unusual (25 km cells most above their own median for that month, named by province)?
+And does the run-up tell us anything about the peak?
+
+**Early signal (hindcast, 2006–2026):** the "run-up" is the 2 months before the 3 busiest months. Each window is
+compared with the median of the same window in *earlier* complete years only (what was known at the time); above
+normal = at least +15%. Settings are in `config.py`.
+
+| Area | Most hotspots fall in | Busiest months | Run-up | Run-up above → peak above | Run-up not above → peak not above | Peak above, all years | Spearman ρ (p) | 2026: run-up → peak |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Indonesia | Jul–Oct (83%) | Aug–Oct | Jun–Jul | 3 of 6 | 12 of 15 | 29% | 0.76 (< 0.001) | +32% → +221% |
+| Riau Province, Indonesia | Feb–Aug (81%) | Jul–Sep | May–Jun | 5 of 5 | 13 of 16 | 38% | 0.76 (< 0.001) | −92% → −82% |
+| Central Kalimantan, Indonesia | Aug–Oct (93%) | Aug–Oct | Jun–Jul | 4 of 5 | 14 of 16 | 29% | 0.86 (< 0.001) | +123% → +572% |
+| Northern Australia | May–Nov (88%) | Sep–Nov | Jul–Aug | 4 of 5 | 12 of 15 | 35% | 0.44 (0.026) | +34% → *pending* |
+
+- In every area, run-up and peak are clearly correlated (one-sided permutation test, 10,000 shuffles). A quiet
+  run-up is the more reliable message (12–14 of 15–16 years stayed not above normal); an above-normal run-up raises
+  the chance of an above-normal peak to roughly 2–3 times the base rate, but it misses too (Indonesia: 3 of 6).
+- It also misses the other way: Riau's 2015 run-up (May–Jun) was −70%, yet Jul–Sep 2015 was +47%. The app shows
+  such misses instead of hiding them.
+- **Live call:** Northern Australia's Jul–Aug 2026 was +34% above normal; Sep–Nov 2026 is not complete yet.
+- We chose a 3-month peak (not 2) because a 2-month window put Riau's peak at Jul–Aug and left out September; the
+  2-month version gave similar or stronger correlations for Indonesia and Northern Australia (ρ 0.60), so this choice
+  was not made to improve the numbers. In the app, the counts shown for a year leave that year out.
+- This is a historical pattern from ~20 years, not a forecast model; it ignores weather and climate drivers.
+
 ## Limits
 
 - Converted counts are estimates; a single ratio per area cannot capture every seasonal or regional difference.
 - Hotspots are fire detections, not burned area. Small, short or cloud-covered fires can be missed.
+- Hotspots are not only wildfires: they include agricultural, land-clearing, peat and planned (prescribed) burns.
+- Burn Calendar is a monthly record for planning and research, not a live alert system; for active fires use the
+  NASA FIRMS Fire Map.
+- The early signal is a historical pattern over about 20 years, not a forecast.
 - Borders come from Natural Earth 1:10m; Northern Australia is defined as Australian land north of 20°S (121–146°E).
 - The latest months use near-real-time data, which FIRMS replaces with standard data after about 5 months.
 - Static sources are removed with FIRMS type flags (standard data) and a 0.05° mask (near-real-time data).
