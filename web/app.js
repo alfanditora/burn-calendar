@@ -104,7 +104,7 @@ function renderTrend() {
   const t = state.area.trend;
   if (!t || t.p_value == null) { $("trend").innerHTML = "<p>Not enough complete years for a trend test.</p>"; return; }
   const start = t.years.split("-")[0];
-  const words = { increasing: "is rising", decreasing: "is falling", "no trend": "shows no clear trend" }[t.direction];
+  const words = { increasing: "has been rising", decreasing: "has been falling", "no trend": "shows no clear trend" }[t.direction];
   const slope = t.slope_per_year > 0 ? `+${fmt(t.slope_per_year)}` : fmt(t.slope_per_year);
   $("trend").innerHTML = `
     <p class="kicker">Long-term trend · ${t.years}</p>
