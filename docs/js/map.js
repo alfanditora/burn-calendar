@@ -229,7 +229,7 @@ function tmGo(i) {
   if (note && TM.playing) tmMoment(`★ ${note}`);
 }
 
-// Floating month stepper: the same steps as the map controls, so the panels below can be read while stepping.
+// Floating month stepper, always on screen: the same steps as the map controls, so every panel can be read while stepping.
 function fnavUpdate() {
   const n = App.grid.months.length;
   $("fnav-month").textContent = $("tm-month").textContent;
@@ -248,10 +248,9 @@ function fnavInit() {
     const n = App.grid.months.length, s = Number(b.dataset.step);
     tmGo(Math.max(0, Math.min(n - 1, TM.idx + s)));  // a year step stops at the first or last month
   });
-  let controlsVisible = true;
-  const show = () => { nav.hidden = controlsVisible || mode() === "home" || !App.grid; };
-  new IntersectionObserver(([en]) => { controlsVisible = en.isIntersecting; show(); })
-    .observe(document.querySelector(".tm-controls"));
+  // Always shown outside the home screen (hidden there and in print).
+  const show = () => { nav.hidden = mode() === "home"; };
+  show();
   new MutationObserver(show).observe(document.body, { attributes: true, attributeFilter: ["data-mode"] });
 }
 
