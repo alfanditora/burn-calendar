@@ -158,7 +158,9 @@ function tmBuildBase() {
 
 // Static overlay for the selected area, from the grid's per-area cell mask (cells touching the outline).
 function tmBuildOverlay() {
-  const g = App.grid, K = TM.K, v = TM.view, mask = (g.areas || {})[App.areaId];
+  // The selected province (any-province view) if there is one, else the selected area.
+  const g = App.grid, K = TM.K, v = TM.view;
+  const mask = (typeof provinceMask === "function" && provinceMask()) || (g.areas || {})[App.areaId];
   TM.overlay = null;
   if (!mask) return;
   const o = document.createElement("canvas");
@@ -220,6 +222,7 @@ function tmGo(i) {
   document.querySelector(`#calendar td[data-y="${y}"][data-m="${m}"]`)?.classList.add("now");
   if (typeof updateViewLink === "function") updateViewLink();
   if (typeof seasonOnMonth === "function") seasonOnMonth();
+  if (typeof provinceOnMonth === "function") provinceOnMonth();
   const note = (MOMENTS[App.areaId] || {})[g.months[TM.idx]];
   if (note && TM.playing) tmMoment(`★ ${note}`);
 }
@@ -357,16 +360,19 @@ function tmHover(ev) {
   const month = Number(g.months[TM.idx].split("-")[1]);
   const an = cellAnomaly(TM.idx), a = an.n >= MIN_BASE_YEARS ? an.cells.get(cell) : null; // cached per month
   const kind = a ? burnKindText(a, month) : "";
+  const pv = typeof Prov !== "undefined" && Prov.data[App.gridRegion];
+  const pk = place.name && pv ? pv.names.indexOf(place.name) : -1;
+  const open = pk >= 0 && featuredFor(place.name) !== App.areaId ?`<br>📍 Tap or click for the ${place.name} view` : "";
   const cause = "<span class=\"muted\">Satellites see heat, not the cause: wildfire, farm burning or land clearing look alike.</span>";
   if (TM.layer === "unusual") {
     if (!a) { tip.hidden = true; return; }
     if (burnKind(a) === "more" && (a.med < 1 || a.v >= 2 * a.med) && cellInArea(cell)) award("pattern_spotter");
-    tip.innerHTML = `<b>${fmt(a.v)} hotspot${fmt(a.v) === "1" ? "" : "s"}</b>, usually ${fmt(a.med)} (${a.ex >= 0 ? "+" : ""}${fmt(a.ex)})<br>${kind}<br>${near}<br>${cause}`;
+    tip.innerHTML = `<b>${fmt(a.v)} hotspot${fmt(a.v) === "1" ? "" : "s"}</b>, usually ${fmt(a.med)} (${a.ex >= 0 ? "+" : ""}${fmt(a.ex)})<br>${kind}<br>${near}${open}<br>${cause}`;
   } else {
     const f = TM.fires.find(([c]) => c === cell);
     if (!f) { tip.hidden = true; return; }
     const flame = TM.flames && TM.flames.has(cell) ? "<br>🔥 One of the busiest places on the map this month." : "";
-    tip.innerHTML = `<b>${fmt(f[1])} hotspot${fmt(f[1]) === "1" ? "" : "s"}</b> this month${flame}${kind ? `<br>${kind}` : ""}<br>${near}<br>${cause}`;
+    tip.innerHTML = `<b>${fmt(f[1])} hotspot${fmt(f[1]) === "1" ? "" : "s"}</b> this month${flame}${kind ? `<br>${kind}` : ""}<br>${near}${open}<br>${cause}`;
   }
   tip.hidden = false;
   tip.style.left = `${Math.min(window.innerWidth - 270, ev.clientX + 12)}px`;

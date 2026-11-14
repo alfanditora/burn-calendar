@@ -92,11 +92,6 @@ function go(target) {
   (mode() === "analyst" ? $("view-lab") : document.querySelector(".tabs")).scrollIntoView(smooth);
 }
 
-function renderRegions() {
-  $("regions").innerHTML = App.index.map((a) =>
-    `<button type="button" data-id="${a.area_id}" aria-pressed="${a.area_id === App.areaId}">${a.name}</button>`).join("");
-}
-
 async function main() {
   const q = new URLSearchParams(location.search);
   // Show the right screen at once, before the data arrives.
@@ -123,6 +118,7 @@ async function main() {
   $("regions").addEventListener("click", (e) => {
     const b = e.target.closest("button[data-id]");
     if (!b) return;
+    Prov.sel = null; // a featured area replaces the province view
     loadArea(b.dataset.id);
     if (isDrawer()) { closeMenu(); $("map-panel").scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" }); }
   });
@@ -147,10 +143,12 @@ async function main() {
     setMode("explore");
   });
   tmInit();
+  provinceInit();
+  await provinceLoad();
   seasonInit();
   storyInit();
   labInit();
-  onAreaChange(renderRegions);
+  onAreaChange(renderRegionGroups);
   onAreaChange(tmOnArea);
   onAreaChange(storyOnArea);
   onAreaChange(labOnArea);

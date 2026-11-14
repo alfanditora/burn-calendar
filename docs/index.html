@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=11">
+  <link rel="stylesheet" href="styles.css?v=12">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -86,6 +86,7 @@
         <span class="muted small" id="side-xptext"></span>
       </div>
       <p class="side-title">📍 AREA</p>
+      <p class="muted small side-hint">Featured areas have the full analysis. Pick any province, or tap it on the map.</p>
       <nav class="regions" id="regions" aria-label="Choose an area"></nav>
       <p class="side-title">🧭 EXPLORE</p>
       <nav class="side-nav" aria-label="Sections">
@@ -153,6 +154,21 @@
       a place's normal is more likely uncontrolled, but the cause cannot be confirmed from space · usual = median of the
       same month in earlier years · white frames = top 5 unusual places</span>
     </div>
+  </section>
+
+  <!-- Any-province view: opened from the area list or by tapping the map -->
+  <section class="panel province-panel" id="province-panel" aria-labelledby="prov-title" hidden>
+    <div class="prov-head">
+      <div><p class="kicker">Province view · counts only</p><h2 id="prov-title"></h2></div>
+      <div class="prov-actions">
+        <button type="button" class="px-btn small" id="prov-featured" hidden>Open full analysis →</button>
+        <button type="button" class="px-btn small analyst-only" id="prov-csv">⬇ CSV</button>
+        <button type="button" class="px-btn small" id="prov-close" aria-label="Close province view">✕</button>
+      </div>
+    </div>
+    <div id="prov-now"></div>
+    <div id="prov-charts"></div>
+    <p class="muted small" id="prov-note"></p>
   </section>
 
   <!-- This season: tracker, fire season, early signal, unusual places, brief / what to do -->
@@ -287,14 +303,15 @@
     <form method="dialog"><button class="px-btn">CLOSE</button></form>
   </dialog>
 
-  <script src="js/core.js?v=11"></script>
-  <script src="js/sprites.js?v=11"></script>
-  <script src="js/map.js?v=11"></script>
-  <script src="js/games.js?v=11"></script>
-  <script src="js/story.js?v=11"></script>
-  <script src="js/lab.js?v=11"></script>
-  <script src="js/season.js?v=11"></script>
-  <script src="js/share.js?v=11"></script>
-  <script src="js/main.js?v=11"></script>
+  <script src="js/core.js?v=12"></script>
+  <script src="js/sprites.js?v=12"></script>
+  <script src="js/map.js?v=12"></script>
+  <script src="js/games.js?v=12"></script>
+  <script src="js/story.js?v=12"></script>
+  <script src="js/lab.js?v=12"></script>
+  <script src="js/season.js?v=12"></script>
+  <script src="js/province.js?v=12"></script>
+  <script src="js/share.js?v=12"></script>
+  <script src="js/main.js?v=12"></script>
 </body>
 </html>

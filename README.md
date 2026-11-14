@@ -18,6 +18,14 @@ redeploys it on every push to `main`).
 
 ![Burn Calendar: the Fire Time Machine on September 2015](docs/screenshots/hero-indonesia-2015.png)
 
+**Areas.** Four featured areas get the full analysis: Indonesia (whole country), two focus provinces (Riau: haze
+from peat fires; Central Kalimantan: the 2015 and 2019 peat crises) and Northern Australia (savanna burning, for
+comparison). Any other province or state can be opened from the area list or by tapping it on the map: the
+province view shows its monthly hotspots, how this month compares with usual, its rank among provinces, its typical
+year and its yearly totals. It uses the country's (or Northern Australia's) conversion factor, and leaves out
+"usual" and busiest-month figures when the busiest month usually has fewer than 10 hotspots
+(`PROVINCE_MIN_PEAK_MEDIAN`), because one or two fires would swing every percentage.
+
 Deep links work too, e.g. `?mode=analyst&area=riau&month=2015-09` or `?mode=explore&area=riau&tab=story`. More screenshots are in `docs/screenshots/`.
 
 ## Run it
@@ -53,6 +61,7 @@ The FIRMS API key, if it is used, is read from the `FIRMS_MAP_KEY` environment v
 | Insights | `pipeline/insights.py` | Fire-season months, busiest months, and the early-signal hindcast (does an above-normal run-up predict an above-normal peak?) |
 | Export | `pipeline/export.py` | `monthly_counts.csv`, `areas/{id}.json` + `.csv`, `areas/index.json` |
 | Pixel map | `pipeline/grid.py` | Harmonized counts per 0.25° cell and month + land mask + province name per cell, `grid/{region}.json` for the Time Machine |
+| Provinces | `pipeline/grid.py` | Monthly harmonized hotspots per province/state (point in outline, same points and factor as the area), `grid/{region}_provinces.json`; provinces add up to the area total |
 
 ### Notes on the monthly_counts table
 
@@ -138,6 +147,20 @@ normal = at least +15%. Settings are in `config.py`.
   was not made to improve the numbers. In the app, the counts shown for a year leave that year out.
 - This is a historical pattern from ~20 years, not a forecast model; it ignores weather and climate drivers.
 
+## Future development
+
+- **AI plain-language situation brief.** Today the brief is a template filled from the computed numbers, so every
+  figure is traceable. Next: generate a plain-language version at build time (not in the browser, so no API key is
+  exposed), check automatically that every number in it appears in the template brief (the build fails otherwise),
+  label it as AI-written next to the template figures, and list it under "Use of SI tools".
+- **Full analysis for every province.** The province view now covers all provinces with counts only. Next: run the
+  whole pipeline per province (own MODIS→VIIRS factor where the link is stable, parent fallback otherwise, validation,
+  season and early-signal hindcast), with the minimum-hotspot rule for small provinces, and current
+  province borders (Natural Earth has 33 Indonesian provinces: no North Kalimantan, split off in 2012, and none of
+  the 2022 Papua provinces; Indonesia now has 38).
+- **Cause context.** Land-cover (MODIS MCD12Q1) and peatland overlays to separate likely farm burning from forest
+  and peat fires.
+
 ## Limits
 
 - Converted counts are estimates; a single ratio per area cannot capture every seasonal or regional difference.
@@ -148,6 +171,10 @@ normal = at least +15%. Settings are in `config.py`.
 - Burn Calendar is a monthly record for planning and research, not a live alert system; for active fires use the
   NASA FIRMS Fire Map.
 - The early signal is a historical pattern over about 20 years, not a forecast.
+- The province view uses Natural Earth's 33 Indonesian provinces (North Kalimantan is inside East Kalimantan; Papua
+  before the 2022 split) and the country's
+  conversion factor, not a per-province one; outlines are simplified to about 2 km, so hotspots right on a provincial
+  border can land in the neighbour.
 - Borders come from Natural Earth 1:10m; Northern Australia is defined as Australian land north of 20°S (121–146°E).
 - The latest months use near-real-time data, which FIRMS replaces with standard data after about 5 months.
 - Static sources are removed with FIRMS type flags (standard data) and a 0.05° mask (near-real-time data).

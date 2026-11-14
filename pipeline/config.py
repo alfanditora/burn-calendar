@@ -118,3 +118,11 @@ MIN_BASELINE_YEARS = 5              # an anomaly needs at least this many earlie
 PERMUTATIONS = 10000                # permutation test for the early-signal correlation (seed 0)
 # Province / state names for map cells (Indonesia and Australia), built by pipeline/regions.py.
 ADMIN1_GEOJSON = ROOT / "data" / "external" / "admin1.geojson"
+
+# --- Any-province view (web map) ----------------------------------------------
+# Monthly hotspots per province/state, from the same harmonized points as the area calendar
+# (the country/region factor, no per-province factor). Only these countries per map region.
+PROVINCE_COUNTRY = {"indonesia": "IDN", "north_australia": "AUS"}
+# A province's "usual" and busiest-months statistics are shown only if its busiest month usually
+# (median) has at least this many hotspots; below that one or two fires swing every percentage.
+PROVINCE_MIN_PEAK_MEDIAN = 10

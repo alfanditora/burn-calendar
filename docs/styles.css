@@ -482,3 +482,22 @@ pre.code, .share-link code {
   body.print-brief .brief-actions { display: none; }
 }
 @media (max-width: 560px) { .utable th:nth-child(3), .utable td:nth-child(3) { display: none; } }
+
+/* Grouped area list and the any-province view */
+.region-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+.rg-title { font: 0.44rem/1.6 var(--title); color: var(--hi); margin: 4px 0 0; }
+.rg-sub { font-size: 0.8rem; color: var(--muted); margin: 4px 0 0 4px; }
+.regions button small { display: block; font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+.regions button[aria-pressed="true"] small { color: #e6f4e4; }
+.prov-select { font: inherit; font-size: 0.9rem; padding: 6px; background: var(--panel2); color: inherit; border: 2px solid #c9b08a; width: 100%; }
+.side-hint { margin: -4px 0 8px; }
+.prov-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+.prov-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.prov-big { font-size: 1.05rem; }
+.province-panel h3 { font: 0.46rem/1.7 var(--title); color: var(--hi); margin: 14px 0 6px; }
+.ybars { display: flex; align-items: flex-end; gap: 2px; height: 70px; margin: 6px 0 2px; }
+.ybar { flex: 1; height: 100%; display: flex; align-items: flex-end; }
+.ybar i { display: block; width: 100%; background: var(--fire2); }
+.ybar.part i { background: #c9b08a; }
+.ybar.now i { background: #1e88e5; }
+.ylabels { display: flex; justify-content: space-between; margin: 0; }
