@@ -33,6 +33,7 @@ async function main() {
   });
   for (const t of ["play", "story", "lab"]) $(`tab-${t}`).addEventListener("click", () => showTab(t));
   $("hud-badges").addEventListener("click", () => { renderBadgeList(); $("badge-dialog").showModal(); });
+  $("hud-share").addEventListener("click", shareCard);
   window.addEventListener("scroll", () => { $("tip").hidden = true; }, { passive: true });
 
   tmInit();
@@ -44,7 +45,12 @@ async function main() {
   onAreaChange(labOnArea);
   onAreaChange(() => { if (!$("game-stage").hidden) closeStage(); });
   renderHub();
-  await loadArea(App.index[0].area_id);
+  // Deep links: ?area=riau&month=2015-09&tab=story
+  const q = new URLSearchParams(location.search);
+  const start = App.index.find((a) => a.area_id === q.get("area")) || App.index[0];
+  await loadArea(start.area_id);
+  if (q.get("month") && App.grid.months.includes(q.get("month"))) tmGo(App.grid.months.indexOf(q.get("month")));
+  if (["play", "story", "lab"].includes(q.get("tab"))) showTab(q.get("tab"));
   // Redraw canvas text once the pixel font has loaded.
   document.fonts?.ready.then(() => { if (App.area) drawRelayChart(); });
 }

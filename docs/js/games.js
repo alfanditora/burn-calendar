@@ -36,6 +36,7 @@ function stage(html) {
   s.hidden = false;
   s.innerHTML = html;
   s.querySelector("[data-close]")?.addEventListener("click", closeStage);
+  s.querySelector("[data-share]")?.addEventListener("click", shareCard);
   s.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
   return s;
 }
@@ -116,7 +117,7 @@ function hlOver() {
   stage(`<div class="stage-head">${backBtn}</div>
     <p class="kicker">Game over</p><p class="question">Best streak: <b>${HL.best}</b> · +${HL.xp} XP</p>
     <p class="muted">Data: NASA FIRMS, harmonized to NOAA-20 units.</p>
-    <button type="button" class="px-btn primary" id="hl-again">PLAY AGAIN</button>`);
+    <button type="button" class="px-btn primary" id="hl-again">PLAY AGAIN</button> <button type="button" class="px-btn" data-share>📤 SHARE</button>`);
   $("hl-again").addEventListener("click", hlStart);
 }
 
@@ -167,7 +168,7 @@ function spotOver() {
   stage(`<div class="stage-head">${backBtn}</div>
     <p class="kicker">Result</p><p class="question">You spotted <b>${SPOT.right} of 3</b> disaster years · +${SPOT.xp} XP</p>
     <p class="muted">Big fire years often follow drought, for example during El Niño. Explore them in the Time Machine above.</p>
-    <button type="button" class="px-btn primary" id="spot-again">PLAY AGAIN</button>`);
+    <button type="button" class="px-btn primary" id="spot-again">PLAY AGAIN</button> <button type="button" class="px-btn" data-share>📤 SHARE</button>`);
   $("spot-again").addEventListener("click", spotStart);
 }
 
@@ -180,7 +181,7 @@ async function questMenu() {
     <div class="levels">${levels.map((a, i) => {
       const st = Player.data.stars[a.area_id] || 0;
       return `<button type="button" class="pick" data-id="${a.area_id}"><span class="kicker">LEVEL ${i + 1}</span>
-        <span class="big-num" style="font-size:0.65rem">${a.name}</span><span class="stars">${"★".repeat(st)}${"☆".repeat(3 - st)}</span></button>`;
+        <span class="big-num" style="font-size:0.52rem">${a.name}</span><span class="stars">${"★".repeat(st)}${"☆".repeat(3 - st)}</span></button>`;
     }).join("")}</div>`);
   s.querySelectorAll(".pick").forEach((b) => b.addEventListener("click", () => questLevel(b.dataset.id)));
 }
@@ -273,6 +274,6 @@ function normalOver() {
   stage(`<div class="stage-head">${backBtn}</div>
     <p class="kicker">Result</p><p class="question"><b>${NN.right} of 10</b> · rank: <b>${rank}</b> · +${NN.xp} XP</p>
     <p class="muted">"Usual" is the median of the same month in all earlier complete years.</p>
-    <button type="button" class="px-btn primary" id="nn-again">PLAY AGAIN</button>`);
+    <button type="button" class="px-btn primary" id="nn-again">PLAY AGAIN</button> <button type="button" class="px-btn" data-share>📤 SHARE</button>`);
   $("nn-again").addEventListener("click", normalStart);
 }

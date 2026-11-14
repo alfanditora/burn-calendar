@@ -71,7 +71,12 @@ class RateGuard:
             if self.calls % 10:
                 return
             while True:
-                s = self.status()
+                try:
+                    s = self.status()
+                except requests.RequestException as e:  # a failed check should not fail a chunk
+                    print(f"  usage check failed ({type(e).__name__}); waiting 30 s", flush=True)
+                    time.sleep(30)
+                    return
                 left = s["transaction_limit"] - s["current_transactions"]
                 if left > LIMIT_MARGIN:
                     return

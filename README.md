@@ -4,12 +4,16 @@ NASA Space Apps 2026: *Harmonization of MODIS and VIIRS Hot Spots*.
 
 Burn Calendar joins NASA FIRMS active-fire hotspots from three sensors (MODIS, VIIRS Suomi NPP,
 VIIRS NOAA-20) into one monthly record in **NOAA-20-equivalent hotspots per month**, then shows it
-as a burning-activity calendar with an anomaly badge, a Mann-Kendall trend test and a CSV download.
+as a pixel-art **Fire Atlas**: a time machine map of 25 years of fire seasons, four games, a story of the
+satellite handover, and a Data Lab with the burning-activity calendar, anomaly badge, Mann-Kendall trend test and
+CSV download.
 
 **Live app:** https://alfanditora.github.io/burn-calendar/ (the static site lives in `docs/` and GitHub Pages
 redeploys it on every push to `main`).
 
-> Work in progress. Method details, limits and validation results will be filled in from the real run.
+![Burn Calendar: the Fire Time Machine on September 2015](docs/screenshots/hero-indonesia-2015.png)
+
+Deep links work too, e.g. `?area=riau&month=2015-09&tab=story`. More screenshots are in `docs/screenshots/`.
 
 ## Run it
 
@@ -48,6 +52,43 @@ NOAA-20 units. `source_used` names the sensor chosen for the month (NOAA-20, els
 so the row where `sensor == source_used` is the calendar value. `pct_rank_within_sensor` is the
 percentile fallback, which ranks a month within the same calendar month of its own sensor.
 
+## Results (run of Nov 14, 2026)
+
+Calibration factors and hold-out validation error (monthly MAPE / yearly error, last two full overlap years held out):
+
+| Area | MODIS → Suomi NPP | Validation | Suomi NPP → NOAA-20 | Validation | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Indonesia region | 5.14 | 22.1% / 10.9% | 1.01 | 7.7% / 6.6% | drift 2.5% |
+| Riau region, Indonesia | 4.90 | 70.2% / 40.1% | 1.03 | 11.8% / 12.0% | drift 29.1%, fitted on 2012–2018, unstable (percentile fallback offered) |
+| Central Kalimantan region, Indonesia | 4.86 | 39.0% / 22.0% | 0.99 | 15.5% / 5.7% | drift 8.0% |
+| Northern Australia | 4.53 | 12.0% / 8.4% | 0.99 | 5.7% / 6.4% | drift 1.5% |
+
+- VIIRS detects about **4.5–5.1× more hotspots than MODIS** over the same land, and the two VIIRS sensors agree within
+  about 3%. The factors are close in two very different fire regimes: Indonesian peat and forest clearing, and
+  Australian savanna burning. That supports one conversion chain for both.
+- Riau is the weak case: its fire counts dropped about tenfold after 2015, so yearly ratios are noisy. The drift check fired and
+  the link is flagged unstable; the app shows this and offers per-sensor percentile ranks.
+
+Trend (Mann-Kendall on yearly totals 2001–2025) and the latest complete month (Oct 2026, near-real-time data):
+
+| Area | Long-term trend | Oct 2026 vs median of earlier Octobers |
+| --- | --- | --- |
+| Indonesia region | falling (p = 0.013, Sen's slope -13,004/yr) | Well above normal (+516%) |
+| Riau region, Indonesia | falling (p = 0.005, Sen's slope -2,192/yr) | Well above normal (+86%) |
+| Central Kalimantan region, Indonesia | falling (p = 0.014, Sen's slope -2,639/yr) | Well above normal (+1282%) |
+| Northern Australia | no clear trend (p = 0.944, Sen's slope -229/yr) | Below normal (-28%) |
+
+All three sensors independently show the 2026 Indonesian fire season (Aug–Oct); October 2026 is the highest October
+since 2015. The largest year in the record is 2015 (the Southeast Asian haze crisis).
+
+## Limits
+
+- Converted counts are estimates; a single ratio per area cannot capture every seasonal or regional difference.
+- Hotspots are fire detections, not burned area. Small, short or cloud-covered fires can be missed.
+- Areas are bounding boxes, so they include some land beyond the named region.
+- The latest months use near-real-time data, which FIRMS replaces with standard data after about 5 months.
+- Static sources are removed with FIRMS type flags (standard data) and a 0.05° mask (near-real-time data).
+
 ## Decisions and differences from the plan
 
 - **The area API now allows at most 5 days per call** (`Invalid day range. Expects [1..5]`, checked
@@ -85,7 +126,7 @@ Libraries (open source)
 
 Other data and assets
 - Natural Earth 1:50m land polygons (public domain): https://www.naturalearthdata.com/, for the pixel map land mask
-- Fonts: Press Start 2P (CodeMan38) and Pixelify Sans (Stefie Justprince), SIL Open Font License, served by Google Fonts
+- Fonts: Press Start 2P (CodeMan38) and VT323 (Peter Hull), SIL Open Font License, served by Google Fonts
 - Pixel sprites (flames, satellites, icons) are drawn in code in `docs/js/sprites.js`; no external images are used
 
 ## Use of SI tools
