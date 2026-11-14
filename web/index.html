@@ -1,0 +1,70 @@
+<!doctype html>
+<!-- Generated with assistance from Claude Code (Anthropic), reviewed by the team. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Burn Calendar</title>
+  <meta name="description" content="A harmonized MODIS + VIIRS fire hotspot calendar, 2001 to now.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <div>
+      <h1>Burn Calendar</h1>
+      <p class="tagline">When and where fires burn: one consistent record from three satellite sensors, 2001 to now.</p>
+    </div>
+  </header>
+
+  <section class="controls" aria-label="Choose area and years">
+    <label>Area
+      <select id="area"></select>
+    </label>
+    <label>From
+      <select id="from"></select>
+    </label>
+    <label>To
+      <select id="to"></select>
+    </label>
+    <button id="download" type="button">Download CSV</button>
+  </section>
+
+  <main>
+    <div class="row">
+      <div id="map" class="card" aria-label="Map of available areas"></div>
+      <div class="side">
+        <article class="card" id="anomaly" aria-live="polite"></article>
+        <article class="card" id="trend" aria-live="polite"></article>
+      </div>
+    </div>
+
+    <section class="card">
+      <div class="cal-head">
+        <h2>Burning-activity calendar</h2>
+        <div id="legend" class="legend"></div>
+      </div>
+      <p class="unit" id="unit"></p>
+      <div class="cal-scroll"><table id="calendar" class="calendar"></table></div>
+      <p class="hint">Each cell is one month. Hover or tap a cell for the count, the sensor it comes from and how it compares with the median of earlier years.</p>
+    </section>
+
+    <section class="card">
+      <details id="method">
+        <summary><h2>Method, validation and limits</h2></summary>
+        <div id="method-body"></div>
+      </details>
+    </section>
+  </main>
+
+  <footer>
+    Data: NASA FIRMS (MODIS, VIIRS). Hotspot counts are harmonized to NOAA-20 VIIRS units by Burn Calendar; they are estimates, not burned area.
+    Map tiles © OpenStreetMap contributors.
+  </footer>
+
+  <div id="tip" class="tip" role="tooltip" hidden></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

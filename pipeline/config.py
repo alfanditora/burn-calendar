@@ -11,14 +11,16 @@ ROOT = Path(__file__).resolve().parent.parent
 RAW_DIR = ROOT / "data" / "raw"
 PROCESSED_DIR = ROOT / "data" / "processed"
 SAMPLE_DIR = ROOT / "data" / "sample"
+WEB_DATA_DIR = ROOT / "web" / "data"     # run_all copies areas/ here for the static site
 
 # --- Areas -------------------------------------------------------------------
 # bbox = [west, south, east, north] in degrees.
-# PLACEHOLDERS: confirm these boxes with the team before the first real run.
+# Boxes, not borders: each area includes some land beyond the named region (labelled
+# "region" in the app). Real borders are an optional day-2 upgrade (only bin.py changes).
 AREAS = {
-    "indonesia": {"name": "Indonesia", "bbox": [95.0, -11.0, 141.0, 6.0]},
-    "riau": {"name": "Riau, Indonesia", "bbox": [100.0, -1.2, 104.0, 2.9]},
-    "central_kalimantan": {"name": "Central Kalimantan, Indonesia", "bbox": [110.7, -3.6, 116.0, 0.8]},
+    "indonesia": {"name": "Indonesia region", "bbox": [95.0, -11.0, 141.0, 6.0]},
+    "riau": {"name": "Riau region, Indonesia", "bbox": [100.0, -1.2, 104.0, 2.9]},
+    "central_kalimantan": {"name": "Central Kalimantan region, Indonesia", "bbox": [110.7, -3.6, 116.0, 0.8]},
     # Outside Indonesia, to show the method generalises: Top End, Kimberley, Gulf country, Cape York.
     "north_australia": {"name": "Northern Australia", "bbox": [121.0, -20.0, 146.0, -10.5]},
 }

@@ -1,0 +1,82 @@
+/* Generated with assistance from Claude Code (Anthropic), reviewed by the team. */
+:root {
+  --bg: #f7f5f2;
+  --card: #ffffff;
+  --text: #1f1d1a;
+  --muted: #6b6560;
+  --line: #e4dfd8;
+  --zero: #efece7;
+  --accent: #b5361b;
+  --normal: #4a6a8a;
+  --below: #2f7d6d;
+  --above: #c2571a;
+  --well-above: #9b1c1c;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161412; --card: #201d1a; --text: #f0ebe4; --muted: #a59d94;
+    --line: #36312c; --zero: #2b2724;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.top, .controls, main, footer { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+.top { padding-top: 20px; }
+h1 { margin: 0; font-size: 1.8rem; letter-spacing: -0.01em; }
+h2 { margin: 0; font-size: 1.1rem; display: inline; }
+.tagline { margin: 4px 0 0; color: var(--muted); }
+
+.controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; margin-top: 16px; margin-bottom: 16px; }
+.controls label { display: flex; flex-direction: column; font-size: 0.8rem; color: var(--muted); gap: 4px; }
+select, button {
+  font: inherit; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--card); color: var(--text);
+}
+button { background: var(--accent); border-color: var(--accent); color: #fff; cursor: pointer; }
+button:hover { filter: brightness(1.08); }
+
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+.row { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; }
+.side { display: flex; flex-direction: column; }
+.side .card { flex: 1; }
+#map { min-height: 300px; padding: 0; overflow: hidden; }
+@media (max-width: 760px) { .row { grid-template-columns: 1fr; } }
+
+.badge { display: inline-block; padding: 4px 12px; border-radius: 999px; color: #fff; font-weight: 600; }
+.badge.normal { background: var(--normal); }
+.badge.below { background: var(--below); }
+.badge.above { background: var(--above); }
+.badge.well-above { background: var(--well-above); }
+.badge.none { background: var(--muted); }
+.big { font-size: 1.6rem; font-weight: 700; margin: 8px 0 2px; }
+.muted, .unit, .hint { color: var(--muted); font-size: 0.85rem; }
+.kicker { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 0 0 6px; }
+
+.cal-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; align-items: center; }
+.cal-scroll { overflow-x: auto; }
+.calendar { border-collapse: separate; border-spacing: 2px; margin-top: 8px; font-size: 0.75rem; }
+.calendar th { font-weight: 500; color: var(--muted); padding: 0 4px; }
+.calendar th.year { text-align: right; padding-right: 8px; }
+.calendar td.cell { width: 34px; min-width: 26px; height: 18px; border-radius: 3px; cursor: default; }
+.calendar td.cell.zero { background: var(--zero); }
+.calendar td.cell.missing { background: transparent; border: 1px dashed var(--line); }
+.calendar td.cell:hover, .calendar td.cell:focus { outline: 2px solid var(--text); outline-offset: -1px; }
+.calendar td.total { padding-left: 10px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.calendar td.sensor { padding-left: 8px; color: var(--muted); white-space: nowrap; }
+
+.legend { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--muted); }
+.legend .ramp { display: flex; }
+.legend .ramp span { width: 22px; height: 12px; }
+
+.tip {
+  position: fixed; z-index: 1000; pointer-events: none; background: var(--text); color: var(--bg);
+  padding: 6px 10px; border-radius: 6px; font-size: 0.8rem; max-width: 260px;
+}
+
+#method-body table { border-collapse: collapse; margin: 8px 0; font-size: 0.85rem; }
+#method-body td, #method-body th { border-bottom: 1px solid var(--line); padding: 4px 10px 4px 0; text-align: left; }
+summary { cursor: pointer; }
+footer { color: var(--muted); font-size: 0.8rem; padding-bottom: 32px; }
