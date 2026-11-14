@@ -1,3 +1,4 @@
+# Generated with assistance from Claude Code (Anthropic), reviewed by the team.
 """Rebuild every output from data/raw in one command:  python pipeline/run_all.py"""
 import argparse
 import sys
@@ -10,8 +11,8 @@ from pipeline import config, export, load  # noqa: E402
 
 
 def run(raw_dir=None, out_dir=None, areas=None):
-    cleaned, raw = load.load_all(raw_dir)
-    print(f"Loaded {len(raw):,} raw rows, kept {len(cleaned):,} after cleaning.")
+    cleaned, raw_stats = load.load_all(raw_dir)
+    print(f"Loaded {raw_stats['rows'].sum():,} raw rows, kept {len(cleaned):,} after cleaning.")
     print(load.summarize(cleaned).to_string(index=False))
 
     counts = binning.monthly_counts(cleaned, areas)

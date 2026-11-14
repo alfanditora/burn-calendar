@@ -1,3 +1,4 @@
+# Generated with assistance from Claude Code (Anthropic), reviewed by the team.
 """Count cleaned hotspots per area, sensor and month (and per grid cell for the map).
 
 A month counts for a sensor only if the whole month is covered, both by the sensor's
@@ -15,7 +16,7 @@ def covered_months(df, coverage=None):
     coverage = coverage or config.SENSOR_COVERAGE
     out = {}
     for sensor in config.SENSORS:
-        dates = df.loc[df["sensor"] == sensor, "acq_date"]
+        dates = df.loc[df["sensor"].astype(str) == sensor, "acq_date"]
         if dates.empty:
             out[sensor] = []
             continue
@@ -42,7 +43,7 @@ def monthly_counts(df, areas=None, coverage=None):
 
     rows = []
     for area_id, area in areas.items():
-        counts = df[in_bbox(df, area["bbox"])].groupby(["sensor", "year", "month"]).size()
+        counts = df[in_bbox(df, area["bbox"])].groupby(["sensor", "year", "month"], observed=True).size()
         for sensor, ym in months.items():
             for year, month in ym:
                 rows.append((area_id, year, month, sensor, int(counts.get((sensor, year, month), 0))))
@@ -59,6 +60,6 @@ def grid_counts(df, grid_deg=None):
         month=df["acq_date"].dt.month,
     )
     return (
-        cells.groupby(["cell_lat", "cell_lon", "sensor", "year", "month"])
+        cells.groupby(["cell_lat", "cell_lon", "sensor", "year", "month"], observed=True)
         .size().rename("raw_count").reset_index()
     )

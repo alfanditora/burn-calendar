@@ -1,3 +1,4 @@
+# Generated with assistance from Claude Code (Anthropic), reviewed by the team.
 """Trend (Mann-Kendall + Sen's slope) and anomaly vs the median of earlier years."""
 import numpy as np
 import pandas as pd

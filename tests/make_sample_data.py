@@ -1,3 +1,4 @@
+# Generated with assistance from Claude Code (Anthropic), reviewed by the team.
 """Generate SYNTHETIC FIRMS-like CSVs in data/sample/ for tests. Never shown in the app.
 
 Ground truth, built in so tests can check exact answers:

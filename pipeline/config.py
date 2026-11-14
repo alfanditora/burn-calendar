@@ -1,3 +1,4 @@
+# Generated with assistance from Claude Code (Anthropic), reviewed by the team.
 """Every choice that changes results lives here, and is copied into the method notes.
 
 Change a value here, rerun `python pipeline/run_all.py`, and every output follows.
@@ -21,10 +22,28 @@ AREAS = {
     # Second region outside Indonesia: still to be chosen by the team.
 }
 
+# --- Download (pipeline/fetch_firms.py) ----------------------------------------
+# One box covering every area above; all areas are cut from this single download.
+FETCH_BBOX = [95.0, -11.0, 141.0, 6.0]
+# (standard source, NRT source used only after the last standard date)
+FETCH_SOURCES = [
+    ("MODIS_SP", "MODIS_NRT"),
+    ("VIIRS_SNPP_SP", "VIIRS_SNPP_NRT"),
+    ("VIIRS_NOAA20_SP", "VIIRS_NOAA20_NRT"),
+]
+
 # --- Cleaning ----------------------------------------------------------------
 MODIS_MIN_CONFIDENCE = 30           # MODIS confidence is 0-100; keep >= this
 VIIRS_KEEP_CONFIDENCE = {"n", "h"}  # VIIRS confidence is l / n / h; keep nominal + high
 KEEP_DAYNIGHT = {"D", "N"}          # same day/night rule for every sensor
+
+# Non-vegetation sources. FIRMS standard (SP) files have a `type` column:
+# 0 = presumed vegetation fire, 1 = active volcano, 2 = other static land source
+# (e.g. gas flares, industry), 3 = offshore. We keep type 0 only. NRT files have no
+# `type`, so an NRT detection is dropped if it falls in a cell where SP data ever
+# flagged a type 1/2/3 source. Same rule for every sensor, so the chain stays consistent.
+KEEP_FIRE_TYPES = {0}
+STATIC_MASK_DEG = 0.05              # ~5 km cells for the NRT static-source mask
 
 # --- Binning -----------------------------------------------------------------
 GRID_DEG = 0.25                     # cell size for the map layer

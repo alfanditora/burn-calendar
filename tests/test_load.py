@@ -1,3 +1,5 @@
+# Generated with assistance from Claude Code (Anthropic), reviewed by the team.
+import numpy as np
 import pandas as pd
 import pytest
 
@@ -5,18 +7,19 @@ from pipeline import load
 
 
 def test_sensors_and_products(sample_loaded):
-    cleaned, raw = sample_loaded
-    assert set(raw["sensor"]) == {"MODIS", "SNPP", "NOAA20"}
-    assert set(raw.loc[raw["source_file"].str.contains("nrt"), "product"]) == {"NRT"}
-    assert set(cleaned["sensor"]) == {"MODIS", "SNPP", "NOAA20"}
+    cleaned, raw_stats = sample_loaded
+    assert set(raw_stats["sensor"]) == {"MODIS", "SNPP", "NOAA20"}
+    nrt_files = cleaned.loc[cleaned["source_file"].astype(str).str.contains("nrt"), "product"]
+    assert set(nrt_files.astype(str)) == {"NRT"}
+    assert set(cleaned["sensor"].astype(str)) == {"MODIS", "SNPP", "NOAA20"}
 
 
 def test_low_confidence_dropped(sample_loaded):
-    cleaned, raw = sample_loaded
-    assert "l" not in set(cleaned.loc[cleaned["sensor"] != "MODIS", "confidence"])
-    modis_conf = pd.to_numeric(cleaned.loc[cleaned["sensor"] == "MODIS", "confidence"])
+    cleaned, raw_stats = sample_loaded
+    assert "l" not in set(cleaned.loc[cleaned["sensor"] != "MODIS", "confidence"].astype(str))
+    modis_conf = pd.to_numeric(cleaned.loc[cleaned["sensor"] == "MODIS", "confidence"].astype(str))
     assert modis_conf.min() >= 30
-    assert len(cleaned) < len(raw)
+    assert len(cleaned) < raw_stats["rows"].sum()
 
 
 def test_nrt_only_after_last_sp_date(sample_loaded):
@@ -52,3 +55,13 @@ def test_missing_columns_and_unknown_satellite(tmp_path):
                  "1,2,2020-01-01,ZZ,VIIRS,n,D\n")
     with pytest.raises(ValueError, match="unknown satellite"):
         load.read_raw_file(g)
+
+
+def test_static_sources_dropped_with_nrt_mask():
+    df = pd.DataFrame({
+        "latitude": [1.00, 1.01, 1.02, 3.0], "longitude": [101.00, 101.01, 101.02, 103.0],
+        "fire_type": [2, 0, np.nan, np.nan],   # flare (SP), vegetation (SP), NRT near flare, NRT elsewhere
+    })
+    out = load.drop_static(df, load.static_cells(df))
+    assert list(out["fire_type"].fillna(-1)) == [0, -1]
+    assert list(out["latitude"]) == [1.01, 3.0]

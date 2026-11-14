@@ -1,3 +1,4 @@
+# Generated with assistance from Claude Code (Anthropic), reviewed by the team.
 """Write monthly_counts.csv, one JSON + CSV per area, and an index for the web app."""
 import json
 from pathlib import Path

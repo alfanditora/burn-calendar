@@ -1,3 +1,4 @@
+# Generated with assistance from Claude Code (Anthropic), reviewed by the team.
 """List every file in data/raw and print its header and first row. Reads nothing else."""
 import csv
 import sys

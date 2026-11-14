@@ -1,3 +1,4 @@
+# Generated with assistance from Claude Code (Anthropic), reviewed by the team.
 """Fit the sensor links on overlap years, validate them, and build one NOAA-20-unit series.
 
 Ratio method: factor = sum(target counts) / sum(source counts) over the overlap months
