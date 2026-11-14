@@ -39,7 +39,8 @@ The FIRMS API key, if it is used, is read from the `FIRMS_MAP_KEY` environment v
 | Download | `pipeline/fetch_firms.py` | Area API in 5-day chunks for one box; resumable, rate-limit aware, SP first then NRT |
 | Settings | `pipeline/config.py` | Areas, thresholds, overlap years: every choice that changes results |
 | Load | `pipeline/load.py` | Normalise columns, map satellites to MODIS/SNPP/NOAA20, drop low confidence, prefer SP over NRT |
-| Bin | `pipeline/bin.py` | Monthly counts per area and sensor (zero-filled only in fully covered months); 0.25° grid |
+| Borders | `pipeline/regions.py` | Builds `data/external/regions.geojson` (real outlines) from Natural Earth 1:10m admin-1 |
+| Bin | `pipeline/bin.py` | Monthly counts per area (inside its real border) and sensor, zero-filled only in fully covered months |
 | Calibrate | `pipeline/calibrate.py` | Ratio factors on overlap years, drift check, stability, hold-out validation, harmonized series |
 | Trend | `pipeline/trend.py` | Mann-Kendall + Sen's slope (yearly and seasonal), anomaly vs median of earlier years |
 | Export | `pipeline/export.py` | `monthly_counts.csv`, `areas/{id}.json` + `.csv`, `areas/index.json` |
@@ -54,38 +55,43 @@ percentile fallback, which ranks a month within the same calendar month of its o
 
 ## Results (run of Nov 14, 2026)
 
-Calibration factors and hold-out validation error (monthly MAPE / yearly error, last two full overlap years held out):
+Areas are counted inside their real borders (Natural Earth 1:10m). Calibration factors and hold-out validation error
+(monthly MAPE / yearly error, last two full overlap years held out):
 
 | Area | MODIS → Suomi NPP | Validation | Suomi NPP → NOAA-20 | Validation | Notes |
 | --- | --- | --- | --- | --- | --- |
-| Indonesia region | 5.14 | 22.1% / 10.9% | 1.01 | 7.7% / 6.6% | drift 2.5% |
-| Riau region, Indonesia | 4.90 | 70.2% / 40.1% | 1.03 | 11.8% / 12.0% | drift 29.1%, fitted on 2012–2018, unstable (percentile fallback offered) |
-| Central Kalimantan region, Indonesia | 4.86 | 39.0% / 22.0% | 0.99 | 15.5% / 5.7% | drift 8.0% |
-| Northern Australia | 4.53 | 12.0% / 8.4% | 0.99 | 5.7% / 6.4% | drift 1.5% |
+| Indonesia | 5.10 | 19.9% / 10.5% | 1.01 | 8.2% / 6.8% | drift 3.4% |
+| Riau Province, Indonesia | 4.87 | 164.9% / 64.4% | 1.02 | 13.8% / 13.0% | drift 34.6%, fitted on 2012–2018, unstable (percentile fallback offered) |
+| Central Kalimantan, Indonesia | 5.05 | 51.8% / 25.3% | 0.99 | 19.5% / 4.7% | drift 9.6%, unstable (percentile fallback offered) |
+| Northern Australia | 4.52 | 12.1% / 8.5% | 0.99 | 5.7% / 6.4% | drift 1.6% |
 
 - VIIRS detects about **4.5–5.1× more hotspots than MODIS** over the same land, and the two VIIRS sensors agree within
-  about 3%. The factors are close in two very different fire regimes: Indonesian peat and forest clearing, and
+  about 2%. The factors are close in two very different fire regimes: Indonesian peat and forest clearing, and
   Australian savanna burning. That supports one conversion chain for both.
-- Riau is the weak case: its fire counts dropped about tenfold after 2015, so yearly ratios are noisy. The drift check fired and
-  the link is flagged unstable; the app shows this and offers per-sensor percentile ranks.
+- Small provinces are harder. Riau's fire counts dropped about tenfold after 2015, so its yearly ratios are noisy;
+  the drift check fired and the link is flagged unstable. The app shows this and offers per-sensor percentile ranks.
 
 Trend (Mann-Kendall on yearly totals 2001–2025) and the latest complete month (Oct 2026, near-real-time data):
 
 | Area | Long-term trend | Oct 2026 vs median of earlier Octobers |
 | --- | --- | --- |
-| Indonesia region | falling (p = 0.013, Sen's slope -13,004/yr) | Well above normal (+516%) |
-| Riau region, Indonesia | falling (p = 0.005, Sen's slope -2,192/yr) | Well above normal (+86%) |
-| Central Kalimantan region, Indonesia | falling (p = 0.014, Sen's slope -2,639/yr) | Well above normal (+1282%) |
-| Northern Australia | no clear trend (p = 0.944, Sen's slope -229/yr) | Below normal (-28%) |
+| Indonesia | falling (p = 0.018, Sen's slope -11,151/yr) | Well above normal (+504%) |
+| Riau Province, Indonesia | falling (p = 0.004, Sen's slope -1,885/yr) | Below normal (-88%) |
+| Central Kalimantan, Indonesia | falling (p = 0.011, Sen's slope -1,828/yr) | Well above normal (+1343%) |
+| Northern Australia | no clear trend (p = 0.944, Sen's slope -246/yr) | Below normal (-30%) |
 
-All three sensors independently show the 2026 Indonesian fire season (Aug–Oct); October 2026 is the highest October
-since 2015. The largest year in the record is 2015 (the Southeast Asian haze crisis).
+All three sensors independently show the 2026 Indonesian fire season (Aug–Oct); for Indonesia, October 2026 is the
+highest October since 2015. The largest year in the record is 2015 (the Southeast Asian haze crisis).
+
+**Why real borders matter:** with a rectangle around Riau, October 2026 looked "Well above normal" (+86%), because
+the box also caught fires in neighbouring Jambi, West Sumatra and North Sumatra. Inside Riau Province's real border
+the same month is "Below normal" (−88%).
 
 ## Limits
 
 - Converted counts are estimates; a single ratio per area cannot capture every seasonal or regional difference.
 - Hotspots are fire detections, not burned area. Small, short or cloud-covered fires can be missed.
-- Areas are bounding boxes, so they include some land beyond the named region.
+- Borders come from Natural Earth 1:10m; Northern Australia is defined as Australian land north of 20°S (121–146°E).
 - The latest months use near-real-time data, which FIRMS replaces with standard data after about 5 months.
 - Static sources are removed with FIRMS type flags (standard data) and a 0.05° mask (near-real-time data).
 
@@ -126,6 +132,7 @@ Libraries (open source)
 
 Other data and assets
 - Natural Earth 1:50m land polygons (public domain): https://www.naturalearthdata.com/, for the pixel map land mask
+- Natural Earth 1:10m admin-1 states and provinces (public domain), for the area borders
 - Fonts: Press Start 2P (CodeMan38) and VT323 (Peter Hull), SIL Open Font License, served by Google Fonts
 - Pixel sprites (flames, satellites, icons) are drawn in code in `docs/js/sprites.js`; no external images are used
 

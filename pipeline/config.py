@@ -14,17 +14,21 @@ SAMPLE_DIR = ROOT / "data" / "sample"
 # Natural Earth 1:50m land (public domain), for the pixel map land mask.
 LAND_GEOJSON = ROOT / "data" / "external" / "ne_50m_land.geojson"
 WEB_DATA_DIR = ROOT / "docs" / "data"    # run_all copies areas/ here; docs/ is the GitHub Pages site
+# Real area outlines, built by pipeline/regions.py from Natural Earth 1:10m admin-1 (public domain).
+REGIONS_GEOJSON = ROOT / "data" / "external" / "regions.geojson"
 
 # --- Areas -------------------------------------------------------------------
-# bbox = [west, south, east, north] in degrees.
-# Boxes, not borders: each area includes some land beyond the named region (labelled
-# "region" in the app). Real borders are an optional day-2 upgrade (only bin.py changes).
+# A hotspot counts for an area if it lies inside the area's real outline ("boundary", an id in
+# regions.geojson). bbox = [west, south, east, north] encloses the outline; it is used to pre-filter
+# points and to frame the map. An area without "boundary" is counted by its bbox alone.
 AREAS = {
-    "indonesia": {"name": "Indonesia region", "bbox": [95.0, -11.0, 141.0, 6.0]},
-    "riau": {"name": "Riau region, Indonesia", "bbox": [100.0, -1.2, 104.0, 2.9]},
-    "central_kalimantan": {"name": "Central Kalimantan region, Indonesia", "bbox": [110.7, -3.6, 116.0, 0.8]},
-    # Outside Indonesia, to show the method generalises: Top End, Kimberley, Gulf country, Cape York.
-    "north_australia": {"name": "Northern Australia", "bbox": [121.0, -20.0, 146.0, -10.5]},
+    "indonesia": {"name": "Indonesia", "bbox": [95.0, -11.0, 141.0, 6.0], "boundary": "indonesia"},
+    "riau": {"name": "Riau Province, Indonesia", "bbox": [100.0, -1.2, 104.0, 2.9], "boundary": "riau"},
+    "central_kalimantan": {"name": "Central Kalimantan, Indonesia", "bbox": [110.7, -3.6, 116.0, 0.8],
+                           "boundary": "central_kalimantan"},
+    # Outside Indonesia, to show the method generalises: Kimberley, Top End, Gulf country, Cape York.
+    "north_australia": {"name": "Northern Australia", "bbox": [121.0, -20.0, 146.0, -10.5],
+                        "boundary": "north_australia"},
 }
 
 # --- Download (pipeline/fetch_firms.py) ----------------------------------------

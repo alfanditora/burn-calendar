@@ -89,7 +89,27 @@ def region_grid(cleaned, bbox, area_json, deg=None):
     }
 
 
-def export_grids(cleaned, out_dir, regions=None):
+def area_masks(bbox, w, h, deg, areas):
+    """For each area with a real outline inside this map: "0"/"1" per cell, 1 where the cell touches the outline.
+    The web map uses it to draw a pixel border and dim cells outside the selected area (display only)."""
+    from pipeline import bin as binning
+    west, south, east, north = bbox
+    cols, rows = np.meshgrid(np.arange(w), np.arange(h))
+    x0 = (west + cols * deg).ravel()
+    y1 = (north - rows * deg).ravel()
+    cells = shapely.box(x0, y1 - deg, x0 + deg, y1)
+    out = {}
+    for area_id, area in areas.items():
+        a = area["bbox"]
+        if not (a[0] >= west and a[1] >= south and a[2] <= east and a[3] <= north):
+            continue
+        geom = binning.area_geometry(area) or shapely.box(*a)
+        hit = shapely.intersects(geom, cells)
+        out[area_id] = "".join("1" if v else "0" for v in hit)
+    return out
+
+
+def export_grids(cleaned, out_dir, regions=None, areas=None):
     out_dir = Path(out_dir)
     regions = regions or config.FETCH_REGIONS
     (out_dir / "grid").mkdir(parents=True, exist_ok=True)
@@ -99,6 +119,7 @@ def export_grids(cleaned, out_dir, regions=None):
         if not area_file.exists():
             continue
         data = region_grid(cleaned, bbox, json.loads(area_file.read_text(encoding="utf-8")))
+        data["areas"] = area_masks(bbox, data["w"], data["h"], data["deg"], areas or config.AREAS)
         path = out_dir / "grid" / f"{region}.json"
         path.write_text(json.dumps(data, separators=(",", ":")), encoding="utf-8")
         written.append(path)

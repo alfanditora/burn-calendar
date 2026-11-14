@@ -22,7 +22,7 @@ def run(raw_dir=None, out_dir=None, areas=None, web_dir=None, regions=None):
 
     out = export.export_all(counts, out_dir, areas)
     print(f"\nWrote outputs to {out}")
-    for path in grid.export_grids(cleaned, out, regions):
+    for path in grid.export_grids(cleaned, out, regions, areas):
         print(f"Wrote pixel-map grid {path.name} ({path.stat().st_size / 1e6:.1f} MB)")
     if web_dir:
         for sub_dir in ["areas", "grid"]:

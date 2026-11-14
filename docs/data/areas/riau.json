@@ -1,6 +1,6 @@
 {
  "area_id": "riau",
- "name": "Riau region, Indonesia",
+ "name": "Riau Province, Indonesia",
  "bbox": [
   100.0,
   -1.2,
@@ -8,11 +8,16 @@
   2.9
  ],
  "unit": "NOAA-20-equivalent hotspots per month",
+ "boundary": {
+  "id": "riau",
+  "type": "outline",
+  "source": "Natural Earth 1:10m admin-1 (public domain)"
+ },
  "calendar": [
   {
    "year": 2000,
    "month": 11,
-   "count": 393.6,
+   "count": 283.4,
    "source": "MODIS",
    "median": null,
    "anomaly_pct": null
@@ -20,7 +25,7 @@
   {
    "year": 2000,
    "month": 12,
-   "count": 726.7,
+   "count": 522.1,
    "source": "MODIS",
    "median": null,
    "anomaly_pct": null
@@ -28,7 +33,7 @@
   {
    "year": 2001,
    "month": 1,
-   "count": 141.3,
+   "count": 74.6,
    "source": "MODIS",
    "median": null,
    "anomaly_pct": null
@@ -36,7 +41,7 @@
   {
    "year": 2001,
    "month": 2,
-   "count": 837.8,
+   "count": 736.0,
    "source": "MODIS",
    "median": null,
    "anomaly_pct": null
@@ -44,7 +49,7 @@
   {
    "year": 2001,
    "month": 3,
-   "count": 2851.4,
+   "count": 2327.3,
    "source": "MODIS",
    "median": null,
    "anomaly_pct": null
@@ -52,7 +57,7 @@
   {
    "year": 2001,
    "month": 4,
-   "count": 307.9,
+   "count": 208.9,
    "source": "MODIS",
    "median": null,
    "anomaly_pct": null
@@ -60,7 +65,7 @@
   {
    "year": 2001,
    "month": 5,
-   "count": 625.8,
+   "count": 387.9,
    "source": "MODIS",
    "median": null,
    "anomaly_pct": null
@@ -68,7 +73,7 @@
   {
    "year": 2001,
    "month": 6,
-   "count": 333.1,
+   "count": 169.1,
    "source": "MODIS",
    "median": null,
    "anomaly_pct": null
@@ -76,7 +81,7 @@
   {
    "year": 2001,
    "month": 7,
-   "count": 6727.3,
+   "count": 5057.3,
    "source": "MODIS",
    "median": null,
    "anomaly_pct": null
@@ -84,7 +89,7 @@
   {
    "year": 2001,
    "month": 8,
-   "count": 888.2,
+   "count": 497.3,
    "source": "MODIS",
    "median": null,
    "anomaly_pct": null
@@ -92,7 +97,7 @@
   {
    "year": 2001,
    "month": 9,
-   "count": 575.3,
+   "count": 343.1,
    "source": "MODIS",
    "median": null,
    "anomaly_pct": null
@@ -100,7 +105,7 @@
   {
    "year": 2001,
    "month": 10,
-   "count": 509.7,
+   "count": 373.0,
    "source": "MODIS",
    "median": null,
    "anomaly_pct": null
@@ -108,7 +113,7 @@
   {
    "year": 2001,
    "month": 11,
-   "count": 65.6,
+   "count": 24.9,
    "source": "MODIS",
    "median": null,
    "anomaly_pct": null
@@ -116,7 +121,7 @@
   {
    "year": 2001,
    "month": 12,
-   "count": 267.5,
+   "count": 79.6,
    "source": "MODIS",
    "median": null,
    "anomaly_pct": null
@@ -124,2727 +129,2727 @@
   {
    "year": 2002,
    "month": 1,
-   "count": 1216.3,
+   "count": 890.1,
    "source": "MODIS",
-   "median": 141.3,
-   "anomaly_pct": 760.7
+   "median": 74.6,
+   "anomaly_pct": 1093.3
   },
   {
    "year": 2002,
    "month": 2,
-   "count": 10123.7,
+   "count": 9000.7,
    "source": "MODIS",
-   "median": 837.8,
-   "anomaly_pct": 1108.4
+   "median": 736.0,
+   "anomaly_pct": 1123.0
   },
   {
    "year": 2002,
    "month": 3,
-   "count": 7277.4,
+   "count": 6588.9,
    "source": "MODIS",
-   "median": 2851.4,
-   "anomaly_pct": 155.2
+   "median": 2327.3,
+   "anomaly_pct": 183.1
   },
   {
    "year": 2002,
    "month": 4,
-   "count": 711.6,
+   "count": 228.7,
    "source": "MODIS",
-   "median": 307.9,
-   "anomaly_pct": 131.1
+   "median": 208.9,
+   "anomaly_pct": 9.5
   },
   {
    "year": 2002,
    "month": 5,
-   "count": 1125.4,
+   "count": 641.5,
    "source": "MODIS",
-   "median": 625.8,
-   "anomaly_pct": 79.8
+   "median": 387.9,
+   "anomaly_pct": 65.4
   },
   {
    "year": 2002,
    "month": 6,
-   "count": 1307.1,
+   "count": 880.2,
    "source": "MODIS",
-   "median": 333.1,
-   "anomaly_pct": 292.4
+   "median": 169.1,
+   "anomaly_pct": 420.6
   },
   {
    "year": 2002,
    "month": 7,
-   "count": 8559.3,
+   "count": 6350.2,
    "source": "MODIS",
-   "median": 6727.3,
-   "anomaly_pct": 27.2
+   "median": 5057.3,
+   "anomaly_pct": 25.6
   },
   {
    "year": 2002,
    "month": 8,
-   "count": 10149.0,
+   "count": 7737.6,
    "source": "MODIS",
-   "median": 888.2,
-   "anomaly_pct": 1042.6
+   "median": 497.3,
+   "anomaly_pct": 1456.0
   },
   {
    "year": 2002,
    "month": 9,
-   "count": 1261.7,
+   "count": 910.0,
    "source": "MODIS",
-   "median": 575.3,
-   "anomaly_pct": 119.3
+   "median": 343.1,
+   "anomaly_pct": 165.2
   },
   {
    "year": 2002,
    "month": 10,
-   "count": 2260.9,
+   "count": 1462.0,
    "source": "MODIS",
-   "median": 509.7,
-   "anomaly_pct": 343.6
+   "median": 373.0,
+   "anomaly_pct": 292.0
   },
   {
    "year": 2002,
    "month": 11,
-   "count": 333.1,
+   "count": 253.6,
    "source": "MODIS",
-   "median": 65.6,
-   "anomaly_pct": 407.7
+   "median": 24.9,
+   "anomaly_pct": 920.0
   },
   {
    "year": 2002,
    "month": 12,
-   "count": 247.3,
+   "count": 139.2,
    "source": "MODIS",
-   "median": 267.5,
-   "anomaly_pct": -7.5
+   "median": 79.6,
+   "anomaly_pct": 75.0
   },
   {
    "year": 2003,
    "month": 1,
-   "count": 434.0,
+   "count": 248.6,
    "source": "MODIS",
-   "median": 678.8,
-   "anomaly_pct": -36.1
+   "median": 482.4,
+   "anomaly_pct": -48.5
   },
   {
    "year": 2003,
    "month": 2,
-   "count": 984.1,
+   "count": 726.0,
    "source": "MODIS",
-   "median": 5480.7,
-   "anomaly_pct": -82.0
+   "median": 4868.3,
+   "anomaly_pct": -85.1
   },
   {
    "year": 2003,
    "month": 3,
-   "count": 8064.7,
+   "count": 7135.9,
    "source": "MODIS",
-   "median": 5064.4,
-   "anomaly_pct": 59.2
+   "median": 4458.1,
+   "anomaly_pct": 60.1
   },
   {
    "year": 2003,
    "month": 4,
-   "count": 398.7,
+   "count": 203.9,
    "source": "MODIS",
-   "median": 509.7,
-   "anomaly_pct": -21.8
+   "median": 218.8,
+   "anomaly_pct": -6.8
   },
   {
    "year": 2003,
    "month": 5,
-   "count": 5465.6,
+   "count": 4231.8,
    "source": "MODIS",
-   "median": 875.6,
-   "anomaly_pct": 524.2
+   "median": 514.7,
+   "anomaly_pct": 722.2
   },
   {
    "year": 2003,
    "month": 6,
-   "count": 21579.8,
+   "count": 18976.0,
    "source": "MODIS",
-   "median": 820.1,
-   "anomaly_pct": 2531.4
+   "median": 524.6,
+   "anomaly_pct": 3517.1
   },
   {
    "year": 2003,
    "month": 7,
-   "count": 5157.8,
+   "count": 4157.2,
    "source": "MODIS",
-   "median": 7643.3,
-   "anomaly_pct": -32.5
+   "median": 5703.8,
+   "anomaly_pct": -27.1
   },
   {
    "year": 2003,
    "month": 8,
-   "count": 5899.6,
+   "count": 4674.4,
    "source": "MODIS",
-   "median": 5518.6,
-   "anomaly_pct": 6.9
+   "median": 4117.4,
+   "anomaly_pct": 13.5
   },
   {
    "year": 2003,
    "month": 9,
-   "count": 1514.0,
+   "count": 1168.6,
    "source": "MODIS",
-   "median": 918.5,
-   "anomaly_pct": 64.8
+   "median": 626.6,
+   "anomaly_pct": 86.5
   },
   {
    "year": 2003,
    "month": 10,
-   "count": 1054.8,
+   "count": 895.1,
    "source": "MODIS",
-   "median": 1385.3,
-   "anomaly_pct": -23.9
+   "median": 917.5,
+   "anomaly_pct": -2.4
   },
   {
    "year": 2003,
    "month": 11,
-   "count": 196.8,
+   "count": 99.5,
    "source": "MODIS",
-   "median": 199.3,
-   "anomaly_pct": -1.3
+   "median": 139.2,
+   "anomaly_pct": -28.6
   },
   {
    "year": 2003,
    "month": 12,
-   "count": 373.5,
+   "count": 298.4,
    "source": "MODIS",
-   "median": 257.4,
-   "anomaly_pct": 45.1
+   "median": 109.4,
+   "anomaly_pct": 172.7
   },
   {
    "year": 2004,
    "month": 1,
-   "count": 4849.9,
+   "count": 4251.7,
    "source": "MODIS",
-   "median": 434.0,
-   "anomaly_pct": 1017.4
+   "median": 248.6,
+   "anomaly_pct": 1610.0
   },
   {
    "year": 2004,
    "month": 2,
-   "count": 5919.8,
+   "count": 5390.5,
    "source": "MODIS",
-   "median": 984.1,
-   "anomaly_pct": 501.5
+   "median": 736.0,
+   "anomaly_pct": 632.4
   },
   {
    "year": 2004,
    "month": 3,
-   "count": 1443.4,
+   "count": 1128.8,
    "source": "MODIS",
-   "median": 7277.4,
-   "anomaly_pct": -80.2
+   "median": 6588.9,
+   "anomaly_pct": -82.9
   },
   {
    "year": 2004,
    "month": 4,
-   "count": 1175.9,
+   "count": 631.5,
    "source": "MODIS",
-   "median": 398.7,
-   "anomaly_pct": 194.9
+   "median": 208.9,
+   "anomaly_pct": 202.4
   },
   {
    "year": 2004,
    "month": 5,
-   "count": 7999.1,
+   "count": 6091.6,
    "source": "MODIS",
-   "median": 1125.4,
-   "anomaly_pct": 610.8
+   "median": 641.5,
+   "anomaly_pct": 849.6
   },
   {
    "year": 2004,
    "month": 6,
-   "count": 22054.2,
+   "count": 18568.3,
    "source": "MODIS",
-   "median": 1307.1,
-   "anomaly_pct": 1587.3
+   "median": 880.2,
+   "anomaly_pct": 2009.6
   },
   {
    "year": 2004,
    "month": 7,
-   "count": 1256.6,
+   "count": 850.3,
    "source": "MODIS",
-   "median": 6727.3,
-   "anomaly_pct": -81.3
+   "median": 5057.3,
+   "anomaly_pct": -83.2
   },
   {
    "year": 2004,
    "month": 8,
-   "count": 12944.9,
+   "count": 10666.6,
    "source": "MODIS",
-   "median": 5899.6,
-   "anomaly_pct": 119.4
+   "median": 4674.4,
+   "anomaly_pct": 128.2
   },
   {
    "year": 2004,
    "month": 9,
-   "count": 5198.1,
+   "count": 3868.8,
    "source": "MODIS",
-   "median": 1261.7,
-   "anomaly_pct": 312.0
+   "median": 910.0,
+   "anomaly_pct": 325.1
   },
   {
    "year": 2004,
    "month": 10,
-   "count": 1549.3,
+   "count": 1178.5,
    "source": "MODIS",
-   "median": 1054.8,
-   "anomaly_pct": 46.9
+   "median": 895.1,
+   "anomaly_pct": 31.7
   },
   {
    "year": 2004,
    "month": 11,
-   "count": 176.6,
+   "count": 89.5,
    "source": "MODIS",
-   "median": 196.8,
-   "anomaly_pct": -10.3
+   "median": 99.5,
+   "anomaly_pct": -10.0
   },
   {
    "year": 2004,
    "month": 12,
-   "count": 358.3,
+   "count": 223.8,
    "source": "MODIS",
-   "median": 267.5,
-   "anomaly_pct": 34.0
+   "median": 139.2,
+   "anomaly_pct": 60.7
   },
   {
    "year": 2005,
    "month": 1,
-   "count": 8584.5,
+   "count": 7702.8,
    "source": "MODIS",
-   "median": 825.1,
-   "anomaly_pct": 940.4
+   "median": 569.4,
+   "anomaly_pct": 1252.8
   },
   {
    "year": 2005,
    "month": 2,
-   "count": 30547.9,
+   "count": 27002.1,
    "source": "MODIS",
-   "median": 3452.0,
-   "anomaly_pct": 784.9
+   "median": 3063.2,
+   "anomaly_pct": 781.5
   },
   {
    "year": 2005,
    "month": 3,
-   "count": 19576.3,
+   "count": 17698.0,
    "source": "MODIS",
-   "median": 5064.4,
-   "anomaly_pct": 286.5
+   "median": 4458.1,
+   "anomaly_pct": 297.0
   },
   {
    "year": 2005,
    "month": 4,
-   "count": 3810.3,
+   "count": 2869.3,
    "source": "MODIS",
-   "median": 555.1,
-   "anomaly_pct": 586.4
+   "median": 218.8,
+   "anomaly_pct": 1211.4
   },
   {
    "year": 2005,
    "month": 5,
-   "count": 2700.0,
+   "count": 1834.9,
    "source": "MODIS",
-   "median": 3295.5,
-   "anomaly_pct": -18.1
+   "median": 2436.7,
+   "anomaly_pct": -24.7
   },
   {
    "year": 2005,
    "month": 6,
-   "count": 13409.2,
+   "count": 10726.2,
    "source": "MODIS",
-   "median": 11443.5,
-   "anomaly_pct": 17.2
+   "median": 9724.2,
+   "anomaly_pct": 10.3
   },
   {
    "year": 2005,
    "month": 7,
-   "count": 5223.4,
+   "count": 4047.8,
    "source": "MODIS",
-   "median": 5942.5,
+   "median": 4607.3,
    "anomaly_pct": -12.1
   },
   {
    "year": 2005,
    "month": 8,
-   "count": 22962.6,
+   "count": 19945.7,
    "source": "MODIS",
-   "median": 8024.3,
-   "anomaly_pct": 186.2
+   "median": 6206.0,
+   "anomaly_pct": 221.4
   },
   {
    "year": 2005,
    "month": 9,
-   "count": 6288.2,
+   "count": 5420.3,
    "source": "MODIS",
-   "median": 1387.9,
-   "anomaly_pct": 353.1
+   "median": 1039.3,
+   "anomaly_pct": 421.5
   },
   {
    "year": 2005,
    "month": 10,
-   "count": 863.0,
+   "count": 681.3,
    "source": "MODIS",
-   "median": 1302.1,
-   "anomaly_pct": -33.7
+   "median": 1036.8,
+   "anomaly_pct": -34.3
   },
   {
    "year": 2005,
    "month": 11,
-   "count": 610.7,
+   "count": 447.5,
    "source": "MODIS",
-   "median": 186.7,
-   "anomaly_pct": 227.0
+   "median": 94.5,
+   "anomaly_pct": 373.7
   },
   {
    "year": 2005,
    "month": 12,
-   "count": 1029.5,
+   "count": 815.5,
    "source": "MODIS",
-   "median": 312.9,
-   "anomaly_pct": 229.0
+   "median": 181.5,
+   "anomaly_pct": 349.3
   },
   {
    "year": 2006,
    "month": 1,
-   "count": 2669.7,
+   "count": 2148.2,
    "source": "MODIS",
-   "median": 1216.3,
-   "anomaly_pct": 119.5
+   "median": 890.1,
+   "anomaly_pct": 141.3
   },
   {
    "year": 2006,
    "month": 2,
-   "count": 8392.7,
+   "count": 7951.4,
    "source": "MODIS",
-   "median": 5919.8,
-   "anomaly_pct": 41.8
+   "median": 5390.5,
+   "anomaly_pct": 47.5
   },
   {
    "year": 2006,
    "month": 3,
-   "count": 10769.7,
+   "count": 9701.8,
    "source": "MODIS",
-   "median": 7277.4,
-   "anomaly_pct": 48.0
+   "median": 6588.9,
+   "anomaly_pct": 47.2
   },
   {
    "year": 2006,
    "month": 4,
-   "count": 1574.6,
+   "count": 1347.6,
    "source": "MODIS",
-   "median": 711.6,
-   "anomaly_pct": 121.3
+   "median": 228.7,
+   "anomaly_pct": 489.1
   },
   {
    "year": 2006,
    "month": 5,
-   "count": 1488.8,
+   "count": 1163.6,
    "source": "MODIS",
-   "median": 2700.0,
-   "anomaly_pct": -44.9
+   "median": 1834.9,
+   "anomaly_pct": -36.6
   },
   {
    "year": 2006,
    "month": 6,
-   "count": 3452.0,
+   "count": 2745.0,
    "source": "MODIS",
-   "median": 13409.2,
-   "anomaly_pct": -74.3
+   "median": 10726.2,
+   "anomaly_pct": -74.4
   },
   {
    "year": 2006,
    "month": 7,
-   "count": 18143.0,
+   "count": 14794.0,
    "source": "MODIS",
-   "median": 5223.4,
-   "anomaly_pct": 247.3
+   "median": 4157.2,
+   "anomaly_pct": 255.9
   },
   {
    "year": 2006,
    "month": 8,
-   "count": 23598.5,
+   "count": 19189.9,
    "source": "MODIS",
-   "median": 10149.0,
-   "anomaly_pct": 132.5
+   "median": 7737.6,
+   "anomaly_pct": 148.0
   },
   {
    "year": 2006,
    "month": 9,
-   "count": 4244.3,
+   "count": 2889.2,
    "source": "MODIS",
-   "median": 1514.0,
-   "anomaly_pct": 180.3
+   "median": 1168.6,
+   "anomaly_pct": 147.2
   },
   {
    "year": 2006,
    "month": 10,
-   "count": 6101.5,
+   "count": 4276.6,
    "source": "MODIS",
-   "median": 1054.8,
-   "anomaly_pct": 478.5
+   "median": 895.1,
+   "anomaly_pct": 377.8
   },
   {
    "year": 2006,
    "month": 11,
-   "count": 378.5,
+   "count": 233.7,
    "source": "MODIS",
-   "median": 196.8,
-   "anomaly_pct": 92.3
+   "median": 99.5,
+   "anomaly_pct": 135.0
   },
   {
    "year": 2006,
    "month": 12,
-   "count": 116.1,
+   "count": 54.7,
    "source": "MODIS",
-   "median": 358.3,
-   "anomaly_pct": -67.6
+   "median": 223.8,
+   "anomaly_pct": -75.6
   },
   {
    "year": 2007,
    "month": 1,
-   "count": 852.9,
+   "count": 740.9,
    "source": "MODIS",
-   "median": 1943.0,
-   "anomaly_pct": -56.1
+   "median": 1519.2,
+   "anomaly_pct": -51.2
   },
   {
    "year": 2007,
    "month": 2,
-   "count": 5425.2,
+   "count": 4883.2,
    "source": "MODIS",
-   "median": 7156.3,
-   "anomaly_pct": -24.2
+   "median": 6671.0,
+   "anomaly_pct": -26.8
   },
   {
    "year": 2007,
    "month": 3,
-   "count": 4451.2,
+   "count": 4003.1,
    "source": "MODIS",
-   "median": 7671.0,
-   "anomaly_pct": -42.0
+   "median": 6862.4,
+   "anomaly_pct": -41.7
   },
   {
    "year": 2007,
    "month": 4,
-   "count": 802.4,
+   "count": 621.6,
    "source": "MODIS",
-   "median": 943.7,
-   "anomaly_pct": -15.0
+   "median": 430.1,
+   "anomaly_pct": 44.5
   },
   {
    "year": 2007,
    "month": 5,
-   "count": 1029.5,
+   "count": 721.0,
    "source": "MODIS",
-   "median": 2094.4,
-   "anomaly_pct": -50.8
+   "median": 1499.3,
+   "anomaly_pct": -51.9
   },
   {
    "year": 2007,
    "month": 6,
-   "count": 3179.4,
+   "count": 2501.3,
    "source": "MODIS",
-   "median": 8430.6,
-   "anomaly_pct": -62.3
+   "median": 6735.6,
+   "anomaly_pct": -62.9
   },
   {
    "year": 2007,
    "month": 7,
-   "count": 5955.1,
+   "count": 4709.2,
    "source": "MODIS",
-   "median": 5975.3,
-   "anomaly_pct": -0.3
+   "median": 4607.3,
+   "anomaly_pct": 2.2
   },
   {
    "year": 2007,
    "month": 8,
-   "count": 5985.4,
+   "count": 4639.6,
    "source": "MODIS",
-   "median": 11546.9,
-   "anomaly_pct": -48.2
+   "median": 9202.1,
+   "anomaly_pct": -49.6
   },
   {
    "year": 2007,
    "month": 9,
-   "count": 3285.4,
+   "count": 2486.4,
    "source": "MODIS",
-   "median": 2879.2,
-   "anomaly_pct": 14.1
+   "median": 2028.9,
+   "anomaly_pct": 22.5
   },
   {
    "year": 2007,
    "month": 10,
-   "count": 1625.0,
+   "count": 1287.9,
    "source": "MODIS",
-   "median": 1302.1,
-   "anomaly_pct": 24.8
+   "median": 1036.8,
+   "anomaly_pct": 24.2
   },
   {
    "year": 2007,
    "month": 11,
-   "count": 519.8,
+   "count": 353.1,
    "source": "MODIS",
-   "median": 265.0,
-   "anomaly_pct": 96.2
+   "median": 166.6,
+   "anomaly_pct": 111.9
   },
   {
    "year": 2007,
    "month": 12,
-   "count": 535.0,
+   "count": 402.8,
    "source": "MODIS",
-   "median": 312.9,
-   "anomaly_pct": 71.0
+   "median": 181.5,
+   "anomaly_pct": 121.9
   },
   {
    "year": 2008,
    "month": 1,
-   "count": 1887.5,
+   "count": 1641.0,
    "source": "MODIS",
-   "median": 1216.3,
-   "anomaly_pct": 55.2
+   "median": 890.1,
+   "anomaly_pct": 84.4
   },
   {
    "year": 2008,
    "month": 2,
-   "count": 9937.0,
+   "count": 9110.1,
    "source": "MODIS",
-   "median": 5919.8,
-   "anomaly_pct": 67.9
+   "median": 5390.5,
+   "anomaly_pct": 69.0
   },
   {
    "year": 2008,
    "month": 3,
-   "count": 444.1,
+   "count": 298.4,
    "source": "MODIS",
-   "median": 7277.4,
-   "anomaly_pct": -93.9
+   "median": 6588.9,
+   "anomaly_pct": -95.5
   },
   {
    "year": 2008,
    "month": 4,
-   "count": 434.0,
+   "count": 333.2,
    "source": "MODIS",
-   "median": 802.4,
-   "anomaly_pct": -45.9
+   "median": 621.6,
+   "anomaly_pct": -46.4
   },
   {
    "year": 2008,
    "month": 5,
-   "count": 6903.9,
+   "count": 5310.9,
    "source": "MODIS",
-   "median": 1488.8,
-   "anomaly_pct": 363.7
+   "median": 1163.6,
+   "anomaly_pct": 356.4
   },
   {
    "year": 2008,
    "month": 6,
-   "count": 2947.3,
+   "count": 2133.3,
    "source": "MODIS",
-   "median": 3452.0,
-   "anomaly_pct": -14.6
+   "median": 2745.0,
+   "anomaly_pct": -22.3
   },
   {
    "year": 2008,
    "month": 7,
-   "count": 4400.7,
+   "count": 3023.4,
    "source": "MODIS",
-   "median": 5955.1,
-   "anomaly_pct": -26.1
+   "median": 4709.2,
+   "anomaly_pct": -35.8
   },
   {
    "year": 2008,
    "month": 8,
-   "count": 17638.3,
+   "count": 14535.4,
    "source": "MODIS",
-   "median": 10149.0,
-   "anomaly_pct": 73.8
+   "median": 7737.6,
+   "anomaly_pct": 87.9
   },
   {
    "year": 2008,
    "month": 9,
-   "count": 2190.3,
+   "count": 1561.4,
    "source": "MODIS",
-   "median": 3285.4,
-   "anomaly_pct": -33.3
+   "median": 2486.4,
+   "anomaly_pct": -37.2
   },
   {
    "year": 2008,
    "month": 10,
-   "count": 393.6,
+   "count": 258.6,
    "source": "MODIS",
-   "median": 1549.3,
-   "anomaly_pct": -74.6
+   "median": 1178.5,
+   "anomaly_pct": -78.1
   },
   {
    "year": 2008,
    "month": 11,
-   "count": 908.4,
+   "count": 711.1,
    "source": "MODIS",
-   "median": 333.1,
-   "anomaly_pct": 172.7
+   "median": 233.7,
+   "anomaly_pct": 204.3
   },
   {
    "year": 2008,
    "month": 12,
-   "count": 1029.5,
+   "count": 939.9,
    "source": "MODIS",
-   "median": 358.3,
-   "anomaly_pct": 187.3
+   "median": 223.8,
+   "anomaly_pct": 320.0
   },
   {
    "year": 2009,
    "month": 1,
-   "count": 8740.9,
+   "count": 8055.9,
    "source": "MODIS",
-   "median": 1551.9,
-   "anomaly_pct": 463.3
+   "median": 1265.6,
+   "anomaly_pct": 536.5
   },
   {
    "year": 2009,
    "month": 2,
-   "count": 7211.8,
+   "count": 6365.1,
    "source": "MODIS",
-   "median": 7156.3,
-   "anomaly_pct": 0.8
+   "median": 6671.0,
+   "anomaly_pct": -4.6
   },
   {
    "year": 2009,
    "month": 3,
-   "count": 459.3,
+   "count": 318.3,
    "source": "MODIS",
-   "median": 5864.3,
-   "anomaly_pct": -92.2
+   "median": 5296.0,
+   "anomaly_pct": -94.0
   },
   {
    "year": 2009,
    "month": 4,
-   "count": 1392.9,
+   "count": 994.6,
    "source": "MODIS",
-   "median": 757.0,
-   "anomaly_pct": 84.0
+   "median": 477.4,
+   "anomaly_pct": 108.3
   },
   {
    "year": 2009,
    "month": 5,
-   "count": 9503.0,
+   "count": 7613.3,
    "source": "MODIS",
-   "median": 2094.4,
-   "anomaly_pct": 353.7
+   "median": 1499.3,
+   "anomaly_pct": 407.8
   },
   {
    "year": 2009,
    "month": 6,
-   "count": 12601.7,
+   "count": 10850.6,
    "source": "MODIS",
-   "median": 3315.7,
-   "anomaly_pct": 280.1
+   "median": 2623.1,
+   "anomaly_pct": 313.6
   },
   {
    "year": 2009,
    "month": 7,
-   "count": 17340.6,
+   "count": 15216.6,
    "source": "MODIS",
-   "median": 5589.3,
-   "anomaly_pct": 210.2
+   "median": 4433.2,
+   "anomaly_pct": 243.2
   },
   {
    "year": 2009,
    "month": 8,
-   "count": 15281.5,
+   "count": 13282.2,
    "source": "MODIS",
-   "median": 11546.9,
-   "anomaly_pct": 32.3
+   "median": 9202.1,
+   "anomaly_pct": 44.3
   },
   {
    "year": 2009,
    "month": 9,
-   "count": 2467.9,
+   "count": 1874.7,
    "source": "MODIS",
-   "median": 2737.9,
-   "anomaly_pct": -9.9
+   "median": 2023.9,
+   "anomaly_pct": -7.4
   },
   {
    "year": 2009,
    "month": 10,
-   "count": 1826.9,
+   "count": 1407.3,
    "source": "MODIS",
-   "median": 1302.1,
-   "anomaly_pct": 40.3
+   "median": 1036.8,
+   "anomaly_pct": 35.7
   },
   {
    "year": 2009,
    "month": 11,
-   "count": 1816.8,
+   "count": 1481.9,
    "source": "MODIS",
-   "median": 355.8,
-   "anomaly_pct": 410.6
+   "median": 243.7,
+   "anomaly_pct": 508.2
   },
   {
    "year": 2009,
    "month": 12,
-   "count": 287.7,
+   "count": 213.8,
    "source": "MODIS",
-   "median": 365.9,
-   "anomaly_pct": -21.4
+   "median": 261.1,
+   "anomaly_pct": -18.1
   },
   {
    "year": 2010,
    "month": 1,
-   "count": 746.9,
+   "count": 591.8,
    "source": "MODIS",
-   "median": 1887.5,
-   "anomaly_pct": -60.4
+   "median": 1641.0,
+   "anomaly_pct": -63.9
   },
   {
    "year": 2010,
    "month": 2,
-   "count": 4743.9,
+   "count": 4142.3,
    "source": "MODIS",
-   "median": 7211.8,
-   "anomaly_pct": -34.2
-  },
-  {
-   "year": 2010,
-   "month": 3,
-   "count": 1625.0,
-   "source": "MODIS",
-   "median": 4451.2,
-   "anomaly_pct": -63.5
-  },
-  {
-   "year": 2010,
-   "month": 4,
-   "count": 1004.3,
-   "source": "MODIS",
-   "median": 802.4,
-   "anomaly_pct": 25.2
-  },
-  {
-   "year": 2010,
-   "month": 5,
-   "count": 2750.5,
-   "source": "MODIS",
-   "median": 2700.0,
-   "anomaly_pct": 1.9
-  },
-  {
-   "year": 2010,
-   "month": 6,
-   "count": 1463.6,
-   "source": "MODIS",
-   "median": 3452.0,
-   "anomaly_pct": -57.6
-  },
-  {
-   "year": 2010,
-   "month": 7,
-   "count": 883.2,
-   "source": "MODIS",
-   "median": 5955.1,
-   "anomaly_pct": -85.2
-  },
-  {
-   "year": 2010,
-   "month": 8,
-   "count": 2392.2,
-   "source": "MODIS",
-   "median": 12944.9,
-   "anomaly_pct": -81.5
-  },
-  {
-   "year": 2010,
-   "month": 9,
-   "count": 2185.2,
-   "source": "MODIS",
-   "median": 2467.9,
-   "anomaly_pct": -11.5
-  },
-  {
-   "year": 2010,
-   "month": 10,
-   "count": 9997.6,
-   "source": "MODIS",
-   "median": 1549.3,
-   "anomaly_pct": 545.3
-  },
-  {
-   "year": 2010,
-   "month": 11,
-   "count": 847.9,
-   "source": "MODIS",
-   "median": 378.5,
-   "anomaly_pct": 124.0
-  },
-  {
-   "year": 2010,
-   "month": 12,
-   "count": 297.8,
-   "source": "MODIS",
-   "median": 358.3,
-   "anomaly_pct": -16.9
-  },
-  {
-   "year": 2011,
-   "month": 1,
-   "count": 393.6,
-   "source": "MODIS",
-   "median": 1551.9,
-   "anomaly_pct": -74.6
-  },
-  {
-   "year": 2011,
-   "month": 2,
-   "count": 4743.9,
-   "source": "MODIS",
-   "median": 6565.8,
-   "anomaly_pct": -27.7
-  },
-  {
-   "year": 2011,
-   "month": 3,
-   "count": 948.8,
-   "source": "MODIS",
-   "median": 3651.3,
-   "anomaly_pct": -74.0
-  },
-  {
-   "year": 2011,
-   "month": 4,
-   "count": 1746.2,
-   "source": "MODIS",
-   "median": 903.4,
-   "anomaly_pct": 93.3
-  },
-  {
-   "year": 2011,
-   "month": 5,
-   "count": 6676.8,
-   "source": "MODIS",
-   "median": 2725.2,
-   "anomaly_pct": 145.0
-  },
-  {
-   "year": 2011,
-   "month": 6,
-   "count": 5339.4,
-   "source": "MODIS",
-   "median": 3315.7,
-   "anomaly_pct": 61.0
-  },
-  {
-   "year": 2011,
-   "month": 7,
-   "count": 14050.1,
-   "source": "MODIS",
-   "median": 5589.3,
-   "anomaly_pct": 151.4
-  },
-  {
-   "year": 2011,
-   "month": 8,
-   "count": 9326.4,
-   "source": "MODIS",
-   "median": 11546.9,
-   "anomaly_pct": -19.2
-  },
-  {
-   "year": 2011,
-   "month": 9,
-   "count": 6146.9,
-   "source": "MODIS",
-   "median": 2329.1,
-   "anomaly_pct": 163.9
-  },
-  {
-   "year": 2011,
-   "month": 10,
-   "count": 1332.3,
-   "source": "MODIS",
-   "median": 1587.2,
-   "anomaly_pct": -16.1
-  },
-  {
-   "year": 2011,
-   "month": 11,
-   "count": 338.1,
-   "source": "MODIS",
-   "median": 449.2,
-   "anomaly_pct": -24.7
-  },
-  {
-   "year": 2011,
-   "month": 12,
-   "count": 257.4,
-   "source": "MODIS",
-   "median": 328.0,
-   "anomaly_pct": -21.5
-  },
-  {
-   "year": 2012,
-   "month": 1,
-   "count": 3386.4,
-   "source": "MODIS",
-   "median": 1216.3,
-   "anomaly_pct": 178.4
-  },
-  {
-   "year": 2012,
-   "month": 2,
-   "count": 1868.7,
-   "source": "SNPP",
-   "median": 5919.8,
-   "anomaly_pct": -68.4
-  },
-  {
-   "year": 2012,
-   "month": 3,
-   "count": 1103.1,
-   "source": "SNPP",
-   "median": 2851.4,
-   "anomaly_pct": -61.3
-  },
-  {
-   "year": 2012,
-   "month": 4,
-   "count": 846.9,
-   "source": "SNPP",
-   "median": 1004.3,
-   "anomaly_pct": -15.7
-  },
-  {
-   "year": 2012,
-   "month": 5,
-   "count": 1997.3,
-   "source": "SNPP",
-   "median": 2750.5,
-   "anomaly_pct": -27.4
-  },
-  {
-   "year": 2012,
-   "month": 6,
-   "count": 17274.9,
-   "source": "SNPP",
-   "median": 3452.0,
-   "anomaly_pct": 400.4
-  },
-  {
-   "year": 2012,
-   "month": 7,
-   "count": 7122.7,
-   "source": "SNPP",
-   "median": 5955.1,
-   "anomaly_pct": 19.6
-  },
-  {
-   "year": 2012,
-   "month": 8,
-   "count": 16894.1,
-   "source": "SNPP",
-   "median": 10149.0,
-   "anomaly_pct": 66.5
-  },
-  {
-   "year": 2012,
-   "month": 9,
-   "count": 4903.2,
-   "source": "SNPP",
-   "median": 2467.9,
-   "anomaly_pct": 98.7
-  },
-  {
-   "year": 2012,
-   "month": 10,
-   "count": 608.1,
-   "source": "SNPP",
-   "median": 1549.3,
-   "anomaly_pct": -60.7
-  },
-  {
-   "year": 2012,
-   "month": 11,
-   "count": 86.4,
-   "source": "SNPP",
-   "median": 378.5,
-   "anomaly_pct": -77.2
-  },
-  {
-   "year": 2012,
-   "month": 12,
-   "count": 58.7,
-   "source": "SNPP",
-   "median": 297.8,
-   "anomaly_pct": -80.3
-  },
-  {
-   "year": 2013,
-   "month": 1,
-   "count": 1519.8,
-   "source": "SNPP",
-   "median": 1551.9,
-   "anomaly_pct": -2.1
-  },
-  {
-   "year": 2013,
-   "month": 2,
-   "count": 1371.7,
-   "source": "SNPP",
-   "median": 5672.5,
-   "anomaly_pct": -75.8
-  },
-  {
-   "year": 2013,
-   "month": 3,
-   "count": 3674.6,
-   "source": "SNPP",
-   "median": 2238.2,
-   "anomaly_pct": 64.2
-  },
-  {
-   "year": 2013,
-   "month": 4,
-   "count": 2561.2,
-   "source": "SNPP",
-   "median": 925.6,
-   "anomaly_pct": 176.7
-  },
-  {
-   "year": 2013,
-   "month": 5,
-   "count": 2516.9,
-   "source": "SNPP",
-   "median": 2725.2,
-   "anomaly_pct": -7.6
-  },
-  {
-   "year": 2013,
-   "month": 6,
-   "count": 57038.5,
-   "source": "SNPP",
-   "median": 4395.7,
-   "anomaly_pct": 1197.6
-  },
-  {
-   "year": 2013,
-   "month": 7,
-   "count": 10840.5,
-   "source": "SNPP",
-   "median": 6341.2,
-   "anomaly_pct": 71.0
-  },
-  {
-   "year": 2013,
-   "month": 8,
-   "count": 18162.9,
-   "source": "SNPP",
-   "median": 11546.9,
-   "anomaly_pct": 57.3
-  },
-  {
-   "year": 2013,
-   "month": 9,
-   "count": 2370.8,
-   "source": "SNPP",
-   "median": 2876.6,
-   "anomaly_pct": -17.6
-  },
-  {
-   "year": 2013,
-   "month": 10,
-   "count": 796.4,
-   "source": "SNPP",
-   "median": 1440.8,
-   "anomaly_pct": -44.7
-  },
-  {
-   "year": 2013,
-   "month": 11,
-   "count": 171.8,
-   "source": "SNPP",
-   "median": 358.3,
-   "anomaly_pct": -52.0
-  },
-  {
-   "year": 2013,
-   "month": 12,
-   "count": 266.5,
-   "source": "SNPP",
-   "median": 292.7,
-   "anomaly_pct": -9.0
-  },
-  {
-   "year": 2014,
-   "month": 1,
-   "count": 3449.2,
-   "source": "SNPP",
-   "median": 1519.8,
-   "anomaly_pct": 126.9
-  },
-  {
-   "year": 2014,
-   "month": 2,
-   "count": 43430.0,
-   "source": "SNPP",
-   "median": 5425.2,
-   "anomaly_pct": 700.5
-  },
-  {
-   "year": 2014,
-   "month": 3,
-   "count": 54994.9,
-   "source": "SNPP",
-   "median": 2851.4,
-   "anomaly_pct": 1828.7
-  },
-  {
-   "year": 2014,
-   "month": 4,
-   "count": 943.6,
-   "source": "SNPP",
-   "median": 1004.3,
-   "anomaly_pct": -6.0
-  },
-  {
-   "year": 2014,
-   "month": 5,
-   "count": 701.8,
-   "source": "SNPP",
-   "median": 2700.0,
-   "anomaly_pct": -74.0
-  },
-  {
-   "year": 2014,
-   "month": 6,
-   "count": 9158.1,
-   "source": "SNPP",
-   "median": 5339.4,
-   "anomaly_pct": 71.5
-  },
-  {
-   "year": 2014,
-   "month": 7,
-   "count": 14038.6,
-   "source": "SNPP",
-   "median": 6727.3,
-   "anomaly_pct": 108.7
-  },
-  {
-   "year": 2014,
-   "month": 8,
-   "count": 2421.2,
-   "source": "SNPP",
-   "median": 12944.9,
-   "anomaly_pct": -81.3
-  },
-  {
-   "year": 2014,
-   "month": 9,
-   "count": 3554.2,
-   "source": "SNPP",
-   "median": 2467.9,
-   "anomaly_pct": 44.0
-  },
-  {
-   "year": 2014,
-   "month": 10,
-   "count": 1752.4,
-   "source": "SNPP",
-   "median": 1332.3,
-   "anomaly_pct": 31.5
-  },
-  {
-   "year": 2014,
-   "month": 11,
-   "count": 220.2,
-   "source": "SNPP",
-   "median": 338.1,
+   "median": 6365.1,
    "anomaly_pct": -34.9
   },
   {
+   "year": 2010,
+   "month": 3,
+   "count": 905.0,
+   "source": "MODIS",
+   "median": 4003.1,
+   "anomaly_pct": -77.4
+  },
+  {
+   "year": 2010,
+   "month": 4,
+   "count": 681.3,
+   "source": "MODIS",
+   "median": 621.6,
+   "anomaly_pct": 9.6
+  },
+  {
+   "year": 2010,
+   "month": 5,
+   "count": 2252.7,
+   "source": "MODIS",
+   "median": 1834.9,
+   "anomaly_pct": 22.8
+  },
+  {
+   "year": 2010,
+   "month": 6,
+   "count": 1104.0,
+   "source": "MODIS",
+   "median": 2745.0,
+   "anomaly_pct": -59.8
+  },
+  {
+   "year": 2010,
+   "month": 7,
+   "count": 512.2,
+   "source": "MODIS",
+   "median": 4709.2,
+   "anomaly_pct": -89.1
+  },
+  {
+   "year": 2010,
+   "month": 8,
+   "count": 1660.9,
+   "source": "MODIS",
+   "median": 10666.6,
+   "anomaly_pct": -84.4
+  },
+  {
+   "year": 2010,
+   "month": 9,
+   "count": 1680.8,
+   "source": "MODIS",
+   "median": 1874.7,
+   "anomaly_pct": -10.3
+  },
+  {
+   "year": 2010,
+   "month": 10,
+   "count": 9085.2,
+   "source": "MODIS",
+   "median": 1178.5,
+   "anomaly_pct": 670.9
+  },
+  {
+   "year": 2010,
+   "month": 11,
+   "count": 760.8,
+   "source": "MODIS",
+   "median": 253.6,
+   "anomaly_pct": 200.0
+  },
+  {
+   "year": 2010,
+   "month": 12,
+   "count": 228.7,
+   "source": "MODIS",
+   "median": 223.8,
+   "anomaly_pct": 2.2
+  },
+  {
+   "year": 2011,
+   "month": 1,
+   "count": 258.6,
+   "source": "MODIS",
+   "median": 1265.6,
+   "anomaly_pct": -79.6
+  },
+  {
+   "year": 2011,
+   "month": 2,
+   "count": 3988.2,
+   "source": "MODIS",
+   "median": 5877.8,
+   "anomaly_pct": -32.1
+  },
+  {
+   "year": 2011,
+   "month": 3,
+   "count": 880.2,
+   "source": "MODIS",
+   "median": 3165.2,
+   "anomaly_pct": -72.2
+  },
+  {
+   "year": 2011,
+   "month": 4,
+   "count": 1402.3,
+   "source": "MODIS",
+   "median": 626.6,
+   "anomaly_pct": 123.8
+  },
+  {
+   "year": 2011,
+   "month": 5,
+   "count": 5927.5,
+   "source": "MODIS",
+   "median": 2043.8,
+   "anomaly_pct": 190.0
+  },
+  {
+   "year": 2011,
+   "month": 6,
+   "count": 4619.7,
+   "source": "MODIS",
+   "median": 2623.1,
+   "anomaly_pct": 76.1
+  },
+  {
+   "year": 2011,
+   "month": 7,
+   "count": 12228.0,
+   "source": "MODIS",
+   "median": 4433.2,
+   "anomaly_pct": 175.8
+  },
+  {
+   "year": 2011,
+   "month": 8,
+   "count": 8215.0,
+   "source": "MODIS",
+   "median": 9202.1,
+   "anomaly_pct": -10.7
+  },
+  {
+   "year": 2011,
+   "month": 9,
+   "count": 4729.1,
+   "source": "MODIS",
+   "median": 1777.8,
+   "anomaly_pct": 166.0
+  },
+  {
+   "year": 2011,
+   "month": 10,
+   "count": 969.7,
+   "source": "MODIS",
+   "median": 1233.2,
+   "anomaly_pct": -21.4
+  },
+  {
+   "year": 2011,
+   "month": 11,
+   "count": 253.6,
+   "source": "MODIS",
+   "median": 303.3,
+   "anomaly_pct": -16.4
+  },
+  {
+   "year": 2011,
+   "month": 12,
+   "count": 164.1,
+   "source": "MODIS",
+   "median": 226.3,
+   "anomaly_pct": -27.5
+  },
+  {
+   "year": 2012,
+   "month": 1,
+   "count": 2590.8,
+   "source": "MODIS",
+   "median": 890.1,
+   "anomaly_pct": 191.1
+  },
+  {
+   "year": 2012,
+   "month": 2,
+   "count": 1609.3,
+   "source": "SNPP",
+   "median": 5390.5,
+   "anomaly_pct": -70.1
+  },
+  {
+   "year": 2012,
+   "month": 3,
+   "count": 770.9,
+   "source": "SNPP",
+   "median": 2327.3,
+   "anomaly_pct": -66.9
+  },
+  {
+   "year": 2012,
+   "month": 4,
+   "count": 596.3,
+   "source": "SNPP",
+   "median": 631.5,
+   "anomaly_pct": -5.6
+  },
+  {
+   "year": 2012,
+   "month": 5,
+   "count": 1575.6,
+   "source": "SNPP",
+   "median": 2252.7,
+   "anomaly_pct": -30.1
+  },
+  {
+   "year": 2012,
+   "month": 6,
+   "count": 15541.1,
+   "source": "SNPP",
+   "median": 2745.0,
+   "anomaly_pct": 466.2
+  },
+  {
+   "year": 2012,
+   "month": 7,
+   "count": 6145.0,
+   "source": "SNPP",
+   "median": 4709.2,
+   "anomaly_pct": 30.5
+  },
+  {
+   "year": 2012,
+   "month": 8,
+   "count": 14435.3,
+   "source": "SNPP",
+   "median": 8215.0,
+   "anomaly_pct": 75.7
+  },
+  {
+   "year": 2012,
+   "month": 9,
+   "count": 2641.6,
+   "source": "SNPP",
+   "median": 1874.7,
+   "anomaly_pct": 40.9
+  },
+  {
+   "year": 2012,
+   "month": 10,
+   "count": 417.6,
+   "source": "SNPP",
+   "median": 1178.5,
+   "anomaly_pct": -64.6
+  },
+  {
+   "year": 2012,
+   "month": 11,
+   "count": 45.9,
+   "source": "SNPP",
+   "median": 253.6,
+   "anomaly_pct": -81.9
+  },
+  {
+   "year": 2012,
+   "month": 12,
+   "count": 30.6,
+   "source": "SNPP",
+   "median": 223.8,
+   "anomaly_pct": -86.3
+  },
+  {
+   "year": 2013,
+   "month": 1,
+   "count": 1269.2,
+   "source": "SNPP",
+   "median": 1265.6,
+   "anomaly_pct": 0.3
+  },
+  {
+   "year": 2013,
+   "month": 2,
+   "count": 1222.3,
+   "source": "SNPP",
+   "median": 5136.9,
+   "anomaly_pct": -76.2
+  },
+  {
+   "year": 2013,
+   "month": 3,
+   "count": 2911.2,
+   "source": "SNPP",
+   "median": 1728.0,
+   "anomaly_pct": 68.5
+  },
+  {
+   "year": 2013,
+   "month": 4,
+   "count": 2189.2,
+   "source": "SNPP",
+   "median": 626.6,
+   "anomaly_pct": 249.4
+  },
+  {
+   "year": 2013,
+   "month": 5,
+   "count": 1997.3,
+   "source": "SNPP",
+   "median": 2043.8,
+   "anomaly_pct": -2.3
+  },
+  {
+   "year": 2013,
+   "month": 6,
+   "count": 53830.3,
+   "source": "SNPP",
+   "median": 3682.3,
+   "anomaly_pct": 1361.9
+  },
+  {
+   "year": 2013,
+   "month": 7,
+   "count": 9842.4,
+   "source": "SNPP",
+   "median": 4883.2,
+   "anomaly_pct": 101.6
+  },
+  {
+   "year": 2013,
+   "month": 8,
+   "count": 16192.6,
+   "source": "SNPP",
+   "median": 9440.8,
+   "anomaly_pct": 71.5
+  },
+  {
+   "year": 2013,
+   "month": 9,
+   "count": 2103.5,
+   "source": "SNPP",
+   "median": 2180.6,
+   "anomaly_pct": -3.5
+  },
+  {
+   "year": 2013,
+   "month": 10,
+   "count": 641.3,
+   "source": "SNPP",
+   "median": 1074.1,
+   "anomaly_pct": -40.3
+  },
+  {
+   "year": 2013,
+   "month": 11,
+   "count": 67.4,
+   "source": "SNPP",
+   "median": 253.6,
+   "anomaly_pct": -73.4
+  },
+  {
+   "year": 2013,
+   "month": 12,
+   "count": 188.9,
+   "source": "SNPP",
+   "median": 218.8,
+   "anomaly_pct": -13.7
+  },
+  {
+   "year": 2014,
+   "month": 1,
+   "count": 3032.7,
+   "source": "SNPP",
+   "median": 1269.2,
+   "anomaly_pct": 138.9
+  },
+  {
+   "year": 2014,
+   "month": 2,
+   "count": 40085.3,
+   "source": "SNPP",
+   "median": 4883.2,
+   "anomaly_pct": 720.9
+  },
+  {
+   "year": 2014,
+   "month": 3,
+   "count": 50284.1,
+   "source": "SNPP",
+   "median": 2327.3,
+   "anomaly_pct": 2060.7
+  },
+  {
+   "year": 2014,
+   "month": 4,
+   "count": 522.8,
+   "source": "SNPP",
+   "median": 631.5,
+   "anomaly_pct": -17.2
+  },
+  {
+   "year": 2014,
+   "month": 5,
+   "count": 390.1,
+   "source": "SNPP",
+   "median": 1997.3,
+   "anomaly_pct": -80.5
+  },
+  {
+   "year": 2014,
+   "month": 6,
+   "count": 8211.7,
+   "source": "SNPP",
+   "median": 4619.7,
+   "anomaly_pct": 77.8
+  },
+  {
+   "year": 2014,
+   "month": 7,
+   "count": 11874.4,
+   "source": "SNPP",
+   "median": 5057.3,
+   "anomaly_pct": 134.8
+  },
+  {
+   "year": 2014,
+   "month": 8,
+   "count": 1772.6,
+   "source": "SNPP",
+   "median": 10666.6,
+   "anomaly_pct": -83.4
+  },
+  {
+   "year": 2014,
+   "month": 9,
+   "count": 2446.6,
+   "source": "SNPP",
+   "median": 2103.5,
+   "anomaly_pct": 16.3
+  },
+  {
+   "year": 2014,
+   "month": 10,
+   "count": 1007.8,
+   "source": "SNPP",
+   "median": 969.7,
+   "anomaly_pct": 3.9
+  },
+  {
+   "year": 2014,
+   "month": 11,
+   "count": 117.4,
+   "source": "SNPP",
+   "median": 253.6,
+   "anomaly_pct": -53.7
+  },
+  {
    "year": 2014,
    "month": 12,
-   "count": 249.0,
+   "count": 134.8,
    "source": "SNPP",
-   "median": 287.7,
-   "anomaly_pct": -13.4
+   "median": 213.8,
+   "anomaly_pct": -37.0
   },
   {
    "year": 2015,
    "month": 1,
-   "count": 936.4,
+   "count": 548.3,
    "source": "SNPP",
-   "median": 1703.7,
-   "anomaly_pct": -45.0
+   "median": 1455.1,
+   "anomaly_pct": -62.3
   },
   {
    "year": 2015,
    "month": 2,
-   "count": 3037.6,
+   "count": 2383.2,
    "source": "SNPP",
-   "median": 5672.5,
-   "anomaly_pct": -46.5
+   "median": 5136.9,
+   "anomaly_pct": -53.6
   },
   {
    "year": 2015,
    "month": 3,
-   "count": 3538.7,
+   "count": 2809.0,
    "source": "SNPP",
-   "median": 3263.0,
-   "anomaly_pct": 8.5
+   "median": 2619.2,
+   "anomaly_pct": 7.2
   },
   {
    "year": 2015,
    "month": 4,
-   "count": 1467.4,
+   "count": 1127.3,
    "source": "SNPP",
-   "median": 973.9,
-   "anomaly_pct": 50.7
+   "median": 626.6,
+   "anomaly_pct": 79.9
   },
   {
    "year": 2015,
    "month": 5,
-   "count": 711.0,
+   "count": 392.1,
    "source": "SNPP",
-   "median": 2608.5,
-   "anomaly_pct": -72.7
+   "median": 1916.1,
+   "anomaly_pct": -79.5
   },
   {
    "year": 2015,
    "month": 6,
-   "count": 3602.5,
+   "count": 2546.6,
    "source": "SNPP",
-   "median": 7248.8,
-   "anomaly_pct": -50.3
+   "median": 6415.7,
+   "anomaly_pct": -60.3
   },
   {
    "year": 2015,
    "month": 7,
-   "count": 14235.2,
+   "count": 12031.6,
    "source": "SNPP",
-   "median": 6925.0,
-   "anomaly_pct": 105.6
+   "median": 5601.1,
+   "anomaly_pct": 114.8
   },
   {
    "year": 2015,
    "month": 8,
-   "count": 6957.1,
+   "count": 4840.0,
    "source": "SNPP",
-   "median": 11546.9,
-   "anomaly_pct": -39.7
+   "median": 9440.8,
+   "anomaly_pct": -48.7
   },
   {
    "year": 2015,
    "month": 9,
-   "count": 12934.5,
+   "count": 9625.9,
    "source": "SNPP",
-   "median": 2876.6,
-   "anomaly_pct": 349.6
+   "median": 2275.0,
+   "anomaly_pct": 323.1
   },
   {
    "year": 2015,
    "month": 10,
-   "count": 5160.4,
+   "count": 3791.3,
    "source": "SNPP",
-   "median": 1440.8,
-   "anomaly_pct": 258.2
+   "median": 988.8,
+   "anomaly_pct": 283.4
   },
   {
    "year": 2015,
    "month": 11,
-   "count": 404.4,
+   "count": 162.4,
    "source": "SNPP",
-   "median": 335.6,
-   "anomaly_pct": 20.5
+   "median": 243.7,
+   "anomaly_pct": -33.4
   },
   {
    "year": 2015,
    "month": 12,
-   "count": 204.8,
+   "count": 101.1,
    "source": "SNPP",
-   "median": 277.6,
-   "anomaly_pct": -26.2
+   "median": 201.4,
+   "anomaly_pct": -49.8
   },
   {
    "year": 2016,
    "month": 1,
-   "count": 297.4,
+   "count": 167.5,
    "source": "SNPP",
-   "median": 1519.8,
-   "anomaly_pct": -80.4
+   "median": 1269.2,
+   "anomaly_pct": -86.8
   },
   {
    "year": 2016,
    "month": 2,
-   "count": 886.0,
+   "count": 625.9,
    "source": "SNPP",
-   "median": 5425.2,
-   "anomaly_pct": -83.7
+   "median": 4883.2,
+   "anomaly_pct": -87.2
   },
   {
    "year": 2016,
    "month": 3,
-   "count": 2558.1,
+   "count": 1992.2,
    "source": "SNPP",
-   "median": 3538.7,
-   "anomaly_pct": -27.7
+   "median": 2809.0,
+   "anomaly_pct": -29.1
   },
   {
    "year": 2016,
    "month": 4,
-   "count": 2160.9,
+   "count": 1327.4,
    "source": "SNPP",
-   "median": 1004.3,
-   "anomaly_pct": 115.2
+   "median": 631.5,
+   "anomaly_pct": 110.2
   },
   {
    "year": 2016,
    "month": 5,
-   "count": 512.4,
+   "count": 118.4,
    "source": "SNPP",
-   "median": 2516.9,
-   "anomaly_pct": -79.6
+   "median": 1834.9,
+   "anomaly_pct": -93.5
   },
   {
    "year": 2016,
    "month": 6,
-   "count": 721.3,
+   "count": 412.5,
    "source": "SNPP",
-   "median": 5339.4,
-   "anomaly_pct": -86.5
+   "median": 4619.7,
+   "anomaly_pct": -91.1
   },
   {
    "year": 2016,
    "month": 7,
-   "count": 2004.5,
+   "count": 1323.3,
    "source": "SNPP",
-   "median": 7122.7,
-   "anomaly_pct": -71.9
-  },
-  {
-   "year": 2016,
-   "month": 8,
-   "count": 8449.1,
-   "source": "SNPP",
-   "median": 10149.0,
-   "anomaly_pct": -16.7
-  },
-  {
-   "year": 2016,
-   "month": 9,
-   "count": 704.9,
-   "source": "SNPP",
-   "median": 3285.4,
+   "median": 6145.0,
    "anomaly_pct": -78.5
   },
   {
    "year": 2016,
-   "month": 10,
-   "count": 1088.7,
+   "month": 8,
+   "count": 7619.4,
    "source": "SNPP",
-   "median": 1549.3,
-   "anomaly_pct": -29.7
+   "median": 8215.0,
+   "anomaly_pct": -7.2
+  },
+  {
+   "year": 2016,
+   "month": 9,
+   "count": 405.4,
+   "source": "SNPP",
+   "median": 2446.6,
+   "anomaly_pct": -83.4
+  },
+  {
+   "year": 2016,
+   "month": 10,
+   "count": 729.1,
+   "source": "SNPP",
+   "median": 1007.8,
+   "anomaly_pct": -27.7
   },
   {
    "year": 2016,
    "month": 11,
-   "count": 39.1,
+   "count": 16.3,
    "source": "SNPP",
-   "median": 338.1,
-   "anomaly_pct": -88.4
+   "median": 233.7,
+   "anomaly_pct": -93.0
   },
   {
    "year": 2016,
    "month": 12,
-   "count": 297.4,
+   "count": 188.9,
    "source": "SNPP",
-   "median": 267.5,
-   "anomaly_pct": 11.2
+   "median": 188.9,
+   "anomaly_pct": 0.0
   },
   {
    "year": 2017,
    "month": 1,
-   "count": 569.0,
+   "count": 373.7,
    "source": "SNPP",
-   "median": 1368.0,
-   "anomaly_pct": -58.4
+   "median": 1079.7,
+   "anomaly_pct": -65.4
   },
   {
    "year": 2017,
    "month": 2,
-   "count": 438.4,
+   "count": 304.3,
    "source": "SNPP",
-   "median": 5084.6,
-   "anomaly_pct": -91.4
+   "median": 4512.8,
+   "anomaly_pct": -93.3
   },
   {
    "year": 2017,
    "month": 3,
-   "count": 243.9,
+   "count": 76.6,
    "source": "SNPP",
-   "median": 3195.1,
-   "anomaly_pct": -92.4
+   "median": 2568.1,
+   "anomaly_pct": -97.0
   },
   {
    "year": 2017,
    "month": 4,
-   "count": 207.9,
+   "count": 100.1,
    "source": "SNPP",
-   "median": 1090.1,
-   "anomaly_pct": -80.9
+   "median": 656.4,
+   "anomaly_pct": -84.8
   },
   {
    "year": 2017,
    "month": 5,
-   "count": 180.1,
+   "count": 92.9,
    "source": "SNPP",
-   "median": 2257.1,
-   "anomaly_pct": -92.0
+   "median": 1705.3,
+   "anomaly_pct": -94.6
   },
   {
    "year": 2017,
    "month": 6,
-   "count": 394.1,
+   "count": 188.9,
    "source": "SNPP",
-   "median": 4471.0,
-   "anomaly_pct": -91.2
+   "median": 3682.3,
+   "anomaly_pct": -94.9
   },
   {
    "year": 2017,
    "month": 7,
-   "count": 1234.8,
+   "count": 726.0,
    "source": "SNPP",
-   "median": 6925.0,
-   "anomaly_pct": -82.2
+   "median": 5601.1,
+   "anomaly_pct": -87.0
   },
   {
    "year": 2017,
    "month": 8,
-   "count": 723.4,
+   "count": 473.8,
    "source": "SNPP",
-   "median": 9737.7,
-   "anomaly_pct": -92.6
+   "median": 7976.3,
+   "anomaly_pct": -94.1
   },
   {
    "year": 2017,
    "month": 9,
-   "count": 206.8,
+   "count": 84.8,
    "source": "SNPP",
-   "median": 2876.6,
-   "anomaly_pct": -92.8
+   "median": 2275.0,
+   "anomaly_pct": -96.3
   },
   {
    "year": 2017,
    "month": 10,
-   "count": 714.1,
+   "count": 377.8,
    "source": "SNPP",
-   "median": 1440.8,
-   "anomaly_pct": -50.4
+   "median": 988.8,
+   "anomaly_pct": -61.8
   },
   {
    "year": 2017,
    "month": 11,
-   "count": 41.2,
+   "count": 11.2,
    "source": "SNPP",
-   "median": 335.6,
-   "anomaly_pct": -87.7
+   "median": 198.0,
+   "anomaly_pct": -94.3
   },
   {
    "year": 2017,
    "month": 12,
-   "count": 168.8,
+   "count": 61.3,
    "source": "SNPP",
-   "median": 277.6,
-   "anomaly_pct": -39.2
+   "median": 188.9,
+   "anomaly_pct": -67.6
   },
   {
    "year": 2018,
    "month": 1,
-   "count": 344.7,
+   "count": 162.4,
    "source": "SNPP",
-   "median": 1216.3,
-   "anomaly_pct": -71.7
+   "median": 890.1,
+   "anomaly_pct": -81.8
   },
   {
    "year": 2018,
    "month": 2,
-   "count": 2120.8,
+   "count": 1689.9,
    "source": "SNPP",
-   "median": 4743.9,
-   "anomaly_pct": -55.3
+   "median": 4142.3,
+   "anomaly_pct": -59.2
   },
   {
    "year": 2018,
    "month": 3,
-   "count": 479.5,
+   "count": 305.3,
    "source": "SNPP",
-   "median": 2851.4,
-   "anomaly_pct": -83.2
+   "median": 2327.3,
+   "anomaly_pct": -86.9
   },
   {
    "year": 2018,
    "month": 4,
-   "count": 496.0,
+   "count": 307.0,
    "source": "NOAA20",
-   "median": 1004.3,
-   "anomaly_pct": -50.6
+   "median": 631.5,
+   "anomaly_pct": -51.4
   },
   {
    "year": 2018,
    "month": 5,
-   "count": 304.0,
+   "count": 155.0,
    "source": "NOAA20",
-   "median": 1997.3,
-   "anomaly_pct": -84.8
+   "median": 1575.6,
+   "anomaly_pct": -90.2
   },
   {
    "year": 2018,
    "month": 6,
-   "count": 320.0,
+   "count": 140.0,
    "source": "NOAA20",
-   "median": 3602.5,
-   "anomaly_pct": -91.1
+   "median": 2745.0,
+   "anomaly_pct": -94.9
   },
   {
    "year": 2018,
    "month": 7,
-   "count": 1064.0,
+   "count": 797.0,
    "source": "NOAA20",
-   "median": 6727.3,
+   "median": 5057.3,
    "anomaly_pct": -84.2
   },
   {
    "year": 2018,
    "month": 8,
-   "count": 6734.0,
+   "count": 5758.0,
    "source": "NOAA20",
-   "median": 9326.4,
-   "anomaly_pct": -27.8
+   "median": 7737.6,
+   "anomaly_pct": -25.6
   },
   {
    "year": 2018,
    "month": 9,
-   "count": 1714.0,
+   "count": 1505.0,
    "source": "NOAA20",
-   "median": 2467.9,
-   "anomaly_pct": -30.5
+   "median": 2103.5,
+   "anomaly_pct": -28.5
   },
   {
    "year": 2018,
    "month": 10,
-   "count": 392.0,
+   "count": 294.0,
    "source": "NOAA20",
-   "median": 1332.3,
-   "anomaly_pct": -70.6
+   "median": 969.7,
+   "anomaly_pct": -69.7
   },
   {
    "year": 2018,
    "month": 11,
-   "count": 57.0,
+   "count": 18.0,
    "source": "NOAA20",
-   "median": 333.1,
-   "anomaly_pct": -82.9
-  },
-  {
-   "year": 2018,
-   "month": 12,
-   "count": 124.0,
-   "source": "NOAA20",
-   "median": 267.5,
-   "anomaly_pct": -53.6
-  },
-  {
-   "year": 2019,
-   "month": 1,
-   "count": 268.0,
-   "source": "NOAA20",
-   "median": 1076.3,
-   "anomaly_pct": -75.1
-  },
-  {
-   "year": 2019,
-   "month": 2,
-   "count": 2530.0,
-   "source": "NOAA20",
-   "median": 4743.9,
-   "anomaly_pct": -46.7
-  },
-  {
-   "year": 2019,
-   "month": 3,
-   "count": 5447.0,
-   "source": "NOAA20",
-   "median": 2704.7,
-   "anomaly_pct": 101.4
-  },
-  {
-   "year": 2019,
-   "month": 4,
-   "count": 350.0,
-   "source": "NOAA20",
-   "median": 973.9,
-   "anomaly_pct": -64.1
-  },
-  {
-   "year": 2019,
-   "month": 5,
-   "count": 620.0,
-   "source": "NOAA20",
-   "median": 1743.0,
-   "anomaly_pct": -64.4
-  },
-  {
-   "year": 2019,
-   "month": 6,
-   "count": 272.0,
-   "source": "NOAA20",
-   "median": 3527.2,
-   "anomaly_pct": -92.3
-  },
-  {
-   "year": 2019,
-   "month": 7,
-   "count": 2177.0,
-   "source": "NOAA20",
-   "median": 6341.2,
-   "anomaly_pct": -65.7
-  },
-  {
-   "year": 2019,
-   "month": 8,
-   "count": 9428.0,
-   "source": "NOAA20",
-   "median": 8887.7,
-   "anomaly_pct": 6.1
-  },
-  {
-   "year": 2019,
-   "month": 9,
-   "count": 14605.0,
-   "source": "NOAA20",
-   "median": 2419.3,
-   "anomaly_pct": 503.7
-  },
-  {
-   "year": 2019,
-   "month": 10,
-   "count": 920.0,
-   "source": "NOAA20",
-   "median": 1210.5,
-   "anomaly_pct": -24.0
-  },
-  {
-   "year": 2019,
-   "month": 11,
-   "count": 352.0,
-   "source": "NOAA20",
-   "median": 276.6,
-   "anomaly_pct": 27.2
-  },
-  {
-   "year": 2019,
-   "month": 12,
-   "count": 126.0,
-   "source": "NOAA20",
-   "median": 267.0,
-   "anomaly_pct": -52.8
-  },
-  {
-   "year": 2020,
-   "month": 1,
-   "count": 723.0,
-   "source": "NOAA20",
-   "median": 936.4,
-   "anomaly_pct": -22.8
-  },
-  {
-   "year": 2020,
-   "month": 2,
-   "count": 1229.0,
-   "source": "NOAA20",
-   "median": 4743.9,
-   "anomaly_pct": -74.1
-  },
-  {
-   "year": 2020,
-   "month": 3,
-   "count": 2034.0,
-   "source": "NOAA20",
-   "median": 2851.4,
-   "anomaly_pct": -28.7
-  },
-  {
-   "year": 2020,
-   "month": 4,
-   "count": 830.0,
-   "source": "NOAA20",
-   "median": 943.6,
-   "anomaly_pct": -12.0
-  },
-  {
-   "year": 2020,
-   "month": 5,
-   "count": 70.0,
-   "source": "NOAA20",
-   "median": 1488.8,
-   "anomaly_pct": -95.3
-  },
-  {
-   "year": 2020,
-   "month": 6,
-   "count": 161.0,
-   "source": "NOAA20",
-   "median": 3452.0,
-   "anomaly_pct": -95.3
-  },
-  {
-   "year": 2020,
-   "month": 7,
-   "count": 231.0,
-   "source": "NOAA20",
-   "median": 5955.1,
-   "anomaly_pct": -96.1
-  },
-  {
-   "year": 2020,
-   "month": 8,
-   "count": 378.0,
-   "source": "NOAA20",
-   "median": 9326.4,
-   "anomaly_pct": -95.9
-  },
-  {
-   "year": 2020,
-   "month": 9,
-   "count": 89.0,
-   "source": "NOAA20",
-   "median": 2467.9,
-   "anomaly_pct": -96.4
-  },
-  {
-   "year": 2020,
-   "month": 10,
-   "count": 121.0,
-   "source": "NOAA20",
-   "median": 1088.7,
+   "median": 162.4,
    "anomaly_pct": -88.9
   },
   {
-   "year": 2020,
-   "month": 11,
-   "count": 54.0,
-   "source": "NOAA20",
-   "median": 333.1,
-   "anomaly_pct": -83.8
-  },
-  {
-   "year": 2020,
+   "year": 2018,
    "month": 12,
-   "count": 114.0,
+   "count": 44.0,
    "source": "NOAA20",
-   "median": 266.5,
-   "anomaly_pct": -57.2
+   "median": 188.9,
+   "anomaly_pct": -76.7
   },
   {
-   "year": 2021,
+   "year": 2019,
    "month": 1,
-   "count": 69.0,
+   "count": 172.0,
    "source": "NOAA20",
-   "median": 894.6,
-   "anomaly_pct": -92.3
+   "median": 815.5,
+   "anomaly_pct": -78.9
   },
   {
-   "year": 2021,
+   "year": 2019,
    "month": 2,
-   "count": 1413.0,
+   "count": 2241.0,
    "source": "NOAA20",
-   "median": 3890.8,
-   "anomaly_pct": -63.7
+   "median": 4065.2,
+   "anomaly_pct": -44.9
   },
   {
-   "year": 2021,
+   "year": 2019,
    "month": 3,
-   "count": 1096.0,
+   "count": 4527.0,
    "source": "NOAA20",
-   "median": 2704.7,
-   "anomaly_pct": -59.5
+   "median": 2159.7,
+   "anomaly_pct": 109.6
   },
   {
-   "year": 2021,
+   "year": 2019,
    "month": 4,
-   "count": 130.0,
+   "count": 153.0,
    "source": "NOAA20",
-   "median": 895.2,
-   "anomaly_pct": -85.5
+   "median": 626.6,
+   "anomaly_pct": -75.6
   },
   {
-   "year": 2021,
+   "year": 2019,
    "month": 5,
-   "count": 101.0,
+   "count": 377.0,
    "source": "NOAA20",
-   "median": 1307.1,
-   "anomaly_pct": -92.3
+   "median": 1369.6,
+   "anomaly_pct": -72.5
   },
   {
-   "year": 2021,
+   "year": 2019,
    "month": 6,
-   "count": 206.0,
+   "count": 194.0,
    "source": "NOAA20",
-   "median": 3315.7,
-   "anomaly_pct": -93.8
+   "median": 2645.8,
+   "anomaly_pct": -92.7
   },
   {
-   "year": 2021,
+   "year": 2019,
    "month": 7,
-   "count": 595.0,
+   "count": 1843.0,
    "source": "NOAA20",
-   "median": 5589.3,
-   "anomaly_pct": -89.4
+   "median": 4883.2,
+   "anomaly_pct": -62.3
   },
   {
-   "year": 2021,
+   "year": 2019,
    "month": 8,
-   "count": 168.0,
+   "count": 7516.0,
    "source": "NOAA20",
-   "median": 8887.7,
+   "median": 7678.5,
+   "anomaly_pct": -2.1
+  },
+  {
+   "year": 2019,
+   "month": 9,
+   "count": 12721.0,
+   "source": "NOAA20",
+   "median": 1989.1,
+   "anomaly_pct": 539.5
+  },
+  {
+   "year": 2019,
+   "month": 10,
+   "count": 616.0,
+   "source": "NOAA20",
+   "median": 932.4,
+   "anomaly_pct": -33.9
+  },
+  {
+   "year": 2019,
+   "month": 11,
+   "count": 202.0,
+   "source": "NOAA20",
+   "median": 139.9,
+   "anomaly_pct": 44.4
+  },
+  {
+   "year": 2019,
+   "month": 12,
+   "count": 55.0,
+   "source": "NOAA20",
+   "median": 176.5,
+   "anomaly_pct": -68.8
+  },
+  {
+   "year": 2020,
+   "month": 1,
+   "count": 597.0,
+   "source": "NOAA20",
+   "median": 740.9,
+   "anomaly_pct": -19.4
+  },
+  {
+   "year": 2020,
+   "month": 2,
+   "count": 853.0,
+   "source": "NOAA20",
+   "median": 3988.2,
+   "anomaly_pct": -78.6
+  },
+  {
+   "year": 2020,
+   "month": 3,
+   "count": 1591.0,
+   "source": "NOAA20",
+   "median": 2327.3,
+   "anomaly_pct": -31.6
+  },
+  {
+   "year": 2020,
+   "month": 4,
+   "count": 424.0,
+   "source": "NOAA20",
+   "median": 621.6,
+   "anomaly_pct": -31.8
+  },
+  {
+   "year": 2020,
+   "month": 5,
+   "count": 23.0,
+   "source": "NOAA20",
+   "median": 1163.6,
+   "anomaly_pct": -98.0
+  },
+  {
+   "year": 2020,
+   "month": 6,
+   "count": 90.0,
+   "source": "NOAA20",
+   "median": 2546.6,
+   "anomaly_pct": -96.5
+  },
+  {
+   "year": 2020,
+   "month": 7,
+   "count": 111.0,
+   "source": "NOAA20",
+   "median": 4709.2,
+   "anomaly_pct": -97.6
+  },
+  {
+   "year": 2020,
+   "month": 8,
+   "count": 192.0,
+   "source": "NOAA20",
+   "median": 7619.4,
+   "anomaly_pct": -97.5
+  },
+  {
+   "year": 2020,
+   "month": 9,
+   "count": 40.0,
+   "source": "NOAA20",
+   "median": 2103.5,
    "anomaly_pct": -98.1
   },
   {
-   "year": 2021,
-   "month": 9,
-   "count": 113.0,
-   "source": "NOAA20",
-   "median": 2419.3,
-   "anomaly_pct": -95.3
-  },
-  {
-   "year": 2021,
+   "year": 2020,
    "month": 10,
-   "count": 319.0,
+   "count": 48.0,
    "source": "NOAA20",
-   "median": 1071.7,
-   "anomaly_pct": -70.2
+   "median": 895.1,
+   "anomaly_pct": -94.6
   },
   {
-   "year": 2021,
+   "year": 2020,
    "month": 11,
-   "count": 111.0,
+   "count": 20.0,
    "source": "NOAA20",
-   "median": 276.6,
-   "anomaly_pct": -59.9
+   "median": 162.4,
+   "anomaly_pct": -87.7
   },
   {
-   "year": 2021,
+   "year": 2020,
    "month": 12,
-   "count": 102.0,
+   "count": 41.0,
    "source": "NOAA20",
-   "median": 261.9,
-   "anomaly_pct": -61.1
+   "median": 164.1,
+   "anomaly_pct": -75.0
   },
   {
-   "year": 2022,
+   "year": 2021,
    "month": 1,
-   "count": 232.0,
+   "count": 22.0,
    "source": "NOAA20",
-   "median": 852.9,
-   "anomaly_pct": -72.8
+   "median": 669.0,
+   "anomaly_pct": -96.7
   },
   {
-   "year": 2022,
+   "year": 2021,
    "month": 2,
-   "count": 125.0,
+   "count": 909.0,
    "source": "NOAA20",
-   "median": 3037.6,
-   "anomaly_pct": -95.9
+   "median": 3185.7,
+   "anomaly_pct": -71.5
   },
   {
-   "year": 2022,
+   "year": 2021,
    "month": 3,
-   "count": 682.0,
+   "count": 791.0,
    "source": "NOAA20",
-   "median": 2558.1,
-   "anomaly_pct": -73.3
-  },
-  {
-   "year": 2022,
-   "month": 4,
-   "count": 253.0,
-   "source": "NOAA20",
-   "median": 846.9,
-   "anomaly_pct": -70.1
-  },
-  {
-   "year": 2022,
-   "month": 5,
-   "count": 269.0,
-   "source": "NOAA20",
-   "median": 1125.4,
-   "anomaly_pct": -76.1
-  },
-  {
-   "year": 2022,
-   "month": 6,
-   "count": 192.0,
-   "source": "NOAA20",
-   "median": 3179.4,
-   "anomaly_pct": -94.0
-  },
-  {
-   "year": 2022,
-   "month": 7,
-   "count": 453.0,
-   "source": "NOAA20",
-   "median": 5223.4,
-   "anomaly_pct": -91.3
-  },
-  {
-   "year": 2022,
-   "month": 8,
-   "count": 259.0,
-   "source": "NOAA20",
-   "median": 8449.1,
-   "anomaly_pct": -96.9
-  },
-  {
-   "year": 2022,
-   "month": 9,
-   "count": 87.0,
-   "source": "NOAA20",
-   "median": 2370.8,
-   "anomaly_pct": -96.3
-  },
-  {
-   "year": 2022,
-   "month": 10,
-   "count": 53.0,
-   "source": "NOAA20",
-   "median": 1054.8,
-   "anomaly_pct": -95.0
-  },
-  {
-   "year": 2022,
-   "month": 11,
-   "count": 102.0,
-   "source": "NOAA20",
-   "median": 220.2,
-   "anomaly_pct": -53.7
-  },
-  {
-   "year": 2022,
-   "month": 12,
-   "count": 45.0,
-   "source": "NOAA20",
-   "median": 257.4,
-   "anomaly_pct": -82.5
-  },
-  {
-   "year": 2023,
-   "month": 1,
-   "count": 57.0,
-   "source": "NOAA20",
-   "median": 799.9,
-   "anomaly_pct": -92.9
-  },
-  {
-   "year": 2023,
-   "month": 2,
-   "count": 106.0,
-   "source": "NOAA20",
-   "median": 2783.8,
-   "anomaly_pct": -96.2
-  },
-  {
-   "year": 2023,
-   "month": 3,
-   "count": 217.0,
-   "source": "NOAA20",
-   "median": 2296.0,
-   "anomaly_pct": -90.5
-  },
-  {
-   "year": 2023,
-   "month": 4,
-   "count": 326.0,
-   "source": "NOAA20",
-   "median": 838.4,
-   "anomaly_pct": -61.1
-  },
-  {
-   "year": 2023,
-   "month": 5,
-   "count": 276.0,
-   "source": "NOAA20",
-   "median": 1077.5,
-   "anomaly_pct": -74.4
-  },
-  {
-   "year": 2023,
-   "month": 6,
-   "count": 356.0,
-   "source": "NOAA20",
-   "median": 3063.4,
-   "anomaly_pct": -88.4
-  },
-  {
-   "year": 2023,
-   "month": 7,
-   "count": 263.0,
-   "source": "NOAA20",
-   "median": 5190.6,
-   "anomaly_pct": -94.9
-  },
-  {
-   "year": 2023,
-   "month": 8,
-   "count": 477.0,
-   "source": "NOAA20",
-   "median": 7703.1,
-   "anomaly_pct": -93.8
-  },
-  {
-   "year": 2023,
-   "month": 9,
-   "count": 1105.0,
-   "source": "NOAA20",
-   "median": 2280.5,
-   "anomaly_pct": -51.5
-  },
-  {
-   "year": 2023,
-   "month": 10,
-   "count": 1107.0,
-   "source": "NOAA20",
-   "median": 987.4,
-   "anomaly_pct": 12.1
-  },
-  {
-   "year": 2023,
-   "month": 11,
-   "count": 135.0,
-   "source": "NOAA20",
-   "median": 208.5,
-   "anomaly_pct": -35.3
-  },
-  {
-   "year": 2023,
-   "month": 12,
-   "count": 38.0,
-   "source": "NOAA20",
-   "median": 253.2,
-   "anomaly_pct": -85.0
-  },
-  {
-   "year": 2024,
-   "month": 1,
-   "count": 73.0,
-   "source": "NOAA20",
-   "median": 746.9,
-   "anomaly_pct": -90.2
-  },
-  {
-   "year": 2024,
-   "month": 2,
-   "count": 209.0,
-   "source": "NOAA20",
-   "median": 2530.0,
-   "anomaly_pct": -91.7
-  },
-  {
-   "year": 2024,
-   "month": 3,
-   "count": 816.0,
-   "source": "NOAA20",
-   "median": 2034.0,
-   "anomaly_pct": -59.9
-  },
-  {
-   "year": 2024,
-   "month": 4,
-   "count": 128.0,
-   "source": "NOAA20",
-   "median": 830.0,
-   "anomaly_pct": -84.6
-  },
-  {
-   "year": 2024,
-   "month": 5,
-   "count": 98.0,
-   "source": "NOAA20",
-   "median": 1029.5,
-   "anomaly_pct": -90.5
-  },
-  {
-   "year": 2024,
-   "month": 6,
-   "count": 147.0,
-   "source": "NOAA20",
-   "median": 2947.3,
-   "anomaly_pct": -95.0
-  },
-  {
-   "year": 2024,
-   "month": 7,
-   "count": 1533.0,
-   "source": "NOAA20",
-   "median": 5157.8,
-   "anomaly_pct": -70.3
-  },
-  {
-   "year": 2024,
-   "month": 8,
-   "count": 662.0,
-   "source": "NOAA20",
-   "median": 6957.1,
-   "anomaly_pct": -90.5
-  },
-  {
-   "year": 2024,
-   "month": 9,
-   "count": 283.0,
-   "source": "NOAA20",
-   "median": 2190.3,
-   "anomaly_pct": -87.1
-  },
-  {
-   "year": 2024,
-   "month": 10,
-   "count": 769.0,
-   "source": "NOAA20",
-   "median": 1054.8,
-   "anomaly_pct": -27.1
-  },
-  {
-   "year": 2024,
-   "month": 11,
-   "count": 72.0,
-   "source": "NOAA20",
-   "median": 196.8,
+   "median": 2159.7,
    "anomaly_pct": -63.4
   },
   {
+   "year": 2021,
+   "month": 4,
+   "count": 53.0,
+   "source": "NOAA20",
+   "median": 609.0,
+   "anomaly_pct": -91.3
+  },
+  {
+   "year": 2021,
+   "month": 5,
+   "count": 46.0,
+   "source": "NOAA20",
+   "median": 942.3,
+   "anomaly_pct": -95.1
+  },
+  {
+   "year": 2021,
+   "month": 6,
+   "count": 87.0,
+   "source": "NOAA20",
+   "median": 2524.0,
+   "anomaly_pct": -96.6
+  },
+  {
+   "year": 2021,
+   "month": 7,
+   "count": 442.0,
+   "source": "NOAA20",
+   "median": 4433.2,
+   "anomaly_pct": -90.0
+  },
+  {
+   "year": 2021,
+   "month": 8,
+   "count": 98.0,
+   "source": "NOAA20",
+   "median": 7567.7,
+   "anomaly_pct": -98.7
+  },
+  {
+   "year": 2021,
+   "month": 9,
+   "count": 46.0,
+   "source": "NOAA20",
+   "median": 1989.1,
+   "anomaly_pct": -97.7
+  },
+  {
+   "year": 2021,
+   "month": 10,
+   "count": 173.0,
+   "source": "NOAA20",
+   "median": 812.1,
+   "anomaly_pct": -78.7
+  },
+  {
+   "year": 2021,
+   "month": 11,
+   "count": 42.0,
+   "source": "NOAA20",
+   "median": 139.9,
+   "anomaly_pct": -70.0
+  },
+  {
+   "year": 2021,
+   "month": 12,
+   "count": 58.0,
+   "source": "NOAA20",
+   "median": 151.7,
+   "anomaly_pct": -61.8
+  },
+  {
+   "year": 2022,
+   "month": 1,
+   "count": 126.0,
+   "source": "NOAA20",
+   "median": 597.0,
+   "anomaly_pct": -78.9
+  },
+  {
+   "year": 2022,
+   "month": 2,
+   "count": 58.0,
+   "source": "NOAA20",
+   "median": 2383.2,
+   "anomaly_pct": -97.6
+  },
+  {
+   "year": 2022,
+   "month": 3,
+   "count": 354.0,
+   "source": "NOAA20",
+   "median": 1992.2,
+   "anomaly_pct": -82.2
+  },
+  {
+   "year": 2022,
+   "month": 4,
+   "count": 125.0,
+   "source": "NOAA20",
+   "median": 596.3,
+   "anomaly_pct": -79.0
+  },
+  {
+   "year": 2022,
+   "month": 5,
+   "count": 164.0,
+   "source": "NOAA20",
+   "median": 721.0,
+   "anomaly_pct": -77.3
+  },
+  {
+   "year": 2022,
+   "month": 6,
+   "count": 109.0,
+   "source": "NOAA20",
+   "median": 2501.3,
+   "anomaly_pct": -95.6
+  },
+  {
+   "year": 2022,
+   "month": 7,
+   "count": 305.0,
+   "source": "NOAA20",
+   "median": 4157.2,
+   "anomaly_pct": -92.7
+  },
+  {
+   "year": 2022,
+   "month": 8,
+   "count": 158.0,
+   "source": "NOAA20",
+   "median": 7516.0,
+   "anomaly_pct": -97.9
+  },
+  {
+   "year": 2022,
+   "month": 9,
+   "count": 44.0,
+   "source": "NOAA20",
+   "median": 1874.7,
+   "anomaly_pct": -97.7
+  },
+  {
+   "year": 2022,
+   "month": 10,
+   "count": 29.0,
+   "source": "NOAA20",
+   "median": 729.1,
+   "anomaly_pct": -96.0
+  },
+  {
+   "year": 2022,
+   "month": 11,
+   "count": 59.0,
+   "source": "NOAA20",
+   "median": 117.4,
+   "anomaly_pct": -49.8
+  },
+  {
+   "year": 2022,
+   "month": 12,
+   "count": 19.0,
+   "source": "NOAA20",
+   "median": 139.2,
+   "anomaly_pct": -86.4
+  },
+  {
+   "year": 2023,
+   "month": 1,
+   "count": 19.0,
+   "source": "NOAA20",
+   "median": 594.4,
+   "anomaly_pct": -96.8
+  },
+  {
+   "year": 2023,
+   "month": 2,
+   "count": 35.0,
+   "source": "NOAA20",
+   "median": 2312.1,
+   "anomaly_pct": -98.5
+  },
+  {
+   "year": 2023,
+   "month": 3,
+   "count": 106.0,
+   "source": "NOAA20",
+   "median": 1791.6,
+   "anomaly_pct": -94.1
+  },
+  {
+   "year": 2023,
+   "month": 4,
+   "count": 230.0,
+   "source": "NOAA20",
+   "median": 559.6,
+   "anomaly_pct": -58.9
+  },
+  {
+   "year": 2023,
+   "month": 5,
+   "count": 156.0,
+   "source": "NOAA20",
+   "median": 681.3,
+   "anomaly_pct": -77.1
+  },
+  {
+   "year": 2023,
+   "month": 6,
+   "count": 227.0,
+   "source": "NOAA20",
+   "median": 2317.3,
+   "anomaly_pct": -90.2
+  },
+  {
+   "year": 2023,
+   "month": 7,
+   "count": 172.0,
+   "source": "NOAA20",
+   "median": 4102.5,
+   "anomaly_pct": -95.8
+  },
+  {
+   "year": 2023,
+   "month": 8,
+   "count": 322.0,
+   "source": "NOAA20",
+   "median": 6637.0,
+   "anomaly_pct": -95.1
+  },
+  {
+   "year": 2023,
+   "month": 9,
+   "count": 636.0,
+   "source": "NOAA20",
+   "median": 1777.8,
+   "anomaly_pct": -64.2
+  },
+  {
+   "year": 2023,
+   "month": 10,
+   "count": 717.0,
+   "source": "NOAA20",
+   "median": 705.2,
+   "anomaly_pct": 1.7
+  },
+  {
+   "year": 2023,
+   "month": 11,
+   "count": 61.0,
+   "source": "NOAA20",
+   "median": 108.4,
+   "anomaly_pct": -43.7
+  },
+  {
+   "year": 2023,
+   "month": 12,
+   "count": 18.0,
+   "source": "NOAA20",
+   "median": 137.0,
+   "anomaly_pct": -86.9
+  },
+  {
+   "year": 2024,
+   "month": 1,
+   "count": 23.0,
+   "source": "NOAA20",
+   "median": 591.8,
+   "anomaly_pct": -96.1
+  },
+  {
+   "year": 2024,
+   "month": 2,
+   "count": 135.0,
+   "source": "NOAA20",
+   "median": 2241.0,
+   "anomaly_pct": -94.0
+  },
+  {
+   "year": 2024,
+   "month": 3,
+   "count": 609.0,
+   "source": "NOAA20",
+   "median": 1591.0,
+   "anomaly_pct": -61.7
+  },
+  {
+   "year": 2024,
+   "month": 4,
+   "count": 61.0,
+   "source": "NOAA20",
+   "median": 522.8,
+   "anomaly_pct": -88.3
+  },
+  {
+   "year": 2024,
+   "month": 5,
+   "count": 27.0,
+   "source": "NOAA20",
+   "median": 641.5,
+   "anomaly_pct": -95.8
+  },
+  {
+   "year": 2024,
+   "month": 6,
+   "count": 62.0,
+   "source": "NOAA20",
+   "median": 2133.3,
+   "anomaly_pct": -97.1
+  },
+  {
+   "year": 2024,
+   "month": 7,
+   "count": 894.0,
+   "source": "NOAA20",
+   "median": 4047.8,
+   "anomaly_pct": -77.9
+  },
+  {
+   "year": 2024,
+   "month": 8,
+   "count": 444.0,
+   "source": "NOAA20",
+   "median": 5758.0,
+   "anomaly_pct": -92.3
+  },
+  {
+   "year": 2024,
+   "month": 9,
+   "count": 145.0,
+   "source": "NOAA20",
+   "median": 1680.8,
+   "anomaly_pct": -91.4
+  },
+  {
+   "year": 2024,
+   "month": 10,
+   "count": 461.0,
+   "source": "NOAA20",
+   "median": 717.0,
+   "anomaly_pct": -35.7
+  },
+  {
+   "year": 2024,
+   "month": 11,
+   "count": 25.0,
+   "source": "NOAA20",
+   "median": 99.5,
+   "anomaly_pct": -74.9
+  },
+  {
    "year": 2024,
    "month": 12,
-   "count": 165.0,
+   "count": 58.0,
    "source": "NOAA20",
-   "median": 249.0,
-   "anomaly_pct": -33.7
+   "median": 134.8,
+   "anomaly_pct": -57.0
   },
   {
    "year": 2025,
    "month": 1,
-   "count": 43.0,
+   "count": 17.0,
    "source": "NOAA20",
-   "median": 735.0,
-   "anomaly_pct": -94.1
+   "median": 570.0,
+   "anomaly_pct": -97.0
   },
   {
    "year": 2025,
    "month": 2,
-   "count": 141.0,
+   "count": 77.0,
    "source": "NOAA20",
-   "median": 2325.4,
-   "anomaly_pct": -93.9
+   "median": 1965.5,
+   "anomaly_pct": -96.1
   },
   {
    "year": 2025,
    "month": 3,
-   "count": 59.0,
+   "count": 23.0,
    "source": "NOAA20",
-   "median": 1829.5,
-   "anomaly_pct": -96.8
+   "median": 1359.9,
+   "anomaly_pct": -98.3
   },
   {
    "year": 2025,
    "month": 4,
-   "count": 141.0,
+   "count": 57.0,
    "source": "NOAA20",
-   "median": 816.2,
-   "anomaly_pct": -82.7
+   "median": 473.4,
+   "anomaly_pct": -88.0
   },
   {
    "year": 2025,
    "month": 5,
-   "count": 245.0,
+   "count": 89.0,
    "source": "NOAA20",
-   "median": 870.3,
-   "anomaly_pct": -71.8
+   "median": 516.8,
+   "anomaly_pct": -82.8
   },
   {
    "year": 2025,
    "month": 6,
-   "count": 500.0,
+   "count": 224.0,
    "source": "NOAA20",
-   "median": 2205.4,
-   "anomaly_pct": -77.3
+   "median": 1618.6,
+   "anomaly_pct": -86.2
   },
   {
    "year": 2025,
    "month": 7,
-   "count": 2731.0,
+   "count": 1985.0,
    "source": "NOAA20",
-   "median": 4779.3,
-   "anomaly_pct": -42.9
+   "median": 3535.6,
+   "anomaly_pct": -43.9
   },
   {
    "year": 2025,
    "month": 8,
-   "count": 889.0,
+   "count": 596.0,
    "source": "NOAA20",
-   "median": 6845.5,
-   "anomaly_pct": -87.0
+   "median": 5299.0,
+   "anomaly_pct": -88.8
   },
   {
    "year": 2025,
    "month": 9,
-   "count": 101.0,
+   "count": 34.0,
    "source": "NOAA20",
-   "median": 2187.8,
-   "anomaly_pct": -95.4
+   "median": 1621.1,
+   "anomaly_pct": -97.9
   },
   {
    "year": 2025,
    "month": 10,
-   "count": 300.0,
+   "count": 138.0,
    "source": "NOAA20",
-   "median": 987.4,
-   "anomaly_pct": -69.6
+   "median": 699.1,
+   "anomaly_pct": -80.3
   },
   {
    "year": 2025,
    "month": 11,
-   "count": 444.0,
+   "count": 342.0,
    "source": "NOAA20",
-   "median": 186.7,
-   "anomaly_pct": 137.8
+   "median": 94.5,
+   "anomaly_pct": 262.0
   },
   {
    "year": 2025,
    "month": 12,
-   "count": 72.0,
+   "count": 18.0,
    "source": "NOAA20",
-   "median": 248.2,
-   "anomaly_pct": -71.0
+   "median": 117.9,
+   "anomaly_pct": -84.7
   },
   {
    "year": 2026,
    "month": 1,
-   "count": 345.0,
+   "count": 156.0,
    "source": "NOAA20",
-   "median": 723.0,
-   "anomaly_pct": -52.3
+   "median": 548.3,
+   "anomaly_pct": -71.6
   },
   {
    "year": 2026,
    "month": 2,
-   "count": 1160.0,
+   "count": 890.0,
    "source": "NOAA20",
-   "median": 2120.8,
-   "anomaly_pct": -45.3
+   "median": 1689.9,
+   "anomaly_pct": -47.3
   },
   {
    "year": 2026,
    "month": 3,
-   "count": 2254.0,
+   "count": 1833.0,
    "source": "NOAA20",
-   "median": 1625.0,
-   "anomaly_pct": 38.7
+   "median": 1128.8,
+   "anomaly_pct": 62.4
   },
   {
    "year": 2026,
    "month": 4,
-   "count": 593.0,
+   "count": 450.0,
    "source": "NOAA20",
-   "median": 802.4,
-   "anomaly_pct": -26.1
+   "median": 424.0,
+   "anomaly_pct": 6.1
   },
   {
    "year": 2026,
    "month": 5,
-   "count": 187.0,
+   "count": 89.0,
    "source": "NOAA20",
-   "median": 711.0,
-   "anomaly_pct": -73.7
+   "median": 392.1,
+   "anomaly_pct": -77.3
   },
   {
    "year": 2026,
    "month": 6,
-   "count": 260.0,
+   "count": 162.0,
    "source": "NOAA20",
-   "median": 1463.6,
-   "anomaly_pct": -82.2
+   "median": 1104.0,
+   "anomaly_pct": -85.3
   },
   {
    "year": 2026,
    "month": 7,
-   "count": 271.0,
+   "count": 151.0,
    "source": "NOAA20",
-   "median": 4400.7,
-   "anomaly_pct": -93.8
+   "median": 3023.4,
+   "anomaly_pct": -95.0
   },
   {
    "year": 2026,
    "month": 8,
-   "count": 1994.0,
+   "count": 1369.0,
    "source": "NOAA20",
-   "median": 6734.0,
-   "anomaly_pct": -70.4
+   "median": 4840.0,
+   "anomaly_pct": -71.7
   },
   {
    "year": 2026,
    "month": 9,
-   "count": 1586.0,
+   "count": 777.0,
    "source": "NOAA20",
-   "median": 2185.2,
-   "anomaly_pct": -27.4
+   "median": 1561.4,
+   "anomaly_pct": -50.2
   },
   {
    "year": 2026,
    "month": 10,
-   "count": 1712.0,
+   "count": 85.0,
    "source": "NOAA20",
-   "median": 920.0,
-   "anomaly_pct": 86.1
+   "median": 681.3,
+   "anomaly_pct": -87.5
   }
  ],
  "yearly": [
   {
    "year": 2001,
-   "count": 14130.8
+   "count": 10278.7
   },
   {
    "year": 2002,
-   "count": 44572.7
+   "count": 35082.8
   },
   {
    "year": 2003,
-   "count": 51123.4
+   "count": 42815.4
   },
   {
    "year": 2004,
-   "count": 64926.2
+   "count": 52940.0
   },
   {
    "year": 2005,
-   "count": 115605.5
+   "count": 99191.6
   },
   {
    "year": 2006,
-   "count": 80929.4
+   "count": 66495.7
   },
   {
    "year": 2007,
-   "count": 33646.6
+   "count": 27350.2
   },
   {
    "year": 2008,
-   "count": 49114.8
+   "count": 39856.6
   },
   {
    "year": 2009,
-   "count": 78930.9
+   "count": 67674.3
   },
   {
    "year": 2010,
-   "count": 28938.0
+   "count": 23605.7
   },
   {
    "year": 2011,
-   "count": 51300.0
+   "count": 43635.9
   },
   {
    "year": 2012,
-   "count": 56150.4
+   "count": 46400.1
   },
   {
    "year": 2013,
-   "count": 101291.7
+   "count": 92455.5
   },
   {
    "year": 2014,
-   "count": 134913.2
+   "count": 119880.2
   },
   {
    "year": 2015,
-   "count": 53190.0
+   "count": 40359.0
   },
   {
    "year": 2016,
-   "count": 19719.8
+   "count": 14926.4
   },
   {
    "year": 2017,
-   "count": 5122.4
+   "count": 2871.3
   },
   {
    "year": 2018,
-   "count": 14150.0
+   "count": 11175.6
   },
   {
    "year": 2019,
-   "count": 37095.0
+   "count": 30617.0
   },
   {
    "year": 2020,
-   "count": 6034.0
+   "count": 4030.0
   },
   {
    "year": 2021,
-   "count": 4423.0
+   "count": 2767.0
   },
   {
    "year": 2022,
-   "count": 2752.0
+   "count": 1550.0
   },
   {
    "year": 2023,
-   "count": 4463.0
+   "count": 2699.0
   },
   {
    "year": 2024,
-   "count": 4955.0
+   "count": 2944.0
   },
   {
    "year": 2025,
-   "count": 5666.0
+   "count": 3600.0
   }
  ],
  "raw_yearly": {
   "MODIS": [
    {
     "year": 2001,
-    "count": 2800
+    "count": 2067
    },
    {
     "year": 2002,
-    "count": 8832
+    "count": 7055
    },
    {
     "year": 2003,
-    "count": 10130
+    "count": 8610
    },
    {
     "year": 2004,
-    "count": 12865
+    "count": 10646
    },
    {
     "year": 2005,
-    "count": 22907
+    "count": 19947
    },
    {
     "year": 2006,
-    "count": 16036
+    "count": 13372
    },
    {
     "year": 2007,
-    "count": 6667
+    "count": 5500
    },
    {
     "year": 2008,
-    "count": 9732
+    "count": 8015
    },
    {
     "year": 2009,
-    "count": 15640
+    "count": 13609
    },
    {
     "year": 2010,
-    "count": 5734
+    "count": 4747
    },
    {
     "year": 2011,
-    "count": 10165
+    "count": 8775
    },
    {
     "year": 2012,
-    "count": 12187
+    "count": 10023
    },
    {
     "year": 2013,
-    "count": 19756
+    "count": 18074
    },
    {
     "year": 2014,
-    "count": 23778
+    "count": 21520
    },
    {
     "year": 2015,
-    "count": 11238
+    "count": 8902
    },
    {
     "year": 2016,
-    "count": 4327
+    "count": 3485
    },
    {
     "year": 2017,
-    "count": 1612
+    "count": 1138
    },
    {
     "year": 2018,
-    "count": 3365
+    "count": 2852
    },
    {
     "year": 2019,
-    "count": 8941
+    "count": 7757
    },
    {
     "year": 2020,
-    "count": 2056
+    "count": 1732
    },
    {
     "year": 2021,
-    "count": 1772
+    "count": 1406
    },
    {
     "year": 2022,
-    "count": 910
+    "count": 686
    },
    {
     "year": 2023,
-    "count": 1618
+    "count": 1207
    },
    {
     "year": 2024,
-    "count": 1512
+    "count": 1079
    },
    {
     "year": 2025,
-    "count": 1384
+    "count": 918
    }
   ],
   "NOAA20": [
    {
     "year": 2019,
-    "count": 37095
+    "count": 30617
    },
    {
     "year": 2020,
-    "count": 6034
+    "count": 4030
    },
    {
     "year": 2021,
-    "count": 4423
+    "count": 2767
    },
    {
     "year": 2022,
-    "count": 2752
+    "count": 1550
    },
    {
     "year": 2023,
-    "count": 4463
+    "count": 2699
    },
    {
     "year": 2024,
-    "count": 4955
+    "count": 2944
    },
    {
     "year": 2025,
-    "count": 5666
+    "count": 3600
    }
   ],
   "SNPP": [
    {
     "year": 2013,
-    "count": 98437
+    "count": 90545
    },
    {
     "year": 2014,
-    "count": 131111
+    "count": 117403
    },
    {
     "year": 2015,
-    "count": 51691
+    "count": 39525
    },
    {
     "year": 2016,
-    "count": 19164
+    "count": 14618
    },
    {
     "year": 2017,
-    "count": 4978
+    "count": 2812
    },
    {
     "year": 2018,
-    "count": 14080
+    "count": 11044
    },
    {
     "year": 2019,
-    "count": 36641
+    "count": 30317
    },
    {
     "year": 2020,
-    "count": 6059
+    "count": 4123
    },
    {
     "year": 2021,
-    "count": 4036
+    "count": 2585
    },
    {
     "year": 2022,
-    "count": 2451
+    "count": 1327
    },
    {
     "year": 2023,
-    "count": 4449
+    "count": 2798
    },
    {
     "year": 2024,
-    "count": 3849
+    "count": 2265
    },
    {
     "year": 2025,
-    "count": 5734
+    "count": 3696
    }
   ]
  },
  "trend": {
   "direction": "decreasing",
-  "p_value": 0.0047,
-  "slope_per_year": -2191.86,
+  "p_value": 0.0041,
+  "slope_per_year": -1884.93,
   "years": "2001-2025",
   "seasonal": {
    "direction": "decreasing",
    "p_value": 0.0,
-   "slope_per_year": -63.086
+   "slope_per_year": -48.277
   }
  },
  "latest": {
   "year": 2026,
   "month": 10,
-  "count": 1712.0,
+  "count": 85.0,
   "source": "NOAA20",
-  "median": 920.0,
-  "anomaly_pct": 86.1,
-  "label": "Well above normal"
+  "median": 681.3,
+  "anomaly_pct": -87.5,
+  "label": "Below normal"
  },
  "method": {
   "factors": {
-   "modis_to_snpp": 4.9045,
-   "snpp_to_noaa20": 1.029
+   "modis_to_snpp": 4.87,
+   "snpp_to_noaa20": 1.0211
   },
-  "validation_error_pct": 70.2,
+  "validation_error_pct": 164.9,
   "links": {
    "modis_to_snpp": {
-    "factor": 4.9045,
+    "factor": 4.87,
     "fit_years": [
      2012,
      2018
     ],
     "overlap_months": 83,
     "yearly_ratios": {
-     "2012": 4.4527,
-     "2013": 4.9826,
-     "2014": 5.514,
-     "2015": 4.5997,
-     "2016": 4.4289,
-     "2017": 3.0881,
-     "2018": 4.1842
+     "2012": 4.5153,
+     "2013": 5.0097,
+     "2014": 5.4555,
+     "2015": 4.44,
+     "2016": 4.1945,
+     "2017": 2.471,
+     "2018": 3.8724
     },
-    "spread": 0.545,
+    "spread": 0.672,
     "unstable": true,
     "drift": {
-     "early_ratio": 4.9045,
-     "late_ratio": 3.4749,
-     "diff_pct": 29.1,
+     "early_ratio": 4.87,
+     "late_ratio": 3.1864,
+     "diff_pct": 34.6,
      "used_early_only": true
     },
     "validation": {
@@ -2852,34 +2857,34 @@
       2017,
       2018
      ],
-     "train_factor": 4.9802,
-     "monthly_mape_pct": 70.2,
+     "train_factor": 4.9606,
+     "monthly_mape_pct": 164.9,
      "months_scored": 24,
-     "yearly_error_pct": 40.1
+     "yearly_error_pct": 64.4
     },
     "notes": [
-     "MODIS-SNPP ratio drifted 29.1% between (2012, 2018) and (2019, 2025); calibrated on 2012-2018 only.",
-     "modis_to_snpp yearly ratios spread 54%; percentile ranks offered as fallback."
+     "MODIS-SNPP ratio drifted 34.6% between (2012, 2018) and (2019, 2025); calibrated on 2012-2018 only.",
+     "modis_to_snpp yearly ratios spread 67%; percentile ranks offered as fallback."
     ]
    },
    "snpp_to_noaa20": {
-    "factor": 1.029,
+    "factor": 1.0211,
     "fit_years": [
      2018,
      2025
     ],
     "overlap_months": 93,
     "yearly_ratios": {
-     "2018": 0.9988,
-     "2019": 1.0124,
-     "2020": 0.9959,
-     "2021": 1.0959,
-     "2022": 1.1228,
-     "2023": 1.0031,
-     "2024": 1.2873,
-     "2025": 0.9881
+     "2018": 1.0097,
+     "2019": 1.0099,
+     "2020": 0.9774,
+     "2021": 1.0704,
+     "2022": 1.168,
+     "2023": 0.9646,
+     "2024": 1.2998,
+     "2025": 0.974
     },
-    "spread": 0.297,
+    "spread": 0.332,
     "unstable": false,
     "drift": null,
     "validation": {
@@ -2887,15 +2892,15 @@
       2024,
       2025
      ],
-     "train_factor": 1.0172,
-     "monthly_mape_pct": 11.8,
+     "train_factor": 1.012,
+     "monthly_mape_pct": 13.8,
      "months_scored": 24,
-     "yearly_error_pct": 12.0
+     "yearly_error_pct": 13.0
     },
     "notes": []
    }
   },
   "fallback_percentiles_recommended": true,
-  "notes": "Cleaning: MODIS confidence >= 30, VIIRS confidence in ['h', 'n'], day/night kept: ['D', 'N']. Factor = sum(target)/sum(source) over overlap months. Validation holds out the last 2 full overlap years; monthly MAPE skips months with < 10 target hotspots. Anomaly = vs median of the same month in earlier complete years. Counts are hotspots, not burned area. MODIS-SNPP ratio drifted 29.1% between (2012, 2018) and (2019, 2025); calibrated on 2012-2018 only. modis_to_snpp yearly ratios spread 54%; percentile ranks offered as fallback."
+  "notes": "Cleaning: MODIS confidence >= 30, VIIRS confidence in ['h', 'n'], day/night kept: ['D', 'N']. Factor = sum(target)/sum(source) over overlap months. Validation holds out the last 2 full overlap years; monthly MAPE skips months with < 10 target hotspots. Anomaly = vs median of the same month in earlier complete years. Areas follow real borders (Natural Earth 1:10m admin-1); Northern Australia is Australian land north of 20\u00b0S, 121-146\u00b0E. Counts are hotspots, not burned area. MODIS-SNPP ratio drifted 34.6% between (2012, 2018) and (2019, 2025); calibrated on 2012-2018 only. modis_to_snpp yearly ratios spread 67%; percentile ranks offered as fallback."
  }
 }

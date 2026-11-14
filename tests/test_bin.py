@@ -41,3 +41,13 @@ def test_grid_counts():
     })
     g = binning.grid_counts(df, 0.25)
     assert sorted(g["raw_count"]) == [1, 2]
+
+
+def test_outline_excludes_points_inside_box_but_outside_border():
+    import shapely
+    df = pd.DataFrame({"latitude": [1.0, 0.5, 1.5], "longitude": [100.3, 101.5, 101.0]})
+    # The box covers all three points; the triangular outline only the first and third.
+    tri = shapely.Polygon([(100, 0), (100, 2), (102, 2)])
+    area = {"name": "a", "bbox": [100, 0, 102, 2], "geometry": tri}
+    assert binning.in_area(df, area).tolist() == [True, False, True]
+    assert binning.in_area(df, {"name": "b", "bbox": [100, 0, 102, 2]}).tolist() == [True, True, True]

@@ -6,6 +6,7 @@ official lifetime (config.SENSOR_COVERAGE) and by the data we actually loaded.
 Inside covered months a missing count is a real zero; outside them it is missing.
 """
 import numpy as np
+import shapely
 import pandas as pd
 
 from pipeline import config
@@ -35,6 +36,28 @@ def in_bbox(df, bbox):
     return df["longitude"].between(west, east) & df["latitude"].between(south, north)
 
 
+def area_geometry(area):
+    """The area's real outline (shapely), or None when the area is defined by its bbox only."""
+    if "geometry" in area:          # tests pass a shapely geometry directly
+        return area["geometry"]
+    if area.get("boundary"):
+        from pipeline import regions
+        return regions.geometry(area["boundary"])
+    return None
+
+
+def in_area(df, area):
+    """Boolean mask: inside the bbox and, if the area has an outline, inside the outline."""
+    mask = in_bbox(df, area["bbox"])
+    geom = area_geometry(area)
+    if geom is not None:
+        inside = np.zeros(len(df), dtype=bool)
+        idx = np.flatnonzero(mask.to_numpy())
+        inside[idx] = shapely.contains_xy(geom, df["longitude"].to_numpy()[idx], df["latitude"].to_numpy()[idx])
+        mask = pd.Series(inside, index=df.index)
+    return mask
+
+
 def monthly_counts(df, areas=None, coverage=None):
     """Long table: area_id, year, month, sensor, raw_count. Zero-filled inside covered months."""
     areas = areas or config.AREAS
@@ -43,7 +66,7 @@ def monthly_counts(df, areas=None, coverage=None):
 
     rows = []
     for area_id, area in areas.items():
-        counts = df[in_bbox(df, area["bbox"])].groupby(["sensor", "year", "month"], observed=True).size()
+        counts = df[in_area(df, area)].groupby(["sensor", "year", "month"], observed=True).size()
         for sensor, ym in months.items():
             for year, month in ym:
                 rows.append((area_id, year, month, sensor, int(counts.get((sensor, year, month), 0))))

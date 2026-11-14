@@ -65,8 +65,34 @@ function tmBuildBase() {
   TM.vmax = Math.max(2, vals[Math.floor(vals.length * 0.99)] || 2);
 }
 
+// Static overlay for the selected area, from the grid's per-area cell mask (cells touching the outline).
+function tmBuildOverlay() {
+  const g = App.grid, K = TM.K, mask = (g.areas || {})[App.areaId];
+  TM.overlay = null;
+  if (!mask) return;
+  const o = document.createElement("canvas");
+  o.width = TM.canvas.width; o.height = TM.canvas.height;
+  const c = o.getContext("2d");
+  const inside = (x, y) => x >= 0 && y >= 0 && x < g.w && y < g.h && mask[y * g.w + x] === "1";
+  c.fillStyle = "rgba(8, 14, 34, 0.62)";
+  for (let y = 0; y < g.h; y++) for (let x = 0; x < g.w; x++) if (!inside(x, y)) c.fillRect(x * K, y * K, K, K);
+  const t = Math.max(2, Math.round(K / 3));
+  c.fillStyle = "#ffffff";
+  for (let y = 0; y < g.h; y++) {
+    for (let x = 0; x < g.w; x++) {
+      if (!inside(x, y)) continue;
+      if (!inside(x, y - 1)) c.fillRect(x * K, y * K, K, t);
+      if (!inside(x, y + 1)) c.fillRect(x * K, (y + 1) * K - t, K, t);
+      if (!inside(x - 1, y)) c.fillRect(x * K, y * K, t, K);
+      if (!inside(x + 1, y)) c.fillRect((x + 1) * K - t, y * K, t, K);
+    }
+  }
+  TM.overlay = o;
+}
+
 function tmOnArea() {
   tmBuildBase();
+  tmBuildOverlay();
   const n = App.grid.months.length;
   $("tm-slider").max = n - 1;
   $("tm-area").textContent = `Hotspots · ${App.area.name}`;
@@ -177,18 +203,8 @@ function tmLoop(now) {
     });
     ctx.globalAlpha = 1;
   }
-  // Selected area outline (dashed pixel box) when it is a sub-area of the map region.
-  if (App.areaId !== App.gridRegion) {
-    const [w, sth, e, n] = App.area.bbox, [gw, , , gn] = g.bbox;
-    const x0 = (w - gw) / g.deg * K, y0 = (gn - n) / g.deg * K;
-    const x1 = (e - gw) / g.deg * K, y1 = (gn - sth) / g.deg * K;
-    ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = Math.max(2, K / 3);
-    ctx.setLineDash([K, K]);
-    ctx.lineDashOffset = reducedMotion ? 0 : -TM.frame;
-    ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
-    ctx.setLineDash([]);
-  }
+  // Selected area: dim everything outside its real border and draw the border as pixel edges.
+  if (TM.overlay) ctx.drawImage(TM.overlay, 0, 0);
   if (TM.momentUntil && now > TM.momentUntil) { $("tm-moment").hidden = true; TM.momentUntil = 0; }
 }
 

@@ -18,7 +18,8 @@ def _config_notes():
         f"Factor = sum(target)/sum(source) over overlap months. Validation holds out the last "
         f"{config.VALIDATION_HOLDOUT_YEARS} full overlap years; monthly MAPE skips months with "
         f"< {config.VALIDATION_MIN_MONTH_COUNT} target hotspots. Anomaly = vs median of the same "
-        f"month in earlier complete years. Counts are hotspots, not burned area."
+        f"month in earlier complete years. Areas follow real borders (Natural Earth 1:10m admin-1); "
+        f"Northern Australia is Australian land north of 20°S, 121-146°E. Counts are hotspots, not burned area."
     )
 
 
@@ -41,6 +42,9 @@ def build_area(counts, area_id, area):
         "name": area["name"],
         "bbox": area["bbox"],
         "unit": UNIT,
+        "boundary": ({"id": area["boundary"], "type": "outline",
+                      "source": "Natural Earth 1:10m admin-1 (public domain)"}
+                     if area.get("boundary") else {"type": "bbox"}),
         "calendar": [
             {"year": int(r.year), "month": int(r.month),
              "count": round(float(r.harmonized_count), 1), "source": r.source_used,

@@ -98,7 +98,7 @@ function renderMethod() {
     <ul>
       <li>Converted counts are estimates; the factor can vary by region and season.</li>
       <li>Hotspots are satellite fire detections, not burned area; small or short fires can be missed.</li>
-      <li>Areas are bounding boxes, so they include some land beyond the named region.</li>
+      <li>Areas follow real borders from Natural Earth (1:10m). Northern Australia is defined as Australian land north of 20°S. Hotspots exactly on a border or coastline can fall either side.</li>
       <li>Volcanoes, gas flares and other static sources are removed using FIRMS type flags.</li>
       <li>The most recent months use near-real-time (NRT) data, which FIRMS later replaces with standard data.</li>
     </ul>
