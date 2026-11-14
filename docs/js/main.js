@@ -119,7 +119,7 @@ async function main() {
   $("regions").addEventListener("click", (e) => {
     const b = e.target.closest("button[data-id]");
     if (!b) return;
-    Prov.sel = null; // a featured area replaces the province view
+    Prov.sel = null; Prov.box = null; // a featured area replaces the province or drawn-area view
     loadArea(b.dataset.id);
     if (isDrawer()) { closeMenu(); $("map-panel").scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth" }); }
   });
@@ -155,12 +155,14 @@ async function main() {
   onAreaChange(labOnArea);
   onAreaChange(() => { if (!$("game-stage").hidden) closeStage(); });
   renderHub();
-  // Deep links: ?mode=analyst&area=riau&month=2015-09&layer=unusual&province=Jambi
+  // Deep links: ?mode=analyst&area=riau&month=2015-09&layer=unusual&province=Jambi (or &box=w,s,e,n)
   // (older ?tab=play|story|lab links still work)
   const start = App.index.find((a) => a.area_id === q.get("area")) || App.index[0];
   await loadArea(start.area_id);
   const pr = GRID_REGIONS.find((r) => Prov.data[r] && Prov.data[r].names.includes(q.get("province")));
   if (pr) await openProvince(pr, Prov.data[pr].names.indexOf(q.get("province")));
+  const bx = (q.get("box") || "").split(",").map(Number);  // box=west,south,east,north in degrees
+  if (bx.length === 4 && bx.every(Number.isFinite)) openBox(boxFromBounds(...bx));
   if (q.get("layer") === "unusual") setLayer("unusual");
   renderHomeStats();
   renderHomeNow();

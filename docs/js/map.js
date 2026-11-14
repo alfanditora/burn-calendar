@@ -307,6 +307,7 @@ function tmLoop(now) {
   if (TM.layer === "unusual") {
     tmDrawUnusual(ctx, K, g, vw);
     if (TM.overlay) ctx.drawImage(TM.overlay, 0, 0);
+    if (typeof drawBoxPreview === "function") drawBoxPreview(ctx, K);
     if (TM.momentUntil && now > TM.momentUntil) { $("tm-moment").hidden = true; TM.momentUntil = 0; }
     return;
   }
@@ -347,6 +348,7 @@ function tmLoop(now) {
   }
   // Selected area: dim everything outside its real border and draw the border as pixel edges.
   if (TM.overlay) ctx.drawImage(TM.overlay, 0, 0);
+  if (typeof drawBoxPreview === "function") drawBoxPreview(ctx, K);
   if (TM.momentUntil && now > TM.momentUntil) { $("tm-moment").hidden = true; TM.momentUntil = 0; }
 }
 

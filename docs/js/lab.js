@@ -166,6 +166,7 @@ function updateViewLink() {
   const q = new URLSearchParams({ mode: "analyst", area: App.areaId, month: App.grid.months[TM.idx] });
   if (TM.layer === "unusual") q.set("layer", "unusual");
   if (typeof Prov !== "undefined" && Prov.sel) q.set("province", Prov.data[Prov.sel.region].names[Prov.sel.i]);
+  if (typeof Prov !== "undefined" && Prov.box) q.set("box", boxBounds(Prov.box).map((v) => +v.toFixed(2)).join(","));
   u.search = q.toString();
   $("view-link").textContent = u.href;
 }

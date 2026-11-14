@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=16">
+  <link rel="stylesheet" href="styles.css?v=18">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -86,7 +86,7 @@
         <span class="muted small" id="side-xptext"></span>
       </div>
       <p class="side-title">📍 AREA</p>
-      <p class="muted small side-hint">Featured areas have the full analysis. Pick any province, or tap it on the map.</p>
+      <p class="muted small side-hint">Featured areas have the full analysis. Pick any province, tap it on the map, or draw your own area.</p>
       <nav class="regions" id="regions" aria-label="Choose an area"></nav>
       <p class="side-title">🧭 EXPLORE</p>
       <nav class="side-nav" aria-label="Sections">
@@ -125,7 +125,9 @@
     <div class="layer-toggle" role="group" aria-label="Map layer">
       <button type="button" class="px-btn small" id="layer-fires" aria-pressed="true">🔥 ALL FIRES</button>
       <button type="button" class="px-btn small" id="layer-unusual" aria-pressed="false">⚠ ROUTINE OR UNUSUAL?</button>
+      <button type="button" class="px-btn small" id="draw-btn" aria-pressed="false">✏️ DRAW YOUR AREA</button>
       <span class="muted small" id="unusual-note"></span>
+      <span class="small draw-note" id="draw-note" aria-live="polite"></span>
     </div>
     <div class="map-wrap" id="map-wrap">
       <canvas id="pixmap" aria-label="Pixel map of fire hotspots"></canvas>
@@ -159,7 +161,8 @@
   <!-- Any-province view: opened from the area list or by tapping the map -->
   <section class="panel province-panel" id="province-panel" aria-labelledby="prov-title" hidden>
     <div class="prov-head">
-      <div><p class="kicker">Province view · counts only</p><h2 id="prov-title"></h2></div>
+      <div><p class="kicker" id="prov-kicker">Province view · counts only</p><h2 id="prov-title"></h2>
+        <p class="muted small" id="prov-sub" hidden></p></div>
       <div class="prov-actions">
         <button type="button" class="px-btn small" id="prov-featured" hidden>Open full analysis →</button>
         <button type="button" class="px-btn small analyst-only" id="prov-csv">⬇ CSV</button>
@@ -311,15 +314,15 @@
     <form method="dialog"><button class="px-btn">CLOSE</button></form>
   </dialog>
 
-  <script src="js/core.js?v=16"></script>
-  <script src="js/sprites.js?v=16"></script>
-  <script src="js/map.js?v=16"></script>
-  <script src="js/games.js?v=16"></script>
-  <script src="js/story.js?v=16"></script>
-  <script src="js/lab.js?v=16"></script>
-  <script src="js/season.js?v=16"></script>
-  <script src="js/province.js?v=16"></script>
-  <script src="js/share.js?v=16"></script>
-  <script src="js/main.js?v=16"></script>
+  <script src="js/core.js?v=18"></script>
+  <script src="js/sprites.js?v=18"></script>
+  <script src="js/map.js?v=18"></script>
+  <script src="js/games.js?v=18"></script>
+  <script src="js/story.js?v=18"></script>
+  <script src="js/lab.js?v=18"></script>
+  <script src="js/season.js?v=18"></script>
+  <script src="js/province.js?v=18"></script>
+  <script src="js/share.js?v=18"></script>
+  <script src="js/main.js?v=18"></script>
 </body>
 </html>

@@ -26,6 +26,13 @@ year and its yearly totals. It uses the country's (or Northern Australia's) conv
 "usual" and busiest-month figures when the busiest month usually has fewer than 10 hotspots
 (`PROVINCE_MIN_PEAK_MEDIAN`), because one or two fires would swing every percentage.
 
+**Draw your own area.** Press "✏️ Draw your area" and drag a box on the map (or tap one square). The same panel then
+shows that box's monthly hotspots in NOAA-20 units, this month against usual, its typical year, year-by-year totals
+and a CSV. It is the sum of the map's 0.25° squares (about 25 km) inside the box, using the area's conversion
+factor; the box follows square edges, not borders, so it can include sea or a neighbouring country. Share it with
+`&box=west,south,east,north`, e.g. `?mode=analyst&area=indonesia&month=2019-09&box=101.75,-5.75,105.75,-1.5`
+(southern Sumatra: 29,939 hotspots in Sep 2019, +105% vs a usual September).
+
 Deep links work too, e.g. `?mode=analyst&area=riau&month=2015-09`, `?mode=explore&area=riau&tab=story`,
 `?mode=explore&area=central_kalimantan&month=2019-09&layer=unusual` or `?mode=explore&province=South%20Sumatra`.
 
@@ -37,6 +44,8 @@ Deep links work too, e.g. `?mode=analyst&area=riau&month=2015-09`, `?mode=explor
 | **Any province:** South Sumatra, Sep 2019 | **This season:** tracker, fire season, early signal |
 | ![Analyst View: calendar, trend, anomaly, method and open data](docs/screenshots/data-lab.png) | ![Phone layout](docs/screenshots/mobile.png) |
 | **Analyst View:** calendar, trend, method, open data | **Phone** |
+| ![Draw your own area: a box over southern Sumatra, September 2019](docs/screenshots/draw.png) | |
+| **Draw your own area:** southern Sumatra, Sep 2019 | |
 
 More screenshots (Northern Australia, Riau 2015, games, story) are in `docs/screenshots/`. They were captured from
 the live app with headless Chrome on Nov 14, 2026 and show real data only.
