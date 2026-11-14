@@ -90,27 +90,45 @@ def static_cells(df):
 def drop_static(df, cells):
     """Drop flagged rows; rows without a type (NRT) are dropped if they fall in a flagged cell."""
     typed = df["fire_type"].notna()
-    bad_typed = typed & ~df["fire_type"].isin(config.KEEP_FIRE_TYPES)
-    bad_untyped = ~typed & _cells(df).isin(cells) if cells else pd.Series(False, index=df.index)
-    return df[~(bad_typed | bad_untyped)].reset_index(drop=True)
+    bad = typed & ~df["fire_type"].isin(config.KEEP_FIRE_TYPES)
+    if cells and (~typed).any():
+        # Cell keys only for untyped rows: building them for every row needs gigabytes of strings.
+        untyped = df[~typed]
+        bad.loc[untyped.index] = _cells(untyped).isin(cells).to_numpy()
+    return df[~bad].reset_index(drop=True)
 
 
 def prefer_standard(df):
     """Per sensor, use SP data; use NRT only for dates after the last SP date."""
     parts = []
-    for sensor, g in df.groupby("sensor"):
+    for sensor, g in df.groupby("sensor", observed=True):
         sp = g[g["product"] == "SP"]
         nrt = g[g["product"] == "NRT"]
         if len(sp):
             nrt = nrt[nrt["acq_date"] > sp["acq_date"].max()]
-        parts.append(pd.concat([sp, nrt]))
+        # Overlapping downloads can repeat detections; drop exact duplicates (one sensor at a time to save memory).
+        parts.append(pd.concat([sp, nrt]).drop_duplicates(subset=["latitude", "longitude", "acq_date", "acq_time"]))
     if not parts:
         return df.iloc[0:0]
-    # Overlapping downloads can repeat detections; drop exact duplicates.
-    out = pd.concat(parts, ignore_index=True)
-    return out.drop_duplicates(
-        subset=["sensor", "latitude", "longitude", "acq_date", "acq_time"]
-    ).reset_index(drop=True)
+    return _concat(parts)
+
+
+CATEGORY_COLS = ["acq_time", "daynight", "confidence", "sensor", "product", "source_file"]
+
+
+def _compact(df):
+    """Repeated text columns as categories: 25M rows of strings do not fit in a laptop's memory."""
+    return df.astype({c: "category" for c in CATEGORY_COLS if c in df.columns})
+
+
+def _concat(parts):
+    """Concatenate and keep categories (pandas falls back to plain strings when categories differ)."""
+    parts = [p for p in parts if len(p)] or parts[:1]
+    for c in CATEGORY_COLS:
+        if c in parts[0].columns and all(isinstance(p[c].dtype, pd.CategoricalDtype) for p in parts):
+            cats = pd.Index(sorted(set().union(*(p[c].cat.categories for p in parts))))
+            parts = [p.assign(**{c: p[c].cat.set_categories(cats)}) for p in parts]
+    return pd.concat(parts, ignore_index=True)
 
 
 def _file_stats(df):
@@ -136,11 +154,11 @@ def load_all(raw_dir=None):
         raw = read_raw_file(f)
         stats.append(_file_stats(raw))
         flagged |= static_cells(raw)   # from all detections, before confidence cleaning
-        parts.append(clean(raw))
-    cleaned = pd.concat(parts, ignore_index=True)
-    cleaned = prefer_standard(drop_static(cleaned, flagged))
-    for col in ["daynight", "confidence", "sensor", "product", "source_file"]:
-        cleaned[col] = cleaned[col].astype("category")
+        parts.append(_compact(clean(raw)))
+        del raw
+    cleaned = _concat(parts)
+    del parts
+    cleaned = _compact(prefer_standard(drop_static(cleaned, flagged)))
 
     raw_stats = pd.concat(stats).groupby(["sensor", "product"]).agg(
         rows=("rows", "sum"), first=("first", "min"), last=("last", "max"),
