@@ -80,3 +80,27 @@ button:hover { filter: brightness(1.08); }
 #method-body td, #method-body th { border-bottom: 1px solid var(--line); padding: 4px 10px 4px 0; text-align: left; }
 summary { cursor: pointer; }
 footer { color: var(--muted); font-size: 0.8rem; padding-bottom: 32px; }
+
+/* ---------- responsive ---------- */
+.calendar th .short { display: none; }
+.table-scroll { overflow-x: auto; }
+@media (max-width: 760px) {
+  body { font-size: 14px; }
+  h1 { font-size: 1.5rem; }
+  .controls { display: grid; grid-template-columns: 1fr 1fr; }
+  .controls label:first-child, .controls button { grid-column: 1 / -1; }
+  .controls select, .controls button { width: 100%; padding: 10px; }
+  #map { min-height: 220px; }
+  .big { font-size: 1.35rem; }
+  .card { padding: 12px; }
+}
+@media (max-width: 600px) {
+  .calendar { width: 100%; table-layout: fixed; border-spacing: 1px; font-size: 0.68rem; }
+  .calendar th.year { width: 34px; padding-right: 4px; }
+  .calendar th .long { display: none; }
+  .calendar th .short { display: inline; }
+  .calendar td.cell { width: auto; min-width: 0; height: 16px; border-radius: 2px; }
+  .calendar .sensor { display: none; }
+  .calendar td.total, .calendar th.total { width: 52px; padding-left: 4px; font-size: 0.62rem; }
+  .legend .ramp span { width: 14px; }
+}

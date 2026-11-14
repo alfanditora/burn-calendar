@@ -53,7 +53,7 @@ function renderCalendar() {
   const max = Math.max(1, ...state.area.calendar.map((c) => c.count || 0)); // fixed scale across filters
   const [lo, hi] = yearRange();
 
-  let html = `<thead><tr><th></th>${MONTHS.map((m) => `<th>${m}</th>`).join("")}<th>Year total</th><th>Sensor</th></tr></thead><tbody>`;
+  let html = `<thead><tr><th class="year"></th>${MONTHS.map((m) => `<th><span class="long">${m}</span><span class="short">${m[0]}</span></th>`).join("")}<th class="total">Total</th><th class="sensor">Sensor</th></tr></thead><tbody>`;
   for (let y = lo; y <= hi; y++) {
     const cells = [];
     let total = 0, n = 0;
@@ -130,11 +130,11 @@ function renderMethod() {
     <p>Three sensors are chained into one record in <strong>NOAA-20 VIIRS-equivalent hotspots</strong>:
       NOAA-20 is used where available (from Apr 2018), else Suomi NPP × factor, else MODIS × both factors.
       Each factor is the ratio of total hotspots seen by the two sensors over the months both were running.</p>
-    <table>
+    <div class="table-scroll"><table>
       <tr><th>Link</th><th>Factor</th><th>Fit years</th><th>Year-to-year spread</th><th>Monthly error</th><th>Yearly error</th></tr>
       ${linkRow("modis_to_snpp", "MODIS → Suomi NPP")}
       ${linkRow("snpp_to_noaa20", "Suomi NPP → NOAA-20")}
-    </table>
+    </table></div>
     <p class="muted">Validation: the last two full overlap years are held out, factors are refitted without them,
       and the held-out months are predicted. Monthly error is the mean absolute percentage error over months with at
       least 10 hotspots. Headline validation error: <strong>${m.validation_error_pct != null ? fmt(m.validation_error_pct, 1) + "%" : "n/a"}</strong>.</p>
@@ -226,7 +226,9 @@ async function main() {
   $("download").addEventListener("click", downloadCSV);
   $("calendar").addEventListener("mouseover", showTip);
   $("calendar").addEventListener("focusin", showTip);
+  $("calendar").addEventListener("click", showTip);   // tap on touch screens
   $("calendar").addEventListener("mouseleave", () => { $("tip").hidden = true; });
+  window.addEventListener("scroll", () => { $("tip").hidden = true; }, { passive: true });
   await selectArea(state.index[0].area_id);
 }
 
