@@ -163,7 +163,10 @@ df = pd.read_csv("${abs(files[0][0])}")</pre>
 function updateViewLink() {
   if (!$("view-link") || !App.grid) return;
   const u = new URL(location.pathname, location.origin);
-  u.search = new URLSearchParams({ mode: "analyst", area: App.areaId, month: App.grid.months[TM.idx] }).toString();
+  const q = new URLSearchParams({ mode: "analyst", area: App.areaId, month: App.grid.months[TM.idx] });
+  if (TM.layer === "unusual") q.set("layer", "unusual");
+  if (typeof Prov !== "undefined" && Prov.sel) q.set("province", Prov.data[Prov.sel.region].names[Prov.sel.i]);
+  u.search = q.toString();
   $("view-link").textContent = u.href;
 }
 

@@ -26,7 +26,20 @@ year and its yearly totals. It uses the country's (or Northern Australia's) conv
 "usual" and busiest-month figures when the busiest month usually has fewer than 10 hotspots
 (`PROVINCE_MIN_PEAK_MEDIAN`), because one or two fires would swing every percentage.
 
-Deep links work too, e.g. `?mode=analyst&area=riau&month=2015-09` or `?mode=explore&area=riau&tab=story`. More screenshots are in `docs/screenshots/`.
+Deep links work too, e.g. `?mode=analyst&area=riau&month=2015-09`, `?mode=explore&area=riau&tab=story`,
+`?mode=explore&area=central_kalimantan&month=2019-09&layer=unusual` or `?mode=explore&province=South%20Sumatra`.
+
+| | |
+| --- | --- |
+| ![Home screen: choose Explore & Play or Analyst View, with the latest month in every area](docs/screenshots/home.png) | ![Routine or unusual? Central Kalimantan, September 2019: grey = routine burning, red = far above that place's normal](docs/screenshots/unusual.png) |
+| **Home:** two modes and the latest month in every area | **Routine or unusual?** Central Kalimantan, Sep 2019 |
+| ![Province view for South Sumatra, September 2019](docs/screenshots/province.png) | ![This season: tracker, fire season and early signal for Indonesia, September 2019](docs/screenshots/season.png) |
+| **Any province:** South Sumatra, Sep 2019 | **This season:** tracker, fire season, early signal |
+| ![Analyst View: calendar, trend, anomaly, method and open data](docs/screenshots/data-lab.png) | ![Phone layout](docs/screenshots/mobile.png) |
+| **Analyst View:** calendar, trend, method, open data | **Phone** |
+
+More screenshots (Northern Australia, Riau 2015, games, story) are in `docs/screenshots/`. They were captured from
+the live app with headless Chrome on Nov 14, 2026 and show real data only.
 
 ## Run it
 

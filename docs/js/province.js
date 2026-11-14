@@ -84,6 +84,7 @@ function provinceRedraw() {
   renderRegionGroups();
   if (App.grid && TM.view) tmBuildOverlay();
   provinceOnMonth();
+  if (typeof updateViewLink === "function") updateViewLink();
 }
 
 // Statistics for one province series, with the same rules as the areas (earlier complete years, >= 5).

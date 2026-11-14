@@ -54,7 +54,8 @@ function renderHomeStats() {
   const cal = App.area.calendar, first = cal[0], last = App.area.latest;
   $("home-stats").innerHTML = [
     `🗓️ ${MONTHS[first.month - 1]} ${first.year} – ${MONTHS[last.month - 1]} ${last.year}`,
-    "🛰️ 3 satellite sensors", `📍 ${App.index.length} areas`,
+    "🛰️ 3 satellite sensors",
+    `📍 ${App.index.length} featured areas + ${GRID_REGIONS.reduce((n, r) => n + (Prov.data[r] ? Prov.data[r].names.length : 0), 0)} provinces & states`,
   ].map((s) => `<span>${s}</span>`).join("");
 }
 
@@ -154,9 +155,13 @@ async function main() {
   onAreaChange(labOnArea);
   onAreaChange(() => { if (!$("game-stage").hidden) closeStage(); });
   renderHub();
-  // Deep links: ?mode=analyst&area=riau&month=2015-09 (older ?tab=play|story|lab links still work)
+  // Deep links: ?mode=analyst&area=riau&month=2015-09&layer=unusual&province=Jambi
+  // (older ?tab=play|story|lab links still work)
   const start = App.index.find((a) => a.area_id === q.get("area")) || App.index[0];
   await loadArea(start.area_id);
+  const pr = GRID_REGIONS.find((r) => Prov.data[r] && Prov.data[r].names.includes(q.get("province")));
+  if (pr) await openProvince(pr, Prov.data[pr].names.indexOf(q.get("province")));
+  if (q.get("layer") === "unusual") setLayer("unusual");
   renderHomeStats();
   renderHomeNow();
   if (q.get("month") && App.grid.months.includes(q.get("month"))) tmGo(App.grid.months.indexOf(q.get("month")));
