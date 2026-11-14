@@ -360,6 +360,7 @@ function tmHover(ev) {
   const cause = "<span class=\"muted\">Satellites see heat, not the cause: wildfire, farm burning or land clearing look alike.</span>";
   if (TM.layer === "unusual") {
     if (!a) { tip.hidden = true; return; }
+    if (burnKind(a) === "more" && (a.med < 1 || a.v >= 2 * a.med) && cellInArea(cell)) award("pattern_spotter");
     tip.innerHTML = `<b>${fmt(a.v)} hotspot${fmt(a.v) === "1" ? "" : "s"}</b>, usually ${fmt(a.med)} (${a.ex >= 0 ? "+" : ""}${fmt(a.ex)})<br>${kind}<br>${near}<br>${cause}`;
   } else {
     const f = TM.fires.find(([c]) => c === cell);

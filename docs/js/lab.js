@@ -178,7 +178,6 @@ function downloadCSV() {
   link.download = `burn-calendar_${a.area_id}_${lo}-${hi}.csv`;
   link.click();
   URL.revokeObjectURL(link.href);
-  award("data_diver");
 }
 
 function labInit() {

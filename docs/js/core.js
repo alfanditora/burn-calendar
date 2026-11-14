@@ -92,7 +92,7 @@ const BADGES = {
   globe_trotter: ["🌏", "Globe Trotter", "Explore both Indonesia and Northern Australia"],
   season_master: ["📅", "Season Master", "Find all 3 peak fire months of a region"],
   time_traveller: ["⏳", "Time Traveller", "Watch the Time Machine play through a whole year"],
-  data_diver: ["🔬", "Data Diver", "Download the data as CSV"],
+  pattern_spotter: ["🔎", "Pattern Spotter", "On the Routine or unusual? map, find a place burning far above its normal"],
   sharp_eye: ["🎯", "Sharp Eye", "Score 8 of 10 in Normal or Not?"],
 };
 
@@ -119,7 +119,7 @@ function renderHUD() {
   $("hud-rank").textContent = l.name;
   $("hud-xp").style.width = `${l.pct}%`;
   $("hud-xpbar").setAttribute("aria-valuenow", Math.round(l.pct));
-  $("hud-badges").textContent = `🏅 ${Object.keys(Player.data.badges).length}/${Object.keys(BADGES).length}`;
+  $("hud-badges").textContent = `🏅 ${Object.keys(BADGES).filter((b) => Player.data.badges[b]).length}/${Object.keys(BADGES).length}`;
   $("side-level").textContent = `LV ${l.level}`;
   $("side-rank").textContent = l.name;
   $("side-xp").style.width = `${l.pct}%`;
