@@ -39,6 +39,7 @@ The FIRMS API key, if it is used, is read from the `FIRMS_MAP_KEY` environment v
 | Calibrate | `pipeline/calibrate.py` | Ratio factors on overlap years, drift check, stability, hold-out validation, harmonized series |
 | Trend | `pipeline/trend.py` | Mann-Kendall + Sen's slope (yearly and seasonal), anomaly vs median of earlier years |
 | Export | `pipeline/export.py` | `monthly_counts.csv`, `areas/{id}.json` + `.csv`, `areas/index.json` |
+| Pixel map | `pipeline/grid.py` | Harmonized counts per 0.25° cell and month + land mask, `grid/{region}.json` for the Time Machine |
 
 ### Notes on the monthly_counts table
 
@@ -80,6 +81,12 @@ Libraries (open source)
 - pymannkendall 1.4.3: Hussain & Mahmud (2019), JOSS 4(39), 1556 (MIT)
 - requests: https://requests.readthedocs.io/ (Apache-2.0)
 - pytest: https://pytest.org/ (MIT)
+- shapely: https://shapely.readthedocs.io/ (BSD-3), to rasterise the land mask
+
+Other data and assets
+- Natural Earth 1:50m land polygons (public domain): https://www.naturalearthdata.com/, for the pixel map land mask
+- Fonts: Press Start 2P (CodeMan38) and Pixelify Sans (Stefie Justprince), SIL Open Font License, served by Google Fonts
+- Pixel sprites (flames, satellites, icons) are drawn in code in `docs/js/sprites.js`; no external images are used
 
 ## Use of SI tools
 

@@ -4,89 +4,148 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Burn Calendar</title>
-  <meta name="description" content="A harmonized MODIS + VIIRS fire hotspot calendar, 2001 to now.">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <title>Burn Calendar: Fire Atlas</title>
+  <meta name="description" content="25 years of satellite fire data, harmonized across MODIS and VIIRS, as a pixel-art time machine and games.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="top">
-    <div>
-      <h1>Burn Calendar</h1>
-      <p class="tagline">When and where fires burn: one consistent record from three satellite sensors, 2001 to now.</p>
+  <header class="hud">
+    <div class="brand">
+      <canvas id="logo-flame" width="10" height="14" aria-hidden="true"></canvas>
+      <div>
+        <h1>BURN CALENDAR</h1>
+        <p class="tagline">25 years of satellite fire data in one pixel atlas</p>
+      </div>
+    </div>
+    <div class="player" aria-label="Your progress">
+      <div class="rank"><span class="lv" id="hud-level">LV 1</span> <span id="hud-rank">Rookie Ranger</span></div>
+      <div class="xpbar" role="progressbar" aria-label="Experience" aria-valuemin="0" aria-valuemax="100" id="hud-xpbar"><span id="hud-xp"></span></div>
+      <button type="button" class="badge-count" id="hud-badges" aria-label="Show badges">🏅 0/8</button>
     </div>
   </header>
 
-  <section class="controls" aria-label="Choose area and years">
-    <label>Area
-      <select id="area"></select>
-    </label>
-    <label>From
-      <select id="from"></select>
-    </label>
-    <label>To
-      <select id="to"></select>
-    </label>
-    <button id="download" type="button">Download CSV</button>
-  </section>
+  <nav class="regions" id="regions" aria-label="Choose an area"></nav>
 
-  <main>
-    <div class="row">
-      <div id="map" class="card" aria-label="Map of available areas"></div>
-      <div class="side">
-        <article class="card" id="anomaly" aria-live="polite"></article>
-        <article class="card" id="trend" aria-live="polite"></article>
+  <!-- Hero: the pixel map time machine -->
+  <section class="panel map-panel" aria-label="Fire time machine">
+    <div class="map-head">
+      <div>
+        <p class="kicker">Fire Time Machine</p>
+        <p class="month-label" id="tm-month">----</p>
+      </div>
+      <div class="counter">
+        <p class="kicker" id="tm-area">Hotspots</p>
+        <p class="count" id="tm-count">0</p>
+        <p class="sensor" id="tm-sensor"></p>
       </div>
     </div>
+    <div class="map-wrap" id="map-wrap">
+      <canvas id="pixmap" aria-label="Pixel map of fire hotspots"></canvas>
+      <div class="moment" id="tm-moment" hidden></div>
+    </div>
+    <p class="fact" id="tm-fact" aria-live="polite"></p>
+    <div class="tm-controls">
+      <button type="button" class="px-btn" id="tm-prev" aria-label="Previous month">◀</button>
+      <button type="button" class="px-btn primary" id="tm-play">▶ PLAY</button>
+      <button type="button" class="px-btn" id="tm-next" aria-label="Next month">▶</button>
+      <input type="range" id="tm-slider" min="0" max="0" value="0" aria-label="Month">
+      <button type="button" class="px-btn" id="tm-speed" aria-label="Playback speed">1×</button>
+    </div>
+    <div class="map-legend">
+      <span class="lg-sea"></span> sea <span class="lg-land"></span> land
+      <span class="lg-fire"></span> fewer fires <span class="lg-fire hot"></span> more fires
+      <span class="muted">· 1 pixel ≈ 25 km · NOAA-20-equivalent hotspots</span>
+    </div>
+  </section>
 
-    <section class="card">
-      <div class="cal-head">
-        <h2>Burning-activity calendar</h2>
-        <div id="legend" class="legend"></div>
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" id="tab-play" aria-controls="view-play" aria-selected="true">🎮 PLAY</button>
+    <button role="tab" id="tab-story" aria-controls="view-story" aria-selected="false">🛰️ STORY</button>
+    <button role="tab" id="tab-lab" aria-controls="view-lab" aria-selected="false">🔬 DATA LAB</button>
+  </nav>
+
+  <main>
+    <!-- PLAY -->
+    <section id="view-play" role="tabpanel" aria-labelledby="tab-play">
+      <div class="game-hub" id="game-hub"></div>
+      <div class="panel game-stage" id="game-stage" hidden></div>
+    </section>
+
+    <!-- STORY -->
+    <section id="view-story" role="tabpanel" aria-labelledby="tab-story" hidden>
+      <div class="panel">
+        <p class="kicker">The scale of it</p>
+        <h2>Fire facts for <span class="area-name"></span></h2>
+        <div class="facts" id="facts"></div>
       </div>
-      <p class="unit" id="unit"></p>
-      <div class="cal-scroll"><table id="calendar" class="calendar"></table></div>
-      <p class="hint">Each cell is one month. Hover or tap a cell for the count, the sensor it comes from and how it compares with the median of earlier years.</p>
-    </section>
-
-    <section class="games" aria-label="Games">
-      <article class="card" id="game-season">
-        <p class="kicker">Game 1</p>
-        <h2>Guess the fire season</h2>
-        <p class="muted">Pick the 3 months you think have the most fires in <span class="g-area"></span>.</p>
-        <div class="month-picks" id="season-picks"></div>
-        <button type="button" id="season-check" disabled>Reveal</button>
-        <div id="season-result" aria-live="polite"></div>
-      </article>
-      <article class="card" id="game-normal">
-        <p class="kicker">Game 2</p>
-        <h2>Is this month normal?</h2>
-        <p id="normal-question"></p>
-        <div class="choice">
-          <button type="button" data-guess="above">More fires than usual</button>
-          <button type="button" data-guess="below">Fewer fires than usual</button>
+      <div class="panel">
+        <p class="kicker">Satellite Relay</p>
+        <h2>Three satellites, one record</h2>
+        <canvas id="relay-sats" class="relay-sats" aria-hidden="true"></canvas>
+        <div class="relay-steps" id="relay-steps"></div>
+        <div class="relay-chart-head">
+          <p id="relay-caption" class="muted"></p>
+          <div class="toggle" role="group" aria-label="Chart mode">
+            <button type="button" class="px-btn small" id="relay-raw" aria-pressed="true">RAW</button>
+            <button type="button" class="px-btn small" id="relay-harm" aria-pressed="false">HARMONIZED</button>
+          </div>
         </div>
-        <div id="normal-result" aria-live="polite"></div>
-        <p class="muted" id="normal-score"></p>
-      </article>
+        <canvas id="relay-chart" class="relay-chart" aria-label="Yearly hotspots per sensor"></canvas>
+      </div>
     </section>
 
-    <section class="card">
-      <details id="method">
-        <summary><h2>Method, validation and limits</h2></summary>
-        <div id="method-body"></div>
-      </details>
+    <!-- DATA LAB -->
+    <section id="view-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <div class="lab-grid">
+        <article class="panel" id="anomaly" aria-live="polite"></article>
+        <article class="panel" id="trend" aria-live="polite"></article>
+      </div>
+      <div class="panel">
+        <div class="cal-head">
+          <h2>Burning-activity calendar</h2>
+          <div id="legend" class="legend"></div>
+        </div>
+        <div class="lab-controls">
+          <label>From <select id="from"></select></label>
+          <label>To <select id="to"></select></label>
+          <button id="download" type="button" class="px-btn primary">⬇ CSV</button>
+        </div>
+        <p class="unit muted" id="unit"></p>
+        <div class="cal-scroll"><table id="calendar" class="calendar"></table></div>
+        <p class="muted small">Tap a cell for the count, the sensor it comes from and the median of earlier years.</p>
+      </div>
+      <div class="panel">
+        <details id="method">
+          <summary><h2>Method, validation and limits</h2></summary>
+          <div id="method-body"></div>
+        </details>
+      </div>
     </section>
   </main>
 
   <footer>
-    Data: NASA FIRMS (MODIS, VIIRS). Hotspot counts are harmonized to NOAA-20 VIIRS units by Burn Calendar; they are estimates, not burned area.
-    Map tiles © OpenStreetMap contributors.
+    Data: NASA FIRMS (MODIS, VIIRS). Counts are harmonized to NOAA-20 VIIRS units by Burn Calendar; they are estimates of
+    fire hotspots, not burned area. Land outlines: Natural Earth. Built for NASA Space Apps Challenge 2026.
+    <a href="https://github.com/alfanditora/burn-calendar">Code and method</a>
   </footer>
 
   <div id="tip" class="tip" role="tooltip" hidden></div>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+  <dialog id="badge-dialog" class="panel">
+    <h2>Badges</h2>
+    <div id="badge-list" class="badge-list"></div>
+    <form method="dialog"><button class="px-btn">CLOSE</button></form>
+  </dialog>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-  <script src="app.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/sprites.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/games.js"></script>
+  <script src="js/story.js"></script>
+  <script src="js/lab.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
