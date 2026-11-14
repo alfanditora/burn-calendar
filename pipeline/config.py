@@ -19,12 +19,17 @@ AREAS = {
     "indonesia": {"name": "Indonesia", "bbox": [95.0, -11.0, 141.0, 6.0]},
     "riau": {"name": "Riau, Indonesia", "bbox": [100.0, -1.2, 104.0, 2.9]},
     "central_kalimantan": {"name": "Central Kalimantan, Indonesia", "bbox": [110.7, -3.6, 116.0, 0.8]},
-    # Second region outside Indonesia: still to be chosen by the team.
+    # Outside Indonesia, to show the method generalises: Top End, Kimberley, Gulf country, Cape York.
+    "north_australia": {"name": "Northern Australia", "bbox": [121.0, -20.0, 146.0, -10.5]},
 }
 
 # --- Download (pipeline/fetch_firms.py) ----------------------------------------
-# One box covering every area above; all areas are cut from this single download.
-FETCH_BBOX = [95.0, -11.0, 141.0, 6.0]
+# One download box per region; the areas above are cut from these boxes.
+# Each region is cached in its own folder: data/raw/firms_api/{region}/{source}/
+FETCH_REGIONS = {
+    "indonesia": [95.0, -11.0, 141.0, 6.0],
+    "north_australia": [121.0, -20.0, 146.0, -10.5],
+}
 # (standard source, NRT source used only after the last standard date)
 FETCH_SOURCES = [
     ("MODIS_SP", "MODIS_NRT"),

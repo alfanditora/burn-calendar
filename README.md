@@ -13,7 +13,8 @@ as a burning-activity calendar with an anomaly badge, a Mann-Kendall trend test 
 ```bash
 python -m venv .venv
 .venv/Scripts/pip install -r requirements.txt     # macOS/Linux: .venv/bin/pip
-python pipeline/fetch_firms.py                     # download FIRMS history via the area API (needs FIRMS_MAP_KEY)
+python pipeline/fetch_firms.py --region indonesia  # download FIRMS history via the area API (needs FIRMS_MAP_KEY)
+python pipeline/fetch_firms.py --region north_australia
 python pipeline/inspect_raw.py                     # list data/raw files and print their headers
 python pipeline/run_all.py                         # rebuild everything in data/processed from data/raw
 python -m pytest                                   # tests run on the SYNTHETIC files in data/sample

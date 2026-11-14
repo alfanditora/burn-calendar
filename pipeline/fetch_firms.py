@@ -1,8 +1,8 @@
 # Generated with assistance from Claude Code (Anthropic), reviewed by the team.
 """Download FIRMS hotspots for the fetch box through the area API into data/raw/firms_api/.
 
-    python pipeline/fetch_firms.py                    # full history, all sources in config.FETCH_SOURCES
-    python pipeline/fetch_firms.py --start 2015-09-01 --end 2015-09-30   # small test
+    python pipeline/fetch_firms.py --region indonesia          # full history for one region
+    python pipeline/fetch_firms.py --region indonesia --start 2015-09-01 --end 2015-09-30   # small test
 
 * One CSV per source per 5-day chunk (the API maximum), saved as it arrives, so a
   rerun skips finished chunks and resumes where it stopped.
@@ -87,8 +87,8 @@ def chunks(start, end):
         d += timedelta(days=n)
 
 
-def fetch_chunk(key, guard, source, bbox, d, n):
-    path = OUT / source / f"{d.isoformat()}_{n}d.csv"
+def fetch_chunk(key, guard, region, source, bbox, d, n):
+    path = OUT / region / source / f"{d.isoformat()}_{n}d.csv"
     if path.exists():
         return path, "cached"
     area = ",".join(str(v) for v in bbox)
@@ -133,20 +133,21 @@ def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--start", type=date.fromisoformat, default=date(2000, 11, 1))
     p.add_argument("--end", type=date.fromisoformat, default=date.today())
-    p.add_argument("--bbox", type=lambda s: [float(v) for v in s.split(",")], default=config.FETCH_BBOX)
+    p.add_argument("--region", required=True, choices=sorted(config.FETCH_REGIONS))
     a = p.parse_args()
+    bbox = config.FETCH_REGIONS[a.region]
 
     key = map_key()
     guard = RateGuard(key)
     jobs = plan(availability(key), a.start, a.end)
     tasks = [(src, d, n) for src, lo, hi in jobs for d, n in chunks(lo, hi)]
-    print(f"Box {a.bbox}; {len(tasks)} chunks:")
+    print(f"Region {a.region} {bbox}; {len(tasks)} chunks:")
     for src, lo, hi in jobs:
         print(f"  {src:18s} {lo} to {hi}")
 
     done = failed = 0
     with ThreadPoolExecutor(WORKERS) as pool:
-        futures = {pool.submit(fetch_chunk, key, guard, src, a.bbox, d, n): (src, d) for src, d, n in tasks}
+        futures = {pool.submit(fetch_chunk, key, guard, a.region, src, bbox, d, n): (src, d) for src, d, n in tasks}
         for f in as_completed(futures):
             src, d = futures[f]
             try:
