@@ -144,7 +144,7 @@ canvas { image-rendering: pixelated; }
   </div>
   <div class="abs v" id="u-cred" style="left:120px; top:700px; width:1700px; font-size:27px; line-height:1.25; color:#cfd6e6">
     <p style="color:#ffd43b; font-family:var(--title); font-size:20px; margin-bottom:12px">TEAM KUMAR · ALFANDITORA RAIS AKBAR · NASA SPACE APPS 2026</p>
-    <p>Data: NASA FIRMS (MODIS, VIIRS) · Borders: Natural Earth · AI narration (Microsoft neural TTS) · Original 8-bit music · Built with Claude Code</p>
+    <p id="u-credline">Data: NASA FIRMS (MODIS, VIIRS) · Borders: Natural Earth · AI narration (Microsoft neural TTS) · Original 8-bit music · Built with Claude Code</p>
   </div>
 </section>
 
@@ -343,7 +343,11 @@ R.problem30 = (t) => {
 };
 R.title30 = (t) => R.title(t * 1.5);
 R.chain30 = (t) => R.chain(t * 4.2);
+const CRED_ORIGINAL = "Data: NASA FIRMS (MODIS, VIIRS) · Borders: Natural Earth · AI narration (Microsoft neural TTS) · Original 8-bit music · Built with Claude Code";
+const CRED_SHINE = "Data: NASA FIRMS (MODIS, VIIRS) · AI narration (Microsoft neural TTS) · Music: “Shine Blitz” by Chris Murphy, CC0 · Built with Claude Code";
+R.future_shine = (t) => { R.future(t); $("u-credline").textContent = CRED_SHINE; };
 R.future = (t) => {
+  $("u-credline").textContent = CRED_ORIGINAL;
   drawMap($("u-map"), "2026-10", t, 0, 2);
   show($("u-kick"), t, 0.05, { dy: -20 });
   CHIPS.forEach((_, i) => show($(`uc${i}`), t, 0.25 + i * 0.9, { pop: true }));
@@ -359,7 +363,7 @@ window.ready = (async () => {
   return true;
 })();
 window.render = (scene, t) => {
-  const sec = { problem30: "problem", title30: "title", chain30: "chain" }[scene] || scene;
+  const sec = { problem30: "problem", title30: "title", chain30: "chain", future_shine: "future" }[scene] || scene;
   document.querySelectorAll(".scene").forEach((s) => { s.style.display = s.id === sec ? "block" : "none"; });
   R[scene](t);
 };

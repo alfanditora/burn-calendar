@@ -1,6 +1,7 @@
 # Generated with assistance from Claude Code (Anthropic), reviewed by the team.
 """Assemble the 30-second Space Apps video (the rules allow 30 s or less).
-python assemble30.py FFMPEG_BIN_DIR -> burn-calendar-30s.mp4
+python assemble30.py FFMPEG_BIN_DIR [shine] -> burn-calendar-30s.mp4 (original 8-bit music)
+or burn-calendar-30s-shineblitz.mp4 ("Shine Blitz" by Chris Murphy, CC0, credited in the closing card)
 0:00 who · 0:03 challenge · 0:08 title · 0:11 how it works (NASA data, real app) · 0:22 future."""
 import json
 import subprocess
@@ -10,6 +11,11 @@ from pathlib import Path
 HERE = Path(__file__).parent
 FF = Path(sys.argv[1])
 FFMPEG = str(FF / "ffmpeg.exe")
+SHINE = len(sys.argv) > 2 and sys.argv[2] == "shine"
+SUFFIX = "_shine" if SHINE else ""
+MUSIC = "music30_shine.wav" if SHINE else "music30.wav"
+OUTPUT = "burn-calendar-30s-shineblitz.mp4" if SHINE else "burn-calendar-30s.mp4"
+MUSIC_GAIN = 0.2  # both tracks sit about 9 LU under the voice (about -29 LUFS)
 FPS, NAVY, VOICE_AT = 30, "0x0d1736", 0.2
 TAG = "fontfile=fonts/PressStart2P-Regular.ttf:fontsize=22:fontcolor=white:box=1:boxcolor=0xc2410c:boxborderw=14"
 # (kind, name, seconds, clip offset, tag)
@@ -22,7 +28,7 @@ TIMELINE = [
     ("clip", "timemachine", 1.8, 4.8, "REAL APP · REPLAY 25 YEARS"),
     ("clip", "modes", 1.5, 9.4, "REAL APP · ROUTINE OR UNUSUAL?"),
     ("clip", "modes", 2.3, 18.7, "REAL APP · DRAW ANY AREA", 1.35),
-    ("card", "future", 7.5, 0, None),
+    ("card", "future_shine" if SHINE else "future", 7.5, 0, None),
 ]
 
 
@@ -33,7 +39,7 @@ def run(args):
 
 
 def main():
-    seg_dir = HERE / "segments30"; seg_dir.mkdir(exist_ok=True)
+    seg_dir = HERE / f"segments30{SUFFIX}"; seg_dir.mkdir(exist_ok=True)
     files = []
     for k, (kind, name, d, off, tag, *sp) in enumerate(TIMELINE):
         speed = sp[0] if sp else 1.0
@@ -55,7 +61,7 @@ def main():
         files.append(out)
     T = sum(t[2] for t in TIMELINE)
     (seg_dir / "list.txt").write_text("".join(f"file '{p.name}'\n" for p in files))
-    run([FFMPEG, "-y", "-f", "concat", "-safe", "0", "-i", "segments30/list.txt", "-c", "copy", "video30.mp4"])
+    run([FFMPEG, "-y", "-f", "concat", "-safe", "0", "-i", f"segments30{SUFFIX}/list.txt", "-c", "copy", f"video30{SUFFIX}.mp4"])
 
     # Captions, one per sentence (long ones split at a word boundary).
     sents = json.loads((HERE / "voice30" / "timings.json").read_text(encoding="utf-8"))["sentences"]
@@ -86,16 +92,16 @@ def main():
 
     ms = int(VOICE_AT * 1000)
     filt = (f"[1:a]aresample=44100,aformat=channel_layouts=stereo,adelay={ms}|{ms}[v];"
-            f"[2:a]volume='if(gt(t,{T - 2.9:.2f}),0.55,0.2)':eval=frame,atrim=0:{T:.2f}[mu];"
+            f"[2:a]volume='if(gt(t,{T - 2.9:.2f}),0.55,{MUSIC_GAIN})':eval=frame,atrim=0:{T:.2f}[mu];"
             f"[v][mu]amix=inputs=2:normalize=0:duration=longest,atrim=0:{T:.2f},afade=t=out:st={T - 0.8:.2f}:d=0.8,alimiter=limit=0.95[a]")
     vf = ("subtitles=captions30.ass:fontsdir=fonts,"
           "drawtext=fontfile=fonts/PressStart2P-Regular.ttf:fontsize=18:fontcolor=0xffd43b:text='AI NARRATION':"
           "x=w-tw-40:y=40:enable='between(t,0.3,2.9)'")
-    run([FFMPEG, "-y", "-i", "video30.mp4", "-i", "voice30/narration.mp3", "-i", "music30.wav",
+    run([FFMPEG, "-y", "-i", f"video30{SUFFIX}.mp4", "-i", "voice30/narration.mp3", "-i", MUSIC,
          "-filter_complex", filt, "-map", "0:v", "-map", "[a]", "-vf", vf, "-c:v", "libx264", "-preset", "slow",
          "-crf", "17", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart",
-         "-t", f"{T:.2f}", "burn-calendar-30s.mp4"])
-    print(f"burn-calendar-30s.mp4: {T:.1f} s")
+         "-t", f"{T:.2f}", OUTPUT])
+    print(f"{OUTPUT}: {T:.1f} s")
 
 
 main()

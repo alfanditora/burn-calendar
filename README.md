@@ -242,6 +242,12 @@ Other data and assets
 - Fonts: Press Start 2P (CodeMan38) and VT323 (Peter Hull), SIL Open Font License, served by Google Fonts
 - Pixel sprites (flames, satellites, icons) are drawn in code in `docs/js/sprites.js`; no external images are used
 
+Demo video tools and assets
+- Playwright (Apache-2.0) with Google Chrome, to record the real app; ffmpeg (LGPL/GPL build by gyan.dev), to assemble it
+- edge-tts (LGPL-3.0), Microsoft neural text-to-speech voice "Andrew", for the AI narration
+- Music, one of two versions: original 8-bit music generated in `video/music.py`, or "Shine Blitz" by Chris Murphy
+  (zesona), CC0, https://opengameart.org/content/shine-blitz
+
 ## Use of SI tools
 
 Code in this repository was generated with assistance from Claude Code (Anthropic), working from
