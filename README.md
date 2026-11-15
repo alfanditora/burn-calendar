@@ -125,6 +125,21 @@ Trend (Mann-Kendall on yearly totals 2001–2025) and the latest complete month 
 | Central Kalimantan, Indonesia | falling (p = 0.008, Sen's slope -1,872/yr) | Well above normal (+1328%) |
 | Northern Australia | no clear trend (p = 0.944, Sen's slope -246/yr) | Below normal (-30%) |
 
+**Independent check against FIRMS's own country totals.** FIRMS publishes a Country Yearly Summary: every
+standard-processing hotspot it assigns to each country. `pipeline/check_firms_country.py` streams the Indonesia files,
+applies the same cleaning (confidence, fire type 0) and compares yearly counts with ours inside Indonesia's
+Natural Earth border (`data/processed/firms_country_check.csv`):
+
+| Sensor | Years | Total, FIRMS | Total, Burn Calendar | Difference | Largest yearly difference |
+| --- | --- | --- | --- | --- | --- |
+| MODIS | 2001–2025 | 1,342,313 | 1,312,585 | −2.2% | −6.7% (2017) |
+| VIIRS NOAA-20 | 2019–2025 | 960,479 | 946,560 | −1.4% | −2.2% (2020, 2022) |
+
+MODIS agrees within 0.3% for 2018–2025; for 2001–2017 our counts are 1.4–3.6% lower (6.7% in 2017). We have not
+yet traced that small, consistent gap (candidates: the country boundary used by FIRMS near coasts and borders, or
+the processing version of the older country files). It is far smaller than the 5.1× sensor difference being
+corrected. Suomi NPP was not checked (largest download).
+
 All three sensors independently show the 2026 Indonesian fire season (Aug–Oct); for Indonesia, October 2026 is the
 highest October since 2015. The largest year in the record is 2015 (the Southeast Asian haze crisis).
 
@@ -260,8 +275,7 @@ Other data and assets
 Demo video tools and assets
 - Playwright (Apache-2.0) with Google Chrome, to record the real app; ffmpeg (LGPL/GPL build by gyan.dev), to assemble it
 - edge-tts (LGPL-3.0), Microsoft neural text-to-speech voice "Andrew", for the AI narration
-- Music, one of two versions: original 8-bit music generated in `video/music.py`, or "Shine Blitz" by Chris Murphy
-  (zesona), CC0, https://opengameart.org/content/shine-blitz
+- Music: original 8-bit music generated in `video/music.py` (no samples or licensed music)
 
 ## Use of SI tools
 
