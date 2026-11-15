@@ -1,0 +1,216 @@
+<!doctype html>
+<!-- Generated with assistance from Claude Code (Anthropic), reviewed by the team. -->
+<!-- A4 project description (1240 x 1754 CSS px, rendered at 2x = 2480 x 3508 px, 300 dpi) in the app's style.
+     Every number comes from the app's data or README; the chart and map are drawn from data/ at render time. -->
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#8fd35a; --panel:#f7e9cb; --panel2:#ebd3a5; --line:#7a4a22; --text:#2d2a12; --muted:#6b5634;
+  --hi:#c2410c; --navy:#0d1736; --navy2:#16224a; --amber:#ffb347; --yellow:#ffd43b; --red:#c92a2a; --green:#2b8a3e;
+  --title:"Press Start 2P", monospace; --body:"VT323", monospace; }
+* { box-sizing:border-box; margin:0; }
+html, body { width:1240px; height:1754px; overflow:hidden; }
+body { font:22px/1.15 var(--body); color:var(--text);
+  background: radial-gradient(ellipse at top, #c8f191 0%, transparent 60%),
+    repeating-linear-gradient(45deg, transparent 0 18px, rgba(255,255,255,0.06) 18px 21px), var(--bg); }
+.page { position:absolute; inset:26px 30px; display:flex; flex-direction:column; gap:15px; }
+.page > * { flex:none; }  /* never squeeze a section; the layout is sized to fit A4 */
+.px { box-shadow: 0 -5px 0 0 var(--line), 0 5px 0 0 var(--line), -5px 0 0 0 var(--line), 5px 0 0 0 var(--line), 9px 9px 0 4px rgba(60,30,10,0.3); }
+.panel { background:var(--panel); padding:16px 20px; }
+.k { font:12px/1.4 var(--title); color:var(--hi); letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.h { font-family:var(--title); line-height:1.35; }
+.row { display:flex; gap:18px; }
+.muted { color:var(--muted); }
+b { color:#1d1a0a; }
+canvas { image-rendering:pixelated; display:block; }
+
+/* header */
+.head { position:relative; height:236px; background:var(--navy); color:#f7e9cb; overflow:hidden; padding:22px 26px; }
+.head canvas.map { position:absolute; right:-20px; top:24px; width:736px; height:272px; opacity:0.95; }
+.head .shade { position:absolute; inset:0; background:linear-gradient(90deg, rgba(13,23,54,1) 38%, rgba(13,23,54,0.35) 70%, rgba(13,23,54,0.1)); }
+.head .in { position:relative; }
+.title { display:flex; align-items:center; gap:16px; margin:10px 0 10px; }
+.title h1 { font:400 42px/1 var(--title); color:var(--yellow); text-shadow:4px 4px 0 var(--hi); }
+.tag { display:inline-block; font:11px/1 var(--title); color:#fff; background:var(--hi); padding:8px 10px; }
+
+/* steps */
+.steps { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px 14px; }
+.step { display:flex; gap:10px; align-items:flex-start; }
+.step .n { font:16px/1 var(--title); color:#fff; background:var(--navy); width:30px; height:30px; display:flex; align-items:center; justify-content:center; flex:none; }
+.step p { font-size:21px; line-height:1.05; }
+.chain { display:flex; align-items:center; margin:14px 0 4px; }
+.node { background:var(--panel2); box-shadow:0 0 0 4px var(--line); padding:9px 12px; text-align:center; min-width:150px; }
+.node.t { background:var(--hi); color:#fff; }
+.node .h { font-size:13px; }
+.node p { font-size:19px; margin-top:4px; }
+.arrow { flex:1; min-width:80px; text-align:center; font:13px/1 var(--title); color:var(--hi); }
+.arrow i { display:block; height:6px; background:var(--yellow); margin:6px 6px 0; box-shadow:0 0 0 2px var(--line); }
+.chip { display:inline-block; background:var(--navy); color:#f7e9cb; padding:7px 10px; font-size:20px; margin:4px 6px 0 0; }
+.chip b { color:var(--yellow); font-family:var(--title); font-size:12px; }
+
+/* cards with screenshots */
+.cards { display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; }
+.card img { width:100%; height:150px; object-fit:cover; object-position:top; display:block; box-shadow:0 0 0 4px var(--line); }
+.card h3 { font:13px/1.3 var(--title); color:var(--hi); margin:12px 0 6px; }
+.card p { font-size:20px; line-height:1.05; }
+
+/* findings */
+.stats { display:grid; grid-template-columns:1fr 1fr; gap:12px; width:470px; flex:none; }
+.stat { background:var(--panel2); padding:11px 13px; }
+.stat .v { font:21px/1.1 var(--title); color:var(--red); }
+.stat p { font-size:19px; line-height:1.02; margin-top:6px; }
+.three { display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; }
+ul { padding-left:20px; font-size:20px; line-height:1.05; }
+li { margin-bottom:5px; }
+.foot { display:flex; justify-content:space-between; align-items:flex-end; font-size:19px; color:#1d2a10; }
+.foot .url { font:13px/1.5 var(--title); color:var(--navy); }
+</style></head>
+<body><div class="page">
+
+<!-- HEADER -->
+<section class="head px">
+  <canvas class="map" id="map" width="184" height="68"></canvas>
+  <div class="shade"></div>
+  <div class="in">
+    <p class="k" style="color:var(--amber)">NASA Space Apps Challenge 2026 · Jakarta · Team Kumar</p>
+    <div class="title"><canvas id="flame" width="7" height="9" style="width:42px; height:54px"></canvas><h1>BURN CALENDAR</h1></div>
+    <p style="font-size:28px; color:#f7e9cb">25 years of satellite fire data in one pixel atlas</p>
+    <p style="font-size:21px; color:#cfd6e6; margin-top:8px">Challenge: Harmonization of MODIS and VIIRS Hot Spots · Alfandito Rais Akbar</p>
+    <p class="tag" style="margin-top:12px; background:#16224a; box-shadow:0 0 0 2px var(--amber); color:var(--yellow)">INDONESIA · SEP 2015 · REAL NASA FIRMS DATA</p>
+  </div>
+</section>
+
+<!-- QUESTION + PROBLEM -->
+<div class="row">
+  <section class="panel px" style="flex:1.05">
+    <p class="k">The question</p>
+    <p class="h" style="font-size:19px; color:var(--navy)">Is this fire season worse than normal, and where?</p>
+    <p style="font-size:21px; margin-top:10px">For anyone, from a disaster agency to a student. Burn Calendar answers it for Indonesia, and for Northern
+      Australia to show the method travels.</p>
+  </section>
+  <section class="panel px" style="flex:1.25; display:flex; gap:16px; align-items:center">
+    <div style="flex:none; background:var(--navy); padding:12px 14px; text-align:center">
+      <p class="h" style="font-size:34px; color:var(--yellow); text-shadow:3px 3px 0 var(--hi)">5.1×</p>
+      <p style="font-size:17px; color:#f7e9cb; margin-top:6px">VIIRS vs MODIS</p>
+    </div>
+    <div>
+      <p class="k">The problem</p>
+      <p style="font-size:21px">NASA’s 25-year fire record is split across <b>three sensors that count differently</b>: VIIRS sees
+        about 5× more hotspots than MODIS over the same land. Suomi NPP stopped on Nov 2, 2026; MODIS is retiring.
+        Raw counts from 2005 and 2025 can’t be compared.</p>
+    </div>
+  </section>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="panel px">
+  <p class="k">How it works · 28.9 million NASA FIRMS hotspots → one monthly record</p>
+  <div class="steps">
+    <div class="step"><span class="n">1</span><p><b>Download</b> FIRMS area API: MODIS, VIIRS Suomi NPP, VIIRS NOAA-20, standard + near-real-time</p></div>
+    <div class="step"><span class="n">2</span><p><b>Clean</b> confident detections; drop volcanoes, gas flares and offshore sources</p></div>
+    <div class="step"><span class="n">3</span><p><b>Count</b> inside real country and province borders, per month and 25 km square</p></div>
+    <div class="step"><span class="n">4</span><p><b>Calibrate</b> on years two sensors overlap, with a drift check for MODIS orbits</p></div>
+    <div class="step"><span class="n">5</span><p><b>Validate</b> by holding out each overlap year and predicting it</p></div>
+    <div class="step"><span class="n">6</span><p><b>Analyse</b> trend test, anomaly vs median, fire season, early signal</p></div>
+  </div>
+  <div class="row" style="align-items:center; margin-top:16px">
+    <div class="chain" style="flex:1">
+      <div class="node"><p class="h">MODIS</p><p>2000–2012</p></div>
+      <div class="arrow">×5.10<i></i></div>
+      <div class="node"><p class="h">SUOMI NPP</p><p>2012–2018</p></div>
+      <div class="arrow">×1.01<i></i></div>
+      <div class="node t"><p class="h">NOAA-20</p><p>2018–now</p></div>
+    </div>
+    <div style="width:330px; flex:none">
+      <p class="k" style="margin:0 0 2px">Validation error</p>
+      <span class="chip"><b>10.9%</b> Indonesia</span><span class="chip"><b>7.6%</b> N. Australia</span>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT PEOPLE SEE -->
+<section class="panel px">
+  <p class="k">What people see · free web app, no login, works on a phone</p>
+  <div class="cards">
+    <div class="card"><img src="{{img:ux-unusual}}" alt=""><h3>EXPLORE &amp; PLAY</h3>
+      <p>Pixel time machine since 2000, a “routine or unusual?” map, four games and badges, and what to do on smoky days.</p></div>
+    <div class="card"><img src="{{img:ux-season}}" alt=""><h3>ANALYST VIEW</h3>
+      <p>Calendar, trend test, anomaly badge, season tracker, early signal, unusual places, a situation brief, open CSV/JSON.</p></div>
+    <div class="card"><img src="{{img:ux-draw}}" alt=""><h3>ANY AREA</h3>
+      <p>4 featured areas, any of 33 Indonesian provinces and 3 Australian states, or a box you draw on the map.</p></div>
+  </div>
+</section>
+
+<!-- FINDINGS -->
+<section class="panel px">
+  <p class="k">What it found · Indonesia, hotspots per year (NOAA-20 units)</p>
+  <div class="row" style="align-items:stretch">
+    <canvas id="chart" width="1240" height="560" style="width:620px; height:255px; flex:1"></canvas>
+    <div class="stats">
+      <div class="stat"><p class="v">812,705</p><p>hotspots in 2015, the worst year: the Southeast Asian haze crisis</p></div>
+      <div class="stat"><p class="v" style="color:var(--hi)">-11,151/yr</p><p>long-term fall since 2001 (Mann-Kendall p = 0.018)</p></div>
+      <div class="stat"><p class="v">+504%</p><p>October 2026 vs a usual October, the most since 2015</p></div>
+      <div class="stat"><p class="v" style="color:var(--green)">12 OF 15</p><p>years: a quiet Jun–Jul meant a quiet Aug–Oct peak (a pattern, not a forecast)</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS / LIMITS / NEXT -->
+<div class="three">
+  <section class="panel px"><p class="k">Benefits</p><ul>
+    <li>One consistent record across the MODIS → VIIRS handover</li>
+    <li>Plain answers for the public; numbers with their error for analysts</li>
+    <li>Free, open data, any area</li></ul></section>
+  <section class="panel px"><p class="k">Honest limits</p><ul>
+    <li>Hotspots are not burned area</li>
+    <li>Not only wildfires: farm, clearing, peat and planned burns look alike from space</li>
+    <li>Monthly, not live alerts</li></ul></section>
+  <section class="panel px" style="background:var(--navy); color:#f7e9cb"><p class="k" style="color:var(--amber)">Next</p><ul>
+    <li>Early warnings for disaster agencies</li>
+    <li>Full analysis for every province</li>
+    <li>Peat and land-cover maps; NOAA-21</li></ul></section>
+</div>
+
+<!-- FOOTER -->
+<div class="foot">
+  <div><p class="url">alfanditora.github.io/burn-calendar</p><p class="url" style="font-size:11px">github.com/alfanditora/burn-calendar</p></div>
+  <div style="text-align:right"><p>Data: NASA FIRMS (MODIS, VIIRS) · Borders: Natural Earth</p>
+    <p class="muted">Made with SI assistance (Claude Code), reviewed by the team · no AI-generated imagery</p></div>
+</div>
+</div>
+
+<script src="/js/sprites.js"></script>
+<script>
+const FIRE_RAMP = ["#5c1a0b", "#8f2410", "#c2361b", "#e8590c", "#ff922b", "#ffc234", "#ffe066", "#fff3bf"];
+window.ready = (async () => {
+  await Promise.all([document.fonts.load('34px VT323'), document.fonts.load('12px "Press Start 2P"')]);
+  const [G, A] = await Promise.all([fetch("/data/grid/indonesia.json").then((r) => r.json()), fetch("/data/areas/indonesia.json").then((r) => r.json())]);
+  // Header map: the real September 2015 hotspots, in the app's colours.
+  const vals = []; for (const f of G.fires) for (let j = 1; j < f.length; j += 2) vals.push(f[j]);
+  vals.sort((a, b) => a - b); const vmax = Math.max(2, vals[Math.floor(vals.length * 0.99)]);
+  const m = document.getElementById("map").getContext("2d");
+  for (let c = 0; c < G.w * G.h; c++) { const x = c % G.w, y = (c / G.w) | 0, d = (x + y) % 2;
+    m.fillStyle = G.land[c] === "1" ? (d ? "#2f6b3f" : "#2b6339") : (d ? "#0f1a3d" : "#0d1736"); m.fillRect(x, y, 1, 1); }
+  const f = G.fires[G.months.indexOf("2015-09")];
+  for (let j = 0; j < f.length; j += 2) { const c = f[j], k = Math.min(0.999, Math.log1p(f[j + 1]) / Math.log1p(vmax));
+    m.fillStyle = FIRE_RAMP[Math.floor(k * FIRE_RAMP.length)]; m.fillRect(c % G.w, (c / G.w) | 0, 1, 1); }
+  const fl = document.getElementById("flame").getContext("2d"); drawSprite(fl, SPRITES.flame[0], 0, 0, 1);
+  // Chart: yearly totals 2001-2025 (complete years), 2015 highlighted, Sen's slope line from the app's trend.
+  const Y = A.yearly.filter((y) => y.year >= 2001 && y.year <= 2025), cv = document.getElementById("chart"), ctx = cv.getContext("2d");
+  const W = cv.width, H = cv.height, base = H - 50, top = 30, max = 860000, bw = (W - 40) / Y.length;
+  ctx.fillStyle = "#ebd3a5"; ctx.fillRect(0, 0, W, H);
+  Y.forEach((y, i) => { const h = y.count / max * (base - top);
+    ctx.fillStyle = y.year === 2015 ? "#f03e3e" : "#ff922b"; ctx.fillRect(20 + i * bw + 6, base - h, bw - 12, h);
+    if (y.year % 5 === 0) { ctx.fillStyle = "#6b5634"; ctx.font = "34px VT323"; ctx.fillText(y.year, 20 + i * bw - 10, H - 12); } });
+  const s = A.trend.slope_per_year, r = Y.map((y) => y.count - s * y.year).sort((a, b) => a - b), b0 = r[r.length >> 1];
+  const yAt = (yr) => base - (s * yr + b0) / max * (base - top);
+  ctx.strokeStyle = "#7a1010"; ctx.lineWidth = 8; ctx.setLineDash([22, 14]); ctx.beginPath();
+  ctx.moveTo(20 + bw / 2, yAt(Y[0].year)); ctx.lineTo(20 + (Y.length - 0.5) * bw, yAt(Y[Y.length - 1].year)); ctx.stroke(); ctx.setLineDash([]);
+  const i15 = Y.findIndex((y) => y.year === 2015); ctx.fillStyle = "#c92a2a"; ctx.font = "38px VT323";
+  ctx.fillText("2015: 812,705", 20 + i15 * bw + bw + 6, top + 34);
+  ctx.fillStyle = "#7a1010"; ctx.fillText("- - - trend: falling", W - 330, top + 110);
+  await document.fonts.ready;
+  return true;
+})();
+</script>
+</body></html>
