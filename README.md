@@ -13,6 +13,9 @@ as a pixel-art **Fire Atlas**. A home screen offers two modes:
   validation, and a "read before use" note (monthly, not a live alert system; hotspots include planned and
   agricultural burns, not only wildfires).
 
+**Project booklet (7 pages, PDF):** https://alfanditora.github.io/burn-calendar/booklet.pdf · **One-page poster:**
+https://alfanditora.github.io/burn-calendar/poster.png
+
 **Live app:** https://alfanditora.github.io/burn-calendar/ (the static site lives in `docs/` and GitHub Pages
 redeploys it on every push to `main`).
 
