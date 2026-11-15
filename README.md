@@ -227,6 +227,21 @@ Data
   (VIIRS_SNPP_SP, VIIRS_SNPP_NRT), VIIRS NOAA-20 375 m (VIIRS_NOAA20_SP, VIIRS_NOAA20_NRT).
   Data: NASA FIRMS (MODIS, VIIRS). https://firms.modaps.eosdis.nasa.gov/
 
+Method and science
+- **The harmonization method is our own design**, not taken from a single paper: per-area ratio factors on the
+  years two sensors overlap (MODIS → Suomi NPP → NOAA-20), a drift check, and leave-one-year-out validation. It is
+  a standard approach for keeping a record continuous across sensors; the papers below describe the fire products
+  and the statistics it builds on.
+- Schroeder, W., Oliva, P., Giglio, L., Csiszar, I. A. (2014). The New VIIRS 375 m active fire detection data
+  product: Algorithm description and initial assessment. *Remote Sensing of Environment* 143, 85–96.
+  https://doi.org/10.1016/j.rse.2013.12.008
+- Giglio, L., Schroeder, W., Justice, C. O. (2016). The collection 6 MODIS active fire detection algorithm and fire
+  products. *Remote Sensing of Environment* 178, 31–41. https://doi.org/10.1016/j.rse.2016.02.054
+- Mann, H. B. (1945). Nonparametric tests against trend. *Econometrica* 13(3), 245–259.
+- Kendall, M. G. (1975). *Rank Correlation Methods*, 4th ed. London: Charles Griffin.
+- Sen, P. K. (1968). Estimates of the regression coefficient based on Kendall's tau. *Journal of the American
+  Statistical Association* 63(324), 1379–1389.
+
 Libraries (open source)
 - pandas: https://pandas.pydata.org/ (BSD-3)
 - NumPy: https://numpy.org/ (BSD-3)
