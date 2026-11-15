@@ -204,8 +204,9 @@ window.ready = (async () => {
     if (y.year % 5 === 0) { ctx.fillStyle = "#6b5634"; ctx.font = "34px VT323"; ctx.fillText(y.year, 20 + i * bw - 10, H - 12); } });
   const s = A.trend.slope_per_year, r = Y.map((y) => y.count - s * y.year).sort((a, b) => a - b), b0 = r[r.length >> 1];
   const yAt = (yr) => base - (s * yr + b0) / max * (base - top);
-  ctx.strokeStyle = "#7a1010"; ctx.lineWidth = 8; ctx.setLineDash([22, 14]); ctx.beginPath();
-  ctx.moveTo(20 + bw / 2, yAt(Y[0].year)); ctx.lineTo(20 + (Y.length - 0.5) * bw, yAt(Y[Y.length - 1].year)); ctx.stroke(); ctx.setLineDash([]);
+  const xOf = (yr) => 20 + (yr - Y[0].year + 0.5) * bw, y0 = Y[0].year - 0.5, y1 = Y[Y.length - 1].year + 0.5;
+  ctx.strokeStyle = "#7a1010"; ctx.lineWidth = 8; ctx.setLineDash([22, 13]); ctx.beginPath();
+  ctx.moveTo(xOf(y0), yAt(y0)); ctx.lineTo(xOf(y1), yAt(y1)); ctx.stroke(); ctx.setLineDash([]);
   const i15 = Y.findIndex((y) => y.year === 2015); ctx.fillStyle = "#c92a2a"; ctx.font = "38px VT323";
   ctx.fillText("2015: 812,705", 20 + i15 * bw + bw + 6, top + 34);
   ctx.fillStyle = "#7a1010"; ctx.fillText("- - - trend: falling", W - 330, top + 110);

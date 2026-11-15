@@ -19,7 +19,7 @@ body { font:31px/1.13 var(--body); color:var(--text); }
   border-bottom:8px solid var(--line); }
 .band .k { font:15px/1 var(--title); color:#2d4a12; letter-spacing:1px; }
 .band h2 { font:400 36px/1.2 var(--title); color:var(--navy); margin-top:16px; text-shadow:3px 3px 0 rgba(255,255,255,0.6); }
-.body { position:absolute; left:64px; right:64px; top:170px; bottom:96px; display:flex; flex-direction:column; gap:22px; }
+.body { position:absolute; left:64px; right:64px; top:170px; bottom:96px; display:flex; flex-direction:column; gap:22px; justify-content:space-between; }
 .foot { position:absolute; left:64px; right:64px; bottom:34px; display:flex; justify-content:space-between; font-size:24px; color:var(--muted);
   border-top:4px solid var(--panel2); padding-top:12px; }
 .foot .n { font:13px/1.6 var(--title); color:var(--hi); }
@@ -92,6 +92,12 @@ canvas { image-rendering:pixelated; display:block; }
       <div class="box px" style="flex:1"><p class="k">A handover now</p><p style="margin-top:10px">Suomi NPP fire production <b>stopped on Nov 2, 2026</b>. MODIS on Terra and Aqua is drifting from its orbit and retiring.</p></div>
       <div class="box px" style="flex:1"><p class="k">The result</p><p style="margin-top:10px">A raw count from 2005 (MODIS) and one from 2025 (NOAA-20) are <b>not comparable</b>: a naive series shows a fake jump when VIIRS arrives.</p></div>
     </div>
+    <div class="row">
+      <div class="box px" style="flex:1; text-align:center"><p class="num" style="color:var(--hi)">28.9M</p><p style="margin-top:8px">hotspot detections downloaded</p></div>
+      <div class="box px" style="flex:1; text-align:center"><p class="num" style="color:var(--hi)">3</p><p style="margin-top:8px">satellite sensors joined</p></div>
+      <div class="box px" style="flex:1; text-align:center"><p class="num" style="color:var(--hi)">Nov 2000</p><p style="margin-top:8px">to Oct 2026, every month</p></div>
+      <div class="box px" style="flex:1; text-align:center"><p class="num" style="color:var(--hi)">36</p><p style="margin-top:8px">provinces and states, plus any box</p></div>
+    </div>
     <div class="box dark px">
       <p class="k" style="color:var(--amber)">The challenge asks for</p>
       <ul style="list-style:none; padding:0; margin-top:14px; columns:2; column-gap:30px">
@@ -132,6 +138,12 @@ canvas { image-rendering:pixelated; display:block; }
       <tr><td>Central Kalimantan</td><td>×5.10 (Indonesia’s)</td><td><b>16.3%</b></td><td>×0.99</td><td>5.5%</td></tr>
       <tr><td>Northern Australia</td><td>×4.52</td><td><b>7.6%</b></td><td>×0.99</td><td>4.9%</td></tr>
     </table>
+    <div class="box dark px" style="padding:18px 22px"><p class="k" style="color:var(--amber)">Rules we kept</p>
+      <ul style="margin-top:10px; columns:2; column-gap:30px">
+        <li>Never invent data: every number comes from FIRMS</li>
+        <li>Archive data first; near-real-time only where the archive ends</li>
+        <li>Every threshold lives in one settings file and the method notes</li>
+        <li>One command rebuilds everything; 32 automated tests pass</li></ul></div>
     <div class="box px" style="padding:16px 20px"><p><b>Why real borders matter.</b> With a rectangle around Riau, October 2026 looked “well above normal” (+86%), because the box also caught fires in neighbouring provinces. Inside Riau’s real border the same month is “below normal” (−88%).</p></div>
   </div>
   <footer class="foot"><span>Cross-validated error, monthly, weighted by fire counts · details in the README</span><span class="n">3 / 7</span></footer>
@@ -141,7 +153,7 @@ canvas { image-rendering:pixelated; display:block; }
 <section class="sheet">
   <header class="band"><p class="k">03 · The app for everyone</p><h2>Explore &amp; Play</h2></header>
   <div class="body">
-    <img class="shot" src="{{img:home}}" style="height:440px" alt="">
+    <img class="shot" src="{{img:home}}" style="height:420px" alt="">
     <p class="cap" style="margin-top:-6px">The home screen: pick a mode; the latest month in every area is one tap away.</p>
     <div class="row">
       <div style="flex:1.35; display:flex; flex-direction:column; gap:14px">
@@ -179,7 +191,7 @@ canvas { image-rendering:pixelated; display:block; }
         </ul>
       </div>
     </div>
-    <img class="shot" src="{{img:ux-season}}" style="height:300px" alt="">
+    <img class="shot" src="{{img:ux-season}}" style="height:395px" alt="">
     <div class="row" style="align-items:flex-start">
       <img class="shot" src="{{img:ux-draw}}" style="width:52%; height:270px" alt="">
       <div style="flex:1">
@@ -197,7 +209,7 @@ canvas { image-rendering:pixelated; display:block; }
   <div class="body">
     <div class="box px" style="padding:18px">
       <p class="k">Indonesia · hotspots per year (NOAA-20 units)</p>
-      <canvas id="chart" width="2160" height="960" style="width:1080px; height:480px; margin-top:12px"></canvas>
+      <canvas id="chart" width="2160" height="1180" style="width:100%; height:590px; margin-top:12px"></canvas>
     </div>
     <div class="row">
       <div class="box px" style="flex:1"><p class="num">812,705</p><p style="margin-top:8px">hotspots in 2015, the worst year: the Southeast Asian haze crisis.</p></div>
@@ -244,6 +256,13 @@ canvas { image-rendering:pixelated; display:block; }
       <div style="flex:1"><p class="k">Use of SI tools</p>
         <p style="margin-top:10px">Code, this booklet and the demo video were made with assistance from <b>Claude Code</b> (Anthropic) from our written plan, and reviewed by the team; every code file says so. The video uses an AI voice, labelled on screen. No images were made by an image model: every picture is a screenshot of the app or is drawn from the real data.</p></div>
     </div>
+    <div class="box px"><p class="k">Use it in four steps</p>
+      <div class="row" style="margin-top:14px; gap:18px">
+        <div class="step" style="flex:1"><span class="n">1</span><p>Open the link: no login, phone or laptop</p></div>
+        <div class="step" style="flex:1"><span class="n">2</span><p>Choose <b>Explore &amp; Play</b> or <b>Analyst View</b></p></div>
+        <div class="step" style="flex:1"><span class="n">3</span><p>Pick an area, a province, or draw a box; step through months</p></div>
+        <div class="step" style="flex:1"><span class="n">4</span><p>Read the badge and brief; download the CSV</p></div>
+      </div></div>
     <div class="box dark px" style="display:flex; justify-content:space-between; align-items:center">
       <div><p class="k" style="color:var(--amber)">Try it</p><p class="h" style="font-size:20px; color:var(--yellow); margin-top:10px">alfanditora.github.io/burn-calendar</p>
         <p style="margin-top:8px; color:#cfd6e6">Code and method: github.com/alfanditora/burn-calendar</p></div>
@@ -289,8 +308,10 @@ window.ready = (async () => {
     if (y.year % 5 === 0) { ctx.fillStyle = "#6b5634"; ctx.font = "44px VT323"; ctx.fillText(y.year, 20 + i * bw - 14, H - 14); } });
   const s = A.trend.slope_per_year, r = Y.map((y) => y.count - s * y.year).sort((a, b) => a - b), b0 = r[r.length >> 1];
   const yAt = (yr) => base - (s * yr + b0) / max * (base - top);
-  ctx.strokeStyle = "#7a1010"; ctx.lineWidth = 12; ctx.setLineDash([30, 20]); ctx.beginPath();
-  ctx.moveTo(20 + bw / 2, yAt(Y[0].year)); ctx.lineTo(20 + (Y.length - 0.5) * bw, yAt(Y[Y.length - 1].year)); ctx.stroke(); ctx.setLineDash([]);
+  // Sen's slope line across the whole plot (x of year y = centre of its bar).
+  const xOf = (yr) => 20 + (yr - Y[0].year + 0.5) * bw, y0 = Y[0].year - 0.5, y1 = Y[Y.length - 1].year + 0.5;
+  ctx.strokeStyle = "#7a1010"; ctx.lineWidth = 12; ctx.lineCap = "butt"; ctx.setLineDash([30, 18]); ctx.beginPath();
+  ctx.moveTo(xOf(y0), yAt(y0)); ctx.lineTo(xOf(y1), yAt(y1)); ctx.stroke(); ctx.setLineDash([]);
   const i15 = Y.findIndex((y) => y.year === 2015); ctx.fillStyle = "#c92a2a"; ctx.font = "50px VT323";
   ctx.fillText("2015: 812,705 (haze crisis)", 20 + i15 * bw + bw + 10, top + 44);
   ctx.fillStyle = "#7a1010"; ctx.fillText("- - - trend: falling", CW - 470, top + 140);
